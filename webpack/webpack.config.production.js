@@ -7,69 +7,28 @@ module.exports = {
 
   entry: {
 
-    'Autodesk.ADN.Viewing.Extension.BasicES2015':
-      './src/Autodesk.ADN.Viewing.Extension.BasicES2015/Autodesk.ADN.Viewing.Extension.BasicES2015.js',
+    'ES6': [
+      'babel-polyfill',
+      './ES6/src/ParticleSystem.js'
+    ],
 
-    'Viewing.Extension.VisualReport':
-      './src/Viewing.Extension.VisualReport/Viewing.Extension.VisualReport.js',
-
-    'Viewing.Extension.StateManager':
-      './src/Viewing.Extension.StateManager/Viewing.Extension.StateManager.js',
-
-    'Viewing.Extension.Markup2D':
-      './src/Viewing.Extension.Markup2D/Viewing.Extension.Markup2D.js',
-
-    'Viewing.Extension.Markup3D':
-      './src/Viewing.Extension.Markup3D/Viewing.Extension.Markup3D.js',
-
-    'Autodesk.ADN.Viewing.Extension.ModelLoader':
-      './src/Autodesk.ADN.Viewing.Extension.ModelLoader/Autodesk.ADN.Viewing.Extension.ModelLoader.js',
-
-    'Viewing.Extension.ModelTransformer':
-      './src/Viewing.Extension.ModelTransformer/Viewing.Extension.ModelTransformer.js',
-
-    'Autodesk.ADN.Viewing.Extension.PropertyPanel':
-      './src/Autodesk.ADN.Viewing.Extension.PropertyPanel/Autodesk.ADN.Viewing.Extension.PropertyPanel.js',
-
-    'Viewing.Extension.CustomTree':
-      './src/Viewing.Extension.CustomTree/Viewing.Extension.CustomTree.js',
-
-    '_Viewing.Extension.CSSTV':
-      './src/Viewing.Extension.CSSTV/Viewing.Extension.CSSTV.js',
-
-    '_Viewing.Extension.ControlSelector':
-      './src/Viewing.Extension.ControlSelector/Viewing.Extension.ControlSelector.js',
-
-    '_Viewing.Extension.ExtensionManager':
-      './src/Viewing.Extension.ExtensionManager/Viewing.Extension.ExtensionManager.js',
-
-    'Viewing.Extension.Particle':
-      './src/Viewing.Extension.Particle/Viewing.Extension.Particle.js',
-
-    '_Viewing.Extension.Particle.LHC':
-      './src/Viewing.Extension.Particle/Viewing.Extension.Particle.LHC.js',
-
-    'Viewing.Extension.PointCloud':
-      './src/Viewing.Extension.PointCloud/Viewing.Extension.PointCloud.js',
-
-    'Viewing.Extension.TypeScript':
-      './src/Viewing.Extension.TypeScript/Viewing.Extension.TypeScript.js',
-
-    'Viewing.Extension.Transform':
-      './src/Viewing.Extension.Transform/Viewing.Extension.Transform.js',
-
-    'ConnectedData':
-      './src/Forge.ConnectedData/ConnectedData.js'
+    'Test': [
+      'babel-polyfill',
+      './Test/src/Particle.Test.js'
+    ]
   },
 
   output: {
-    path: path.join(__dirname, '../../App/dynamic/extensions'),
-    filename: "[name]/[name].min.js",
-    libraryTarget: "umd",
-    library: "[name]"
+    path: path.join(__dirname, '../'),
+    filename: '[name]/dist/bundle.js',
+    publicPath: './dist/',
+    libraryTarget: 'umd',
+    watch: true
   },
 
   plugins: [
+
+    new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/),
 
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin(),
@@ -102,15 +61,16 @@ module.exports = {
   ],
 
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json', '.ts'],
+    extensions: ['', '.js', '.jsx', '.json'],
     root: [
-      path.resolve('./src/utils'),
-      path.resolve('./src/Viewing.Extension.Particle'),
-      path.resolve('./src/Viewing.Extension.Transform')
+      path.resolve('./ES6/src'),
+      path.resolve('./Test/src'),
+      path.resolve('./Emscripten/dist')
     ]
   },
 
   module: {
+
     loaders: [
       {
         test: /\.jsx?$/,
@@ -118,17 +78,16 @@ module.exports = {
         exclude: /node_modules/,
         query: {
           cacheDirectory: true,
-          presets: ['es2015', 'stage-0', 'react']
+          presets: ['es2015', 'stage-0']
         }
       },
       {
-        test: /\.css$/,
-        loader: "style-loader!css-loader"
+        test: /\.json$/,
+        loader: 'json-loader'
       },
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -140,3 +99,4 @@ module.exports = {
     ]
   }
 }
+
