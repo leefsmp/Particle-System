@@ -1,0 +1,56 @@
+
+interface Vector {
+
+        void Vector(double x, double y, double z);
+
+        void set(double x, double y, double z);
+
+        double getX();
+        double getY();
+        double getZ();
+};
+
+interface ParticleEmitter {
+
+        void ParticleEmitter(long id);
+
+        Vector getPosition();
+        Vector getOffset();
+
+       	void setEmissionRate(double emissionRate);
+       	void setVelocity(double velocity);
+       	void setSpread(double spread);
+       	void setCharge(double charge);
+};
+
+interface MagneticField {
+
+        void MagneticField(long id);
+
+        Vector getPosition();
+        Vector getOffset();
+
+       	void setForce(double force);
+};
+
+interface Particle {
+
+        void Particle();
+
+        Vector getAcceleration();
+        Vector getVelocity();
+        Vector getPosition();
+        Vector getDof();
+};
+
+interface ParticleSystem {
+
+        void ParticleSystem(long maxParticles);
+        void pushRecycle(Particle particle);
+        void initParticleLoop();
+        Particle nextParticle();
+        void step(double dt);
+
+        MagneticField addMagneticField(long id);
+        ParticleEmitter addEmitter(long id);
+};

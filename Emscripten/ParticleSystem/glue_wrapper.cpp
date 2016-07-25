@@ -1,0 +1,6 @@
+#include "ParticleEmitter.h"
+#include "ParticleSystem.h"
+#include "MagneticField.h"
+#include "Particle.h"
+#include "Vector.h"
+#include "glue.cpp"

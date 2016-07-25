@@ -1,0 +1,36 @@
+{
+  "name": "particle-system",
+  "version": "1.0.0",
+  "description": "Particle System ES6/Emscripten/WebASM Project",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run build-prod",
+    "build-dev": "webpack --watch --progress --colors --config ./webpack/webpack.config.development.js",
+    "build-prod": "webpack --progress --colors --config ./webpack/webpack.config.production.js"
+  },
+  "author": "Philippe Leefsma",
+  "dependencies": {
+    "babel-core": "^6.5.2",
+    "babel-loader": "^6.2.2",
+    "babel-polyfill": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.0.15",
+    "babel-preset-stage-0": "^6.5.0",
+    "backbone": "1.3.1",
+    "css-loader": "^0.23.1",
+    "dat-gui": "0.5.0",
+    "debug": "2.2.0",
+    "file-loader": "^0.8.5",
+    "image-webpack-loader": "^1.6.3",
+    "imports-loader": "0.6.5",
+    "jquery": "^2.2.0",
+    "json-loader": "^0.5.4",
+    "jsoneditor": "^5.5.6",
+    "lodash": "^4.11.1",
+    "style-loader": "^0.13.0",
+    "systemjs": "0.19.22",
+    "traceur": "0.0.104",
+    "ts-loader": "^0.8.1",
+    "webpack": "^1.12.13"
+  }
+}

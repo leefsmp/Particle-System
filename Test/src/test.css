@@ -1,0 +1,35 @@
+
+body {
+    background-color: #eaeaea;
+    margin-left: 50px;
+}
+
+.test-config-title {
+    text-align: center;
+    color: #0346b1;
+    margin: 10px;
+    width: 300px;
+}
+
+.test-config {
+    margin-bottom: 10px;
+    height: 250px;
+    width: 300px;
+}
+
+.test-btn {
+    font-size: 14px;
+    width: 300px;
+    height: 34px;
+    border-radius: 4px;
+    border: solid 1px #3883fa;
+}
+
+.test-results {
+    padding: 10px 0px 0px 10px;
+    border: solid 1px #3883fa;
+    border-radius: 4px;
+    margin-top: 10px;
+    width: 288px;
+    height: 70px;
+}
