@@ -1,12 +1,12 @@
 {
   "name": "particle-system",
   "version": "1.0.0",
-  "description": "Particle System ES6/Emscripten/WebASM Project",
+  "description": "Particle System ES6/ASM.js/WebASM Project",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm run build-prod",
-    "build-dev": "webpack --watch --progress --colors --config ./webpack/webpack.config.development.js",
-    "build-prod": "webpack --progress --colors --config ./webpack/webpack.config.production.js"
+    "build-lib-dev": "webpack --watch --progress --colors --config ./webpack/webpack.config.development.js",
+    "build-lib-prod": "webpack --progress --colors --config ./webpack/webpack.config.production.js",
+    "build-tests": "webpack --progress --colors --config ./webpack/webpack.config.production.js",
   },
   "author": "Philippe Leefsma",
   "dependencies": {

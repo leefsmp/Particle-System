@@ -1,0 +1,23 @@
+{
+"ABORT": { "address": 32, "type": 1, "import": 1, "module": "env", "base": "ABORT" }
+,"STACKTOP": { "address": 8, "type": 1, "import": 1, "module": "env", "base": "STACKTOP" }
+,"STACK_MAX": { "address": 16, "type": 1, "import": 1, "module": "env", "base": "STACK_MAX" }
+,"__THREW__": { "address": 40, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"inf": { "address": 80, "type": 4, "import": 1, "module": "global", "base": "Infinity" }
+,"nan": { "address": 72, "type": 4, "import": 1, "module": "global", "base": "NaN" }
+,"setjmpId": { "address": 56, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempBigInt": { "address": 96, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempBigIntD": { "address": 136, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempBigIntI": { "address": 128, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempBigIntP": { "address": 104, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempBigIntR": { "address": 120, "type": 4, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempBigIntS": { "address": 112, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempDouble": { "address": 152, "type": 4, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempDoublePtr": { "address": 24, "type": 1, "import": 1, "module": "env", "base": "tempDoublePtr" }
+,"tempFloat": { "address": 168, "type": 4, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempInt": { "address": 88, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempRet0": { "address": 160, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"tempValue": { "address": 144, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"threwValue": { "address": 48, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+,"undef": { "address": 64, "type": 1, "import": 0, "module": "(null)", "base": "(null)" }
+}
