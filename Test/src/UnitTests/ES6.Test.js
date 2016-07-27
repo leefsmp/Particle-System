@@ -89,7 +89,7 @@ export default class ES6Test extends UnitTestBase {
         for (var i = 0; i < config.nbSteps; ++i) {
           console.log('-------- Step ' + (i + 1) + ' --------')
           this.ps.step(config.timeStep)
-          this.dumpParticles(ps)
+          this.dumpParticles(this.ps)
         }
 
       } else {
