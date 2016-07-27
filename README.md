@@ -2,13 +2,52 @@
 
 ##Description
 
-A Particle System experiment designed to benchmark web technologies:
-ES6, Emscripten and Web Assembly
+A Particle System experiment designed to benchmark web technologies from a non trivial piece of code: ES6, Emscripten and Web Assembly (yet to come)
 
 ##Setup/Usage Instructions
 
-    npm install
-    npm run build-dev / npm run build-prod
+- Building the ASM.js and WebAssembly versions:
+
+ If you want to build the Web Assembly version, you need to build the Emscripten toolchain **from source** using the **incoming branch**. The master branch does NOT support BINARYEN=1 option at the moment
+
+     [Install Emscripten Portable SDK](https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html#all-os-installation-instructions-portable-sdk)
+     
+     [Building Emscripten from Source](https://kripken.github.io/emscripten-site/docs/building_from_source/index.html?highlight=build%20from%20source)
+     
+      . cd particle-system/Emscriptem
+      . make
+      . emcc -s NO_EXIT_RUNTIME=1 -s release/ParticleSystem.bc --post-js ParticleSystem/glue.js -o dist/asmjs/ParticleSystem.asm.js
+      (or run emcc-asmjs.sh script for mac/linux users. Assumes emcc is in your PATH)
+      . eemcc -s NO_EXIT_RUNTIME=1 -s BINARYEN=1 release/ParticleSystem.bc --post-js ParticleSystem/glue.js -o dist/wasm/ParticleSystem.js
+      (or run emcc-wasm.sh script for mac/linux users. Assumes emcc is in your PATH)
+        
+
+
+- Building the the ES6 Particle System Library and the Test pages:
+
+   	. npm install
+       . npm run build-lib-dev / npm run build-lib-prod 
+       (prod version is minified and without source map)
+       . npm run build-tests
+       . 
+      (open file in browser or serve it from the HTTP server of your choice)
+
+- Running the tests:
+  
+  Serve **ES6vsASM.html** and **ES6vsWASM.html** with the HTTP server of your choice... 
+ 
+ If you want to test ES6vsWASM.html (the Web Assembly version), you need a browser that supports Web Assembly. 
+ 
+ At the moment [Chrome Canary](https://www.google.com/chrome/browser/canary.html), [Firefox Nighly](https://nightly.mozilla.org/) and soon in Microsoft Edge.
+
+## Live Tests
+
+The two tests are available online from the following locations:
+
+[ES6vsASM.html](http://leefsmp.github.io/Particle-System/Test/ES6vsASM.html)
+
+[ES6vsWASM.html](http://leefsmp.github.io/Particle-System/Test/ES6vsWASM.html)
+
 
 ## License
 

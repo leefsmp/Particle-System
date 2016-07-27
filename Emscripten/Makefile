@@ -11,4 +11,5 @@ ParticleSystem:
 .PHONY: clean
 clean:
 	make --directory="ParticleSystem/" --file=ParticleSystem.makefile clean
+	rm -f release/*.bc
 
