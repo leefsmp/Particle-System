@@ -1,34 +1,34 @@
-// The ASMModule object: Our interface to the outside world. We import
+// The Module object: Our interface to the outside world. We import
 // and export values on it, and do the work to get that through
-// closure compiler if necessary. There are various ways ASMModule can be used:
+// closure compiler if necessary. There are various ways Module can be used:
 // 1. Not defined. We create it here
-// 2. A function parameter, function(ASMModule) { ..generated code.. }
-// 3. pre-run appended it, var ASMModule = {}; ..generated code..
-// 4. External script tag defines var ASMModule.
+// 2. A function parameter, function(Module) { ..generated code.. }
+// 3. pre-run appended it, var Module = {}; ..generated code..
+// 4. External script tag defines var Module.
 // We need to do an eval in order to handle the closure compiler
-// case, where this code here is minified but ASMModule was defined
-// elsewhere (e.g. case 4 above). We also need to check if ASMModule
+// case, where this code here is minified but Module was defined
+// elsewhere (e.g. case 4 above). We also need to check if Module
 // already exists (e.g. case 3 above).
-// Note that if you want to run closure, and also to use ASMModule
-// after the generated code, you will need to define   var ASMModule = {};
+// Note that if you want to run closure, and also to use Module
+// after the generated code, you will need to define   var Module = {};
 // before the code. Then that object will be used in the code, and you
-// can continue to use ASMModule afterwards as well.
-var ASMModule;
-if (!ASMModule) ASMModule = (typeof ASMModule !== 'undefined' ? ASMModule : null) || {};
+// can continue to use Module afterwards as well.
+var Module;
+if (!Module) Module = (typeof Module !== 'undefined' ? Module : null) || {};
 
-// Sometimes an existing ASMModule object exists with properties
+// Sometimes an existing Module object exists with properties
 // meant to overwrite the default module functionality. Here
 // we collect those properties and reapply _after_ we configure
 // the current environment's defaults to avoid having to be so
 // defensive during initialization.
 var moduleOverrides = {};
-for (var key in ASMModule) {
-  if (ASMModule.hasOwnProperty(key)) {
-    moduleOverrides[key] = ASMModule[key];
+for (var key in Module) {
+  if (Module.hasOwnProperty(key)) {
+    moduleOverrides[key] = Module[key];
   }
 }
 
-// The environment setup code below is customized to use ASMModule.
+// The environment setup code below is customized to use Module.
 // *** Environment setup code ***
 var ENVIRONMENT_IS_WEB = false;
 var ENVIRONMENT_IS_WORKER = false;
@@ -40,17 +40,17 @@ var ENVIRONMENT_IS_SHELL = false;
 // 2) We could be the application main() thread proxied to worker. (with Emscripten -s PROXY_TO_WORKER=1) (ENVIRONMENT_IS_WORKER == true, ENVIRONMENT_IS_PTHREAD == false)
 // 3) We could be an application pthread running in a worker. (ENVIRONMENT_IS_WORKER == true and ENVIRONMENT_IS_PTHREAD == true)
 
-if (ASMModule['ENVIRONMENT']) {
-  if (ASMModule['ENVIRONMENT'] === 'WEB') {
+if (Module['ENVIRONMENT']) {
+  if (Module['ENVIRONMENT'] === 'WEB') {
     ENVIRONMENT_IS_WEB = true;
-  } else if (ASMModule['ENVIRONMENT'] === 'WORKER') {
+  } else if (Module['ENVIRONMENT'] === 'WORKER') {
     ENVIRONMENT_IS_WORKER = true;
-  } else if (ASMModule['ENVIRONMENT'] === 'NODE') {
+  } else if (Module['ENVIRONMENT'] === 'NODE') {
     ENVIRONMENT_IS_NODE = true;
-  } else if (ASMModule['ENVIRONMENT'] === 'SHELL') {
+  } else if (Module['ENVIRONMENT'] === 'SHELL') {
     ENVIRONMENT_IS_SHELL = true;
   } else {
-    throw new Error('The provided ASMModule[\'ENVIRONMENT\'] value is not valid. It must be one of: WEB|WORKER|NODE|SHELL.');
+    throw new Error('The provided Module[\'ENVIRONMENT\'] value is not valid. It must be one of: WEB|WORKER|NODE|SHELL.');
   }
 } else {
   ENVIRONMENT_IS_WEB = typeof window === 'object';
@@ -63,13 +63,13 @@ if (ASMModule['ENVIRONMENT']) {
 if (ENVIRONMENT_IS_NODE) {
   // Expose functionality in the same simple way that the shells work
   // Note that we pollute the global namespace here, otherwise we break in node
-  if (!ASMModule['print']) ASMModule['print'] = console.log;
-  if (!ASMModule['printErr']) ASMModule['printErr'] = console.warn;
+  if (!Module['print']) Module['print'] = console.log;
+  if (!Module['printErr']) Module['printErr'] = console.warn;
 
   var nodeFS;
   var nodePath;
 
-  ASMModule['read'] = function read(filename, binary) {
+  Module['read'] = function read(filename, binary) {
     if (!nodeFS) nodeFS = require('fs');
     if (!nodePath) nodePath = require('path');
     filename = nodePath['normalize'](filename);
@@ -77,8 +77,8 @@ if (ENVIRONMENT_IS_NODE) {
     return binary ? ret : ret.toString();
   };
 
-  ASMModule['readBinary'] = function readBinary(filename) {
-    var ret = ASMModule['read'](filename, true);
+  Module['readBinary'] = function readBinary(filename) {
+    var ret = Module['read'](filename, true);
     if (!ret.buffer) {
       ret = new Uint8Array(ret);
     }
@@ -86,22 +86,22 @@ if (ENVIRONMENT_IS_NODE) {
     return ret;
   };
 
-  ASMModule['load'] = function load(f) {
+  Module['load'] = function load(f) {
     globalEval(read(f));
   };
 
-  if (!ASMModule['thisProgram']) {
+  if (!Module['thisProgram']) {
     if (process['argv'].length > 1) {
-      ASMModule['thisProgram'] = process['argv'][1].replace(/\\/g, '/');
+      Module['thisProgram'] = process['argv'][1].replace(/\\/g, '/');
     } else {
-      ASMModule['thisProgram'] = 'unknown-program';
+      Module['thisProgram'] = 'unknown-program';
     }
   }
 
-  ASMModule['arguments'] = process['argv'].slice(2);
+  Module['arguments'] = process['argv'].slice(2);
 
   if (typeof module !== 'undefined') {
-    module['exports'] = ASMModule;
+    module['exports'] = Module;
   }
 
   process['on']('uncaughtException', function(ex) {
@@ -111,19 +111,19 @@ if (ENVIRONMENT_IS_NODE) {
     }
   });
 
-  ASMModule['inspect'] = function () { return '[Emscripten ASMModule object]'; };
+  Module['inspect'] = function () { return '[Emscripten Module object]'; };
 }
 else if (ENVIRONMENT_IS_SHELL) {
-  if (!ASMModule['print']) ASMModule['print'] = print;
-  if (typeof printErr != 'undefined') ASMModule['printErr'] = printErr; // not present in v8 or older sm
+  if (!Module['print']) Module['print'] = print;
+  if (typeof printErr != 'undefined') Module['printErr'] = printErr; // not present in v8 or older sm
 
   if (typeof read != 'undefined') {
-    ASMModule['read'] = read;
+    Module['read'] = read;
   } else {
-    ASMModule['read'] = function read() { throw 'no read() available (jsc?)' };
+    Module['read'] = function read() { throw 'no read() available (jsc?)' };
   }
 
-  ASMModule['readBinary'] = function readBinary(f) {
+  Module['readBinary'] = function readBinary(f) {
     if (typeof readbuffer === 'function') {
       return new Uint8Array(readbuffer(f));
     }
@@ -133,21 +133,21 @@ else if (ENVIRONMENT_IS_SHELL) {
   };
 
   if (typeof scriptArgs != 'undefined') {
-    ASMModule['arguments'] = scriptArgs;
+    Module['arguments'] = scriptArgs;
   } else if (typeof arguments != 'undefined') {
-    ASMModule['arguments'] = arguments;
+    Module['arguments'] = arguments;
   }
 
 }
 else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
-  ASMModule['read'] = function read(url) {
+  Module['read'] = function read(url) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, false);
     xhr.send(null);
     return xhr.responseText;
   };
 
-  ASMModule['readAsync'] = function readAsync(url, onload, onerror) {
+  Module['readAsync'] = function readAsync(url, onload, onerror) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'arraybuffer';
@@ -163,20 +163,20 @@ else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
   };
 
   if (typeof arguments != 'undefined') {
-    ASMModule['arguments'] = arguments;
+    Module['arguments'] = arguments;
   }
 
   if (typeof console !== 'undefined') {
-    if (!ASMModule['print']) ASMModule['print'] = function print(x) {
+    if (!Module['print']) Module['print'] = function print(x) {
       console.log(x);
     };
-    if (!ASMModule['printErr']) ASMModule['printErr'] = function printErr(x) {
+    if (!Module['printErr']) Module['printErr'] = function printErr(x) {
       console.warn(x);
     };
   } else {
     // Probably a worker, and without console.log. We can do very little here...
     var TRY_USE_DUMP = false;
-    if (!ASMModule['print']) ASMModule['print'] = (TRY_USE_DUMP && (typeof(dump) !== "undefined") ? (function(x) {
+    if (!Module['print']) Module['print'] = (TRY_USE_DUMP && (typeof(dump) !== "undefined") ? (function(x) {
       dump(x);
     }) : (function(x) {
       // self.postMessage(x); // enable this if you want stdout to be sent as messages
@@ -184,11 +184,11 @@ else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
   }
 
   if (ENVIRONMENT_IS_WORKER) {
-    ASMModule['load'] = importScripts;
+    Module['load'] = importScripts;
   }
 
-  if (typeof ASMModule['setWindowTitle'] === 'undefined') {
-    ASMModule['setWindowTitle'] = function(title) { document.title = title };
+  if (typeof Module['setWindowTitle'] === 'undefined') {
+    Module['setWindowTitle'] = function(title) { document.title = title };
   }
 }
 else {
@@ -199,38 +199,38 @@ else {
 function globalEval(x) {
   eval.call(null, x);
 }
-if (!ASMModule['load'] && ASMModule['read']) {
-  ASMModule['load'] = function load(f) {
-    globalEval(ASMModule['read'](f));
+if (!Module['load'] && Module['read']) {
+  Module['load'] = function load(f) {
+    globalEval(Module['read'](f));
   };
 }
-if (!ASMModule['print']) {
-  ASMModule['print'] = function(){};
+if (!Module['print']) {
+  Module['print'] = function(){};
 }
-if (!ASMModule['printErr']) {
-  ASMModule['printErr'] = ASMModule['print'];
+if (!Module['printErr']) {
+  Module['printErr'] = Module['print'];
 }
-if (!ASMModule['arguments']) {
-  ASMModule['arguments'] = [];
+if (!Module['arguments']) {
+  Module['arguments'] = [];
 }
-if (!ASMModule['thisProgram']) {
-  ASMModule['thisProgram'] = './this.program';
+if (!Module['thisProgram']) {
+  Module['thisProgram'] = './this.program';
 }
 
 // *** Environment setup code ***
 
 // Closure helpers
-ASMModule.print = ASMModule['print'];
-ASMModule.printErr = ASMModule['printErr'];
+Module.print = Module['print'];
+Module.printErr = Module['printErr'];
 
 // Callbacks
-ASMModule['preRun'] = [];
-ASMModule['postRun'] = [];
+Module['preRun'] = [];
+Module['postRun'] = [];
 
 // Merge back in the overrides
 for (var key in moduleOverrides) {
   if (moduleOverrides.hasOwnProperty(key)) {
-    ASMModule[key] = moduleOverrides[key];
+    Module[key] = moduleOverrides[key];
   }
 }
 // Free the object hierarchy contained in the overrides, this lets the GC
@@ -314,12 +314,12 @@ var Runtime = {
   dynCall: function (sig, ptr, args) {
     if (args && args.length) {
       assert(args.length == sig.length-1);
-      assert(('dynCall_' + sig) in ASMModule, 'bad function pointer type - no table for sig \'' + sig + '\'');
-      return ASMModule['dynCall_' + sig].apply(null, [ptr].concat(args));
+      assert(('dynCall_' + sig) in Module, 'bad function pointer type - no table for sig \'' + sig + '\'');
+      return Module['dynCall_' + sig].apply(null, [ptr].concat(args));
     } else {
       assert(sig.length == 1);
-      assert(('dynCall_' + sig) in ASMModule, 'bad function pointer type - no table for sig \'' + sig + '\'');
-      return ASMModule['dynCall_' + sig].call(null, ptr);
+      assert(('dynCall_' + sig) in Module, 'bad function pointer type - no table for sig \'' + sig + '\'');
+      return Module['dynCall_' + sig].call(null, ptr);
     }
   },
   functionPointers: [],
@@ -339,7 +339,7 @@ var Runtime = {
     if (!Runtime.warnOnce.shown) Runtime.warnOnce.shown = {};
     if (!Runtime.warnOnce.shown[text]) {
       Runtime.warnOnce.shown[text] = 1;
-      ASMModule.printErr(text);
+      Module.printErr(text);
     }
   },
   funcWrappers: {},
@@ -383,7 +383,7 @@ var Runtime = {
 
 
 
-ASMModule["Runtime"] = Runtime;
+Module["Runtime"] = Runtime;
 
 
 
@@ -404,7 +404,7 @@ var globalScope = this;
 
 // Returns the C function with a specified identifier (for C++, you need to do manual name mangling)
 function getCFunc(ident) {
-  var func = ASMModule['_' + ident]; // closure exported function
+  var func = Module['_' + ident]; // closure exported function
   if (!func) {
     try { func = eval('_' + ident); } catch(e) {}
   }
@@ -548,8 +548,8 @@ var cwrap, ccall;
     return eval(funcstr);
   };
 })();
-ASMModule["ccall"] = ccall;
-ASMModule["cwrap"] = cwrap;
+Module["ccall"] = ccall;
+Module["cwrap"] = cwrap;
 
 function setValue(ptr, value, type, noSafe) {
   type = type || 'i8';
@@ -565,7 +565,7 @@ function setValue(ptr, value, type, noSafe) {
       default: abort('invalid type for setValue: ' + type);
     }
 }
-ASMModule["setValue"] = setValue;
+Module["setValue"] = setValue;
 
 
 function getValue(ptr, type, noSafe) {
@@ -583,18 +583,18 @@ function getValue(ptr, type, noSafe) {
     }
   return null;
 }
-ASMModule["getValue"] = getValue;
+Module["getValue"] = getValue;
 
 var ALLOC_NORMAL = 0; // Tries to use _malloc()
 var ALLOC_STACK = 1; // Lives for the duration of the current function call
 var ALLOC_STATIC = 2; // Cannot be freed
 var ALLOC_DYNAMIC = 3; // Cannot be freed except through sbrk
 var ALLOC_NONE = 4; // Do not allocate
-ASMModule["ALLOC_NORMAL"] = ALLOC_NORMAL;
-ASMModule["ALLOC_STACK"] = ALLOC_STACK;
-ASMModule["ALLOC_STATIC"] = ALLOC_STATIC;
-ASMModule["ALLOC_DYNAMIC"] = ALLOC_DYNAMIC;
-ASMModule["ALLOC_NONE"] = ALLOC_NONE;
+Module["ALLOC_NORMAL"] = ALLOC_NORMAL;
+Module["ALLOC_STACK"] = ALLOC_STACK;
+Module["ALLOC_STATIC"] = ALLOC_STATIC;
+Module["ALLOC_DYNAMIC"] = ALLOC_DYNAMIC;
+Module["ALLOC_NONE"] = ALLOC_NONE;
 
 // allocate(): This is for internal use. You can use it yourself as well, but the interface
 //             is a little tricky (see docs right below). The reason is that it is optimized
@@ -680,7 +680,7 @@ function allocate(slab, types, allocator, ptr) {
 
   return ret;
 }
-ASMModule["allocate"] = allocate;
+Module["allocate"] = allocate;
 
 // Allocate memory during any stage of startup - static memory early on, dynamic memory later, malloc when ready
 function getMemory(size) {
@@ -688,7 +688,7 @@ function getMemory(size) {
   if ((typeof _sbrk !== 'undefined' && !_sbrk.called) || !runtimeInitialized) return Runtime.dynamicAlloc(size);
   return _malloc(size);
 }
-ASMModule["getMemory"] = getMemory;
+Module["getMemory"] = getMemory;
 
 function Pointer_stringify(ptr, /* optional */ length) {
   if (length === 0 || !ptr) return '';
@@ -720,9 +720,9 @@ function Pointer_stringify(ptr, /* optional */ length) {
     }
     return ret;
   }
-  return ASMModule['UTF8ToString'](ptr);
+  return Module['UTF8ToString'](ptr);
 }
-ASMModule["Pointer_stringify"] = Pointer_stringify;
+Module["Pointer_stringify"] = Pointer_stringify;
 
 // Given a pointer 'ptr' to a null-terminated ASCII-encoded string in the emscripten HEAP, returns
 // a copy of that string as a Javascript String object.
@@ -735,7 +735,7 @@ function AsciiToString(ptr) {
     str += String.fromCharCode(ch);
   }
 }
-ASMModule["AsciiToString"] = AsciiToString;
+Module["AsciiToString"] = AsciiToString;
 
 // Copies the given Javascript String object 'str' to the emscripten HEAP at address 'outPtr',
 // null-terminated and encoded in ASCII form. The copy will require at most str.length+1 bytes of space in the HEAP.
@@ -743,7 +743,7 @@ ASMModule["AsciiToString"] = AsciiToString;
 function stringToAscii(str, outPtr) {
   return writeAsciiToMemory(str, outPtr, false);
 }
-ASMModule["stringToAscii"] = stringToAscii;
+Module["stringToAscii"] = stringToAscii;
 
 // Given a pointer 'ptr' to a null-terminated UTF8-encoded string in the given array that contains uint8 values, returns
 // a copy of that string as a Javascript String object.
@@ -794,7 +794,7 @@ function UTF8ArrayToString(u8Array, idx) {
     }
   }
 }
-ASMModule["UTF8ArrayToString"] = UTF8ArrayToString;
+Module["UTF8ArrayToString"] = UTF8ArrayToString;
 
 // Given a pointer 'ptr' to a null-terminated UTF8-encoded string in the emscripten HEAP, returns
 // a copy of that string as a Javascript String object.
@@ -802,7 +802,7 @@ ASMModule["UTF8ArrayToString"] = UTF8ArrayToString;
 function UTF8ToString(ptr) {
   return UTF8ArrayToString(HEAPU8,ptr);
 }
-ASMModule["UTF8ToString"] = UTF8ToString;
+Module["UTF8ToString"] = UTF8ToString;
 
 // Copies the given Javascript String object 'str' to the given byte array at address 'outIdx',
 // encoded in UTF8 form and null-terminated. The copy will require at most str.length*4+1 bytes of space in the HEAP.
@@ -867,7 +867,7 @@ function stringToUTF8Array(str, outU8Array, outIdx, maxBytesToWrite) {
   outU8Array[outIdx] = 0;
   return outIdx - startIdx;
 }
-ASMModule["stringToUTF8Array"] = stringToUTF8Array;
+Module["stringToUTF8Array"] = stringToUTF8Array;
 
 // Copies the given Javascript String object 'str' to the emscripten HEAP at address 'outPtr',
 // null-terminated and encoded in UTF8 form. The copy will require at most str.length*4+1 bytes of space in the HEAP.
@@ -878,7 +878,7 @@ function stringToUTF8(str, outPtr, maxBytesToWrite) {
   assert(typeof maxBytesToWrite == 'number', 'stringToUTF8(str, outPtr, maxBytesToWrite) is missing the third parameter that specifies the length of the output buffer!');
   return stringToUTF8Array(str, HEAPU8,outPtr, maxBytesToWrite);
 }
-ASMModule["stringToUTF8"] = stringToUTF8;
+Module["stringToUTF8"] = stringToUTF8;
 
 // Returns the number of bytes the given Javascript string takes if encoded as a UTF8 byte array, EXCLUDING the null terminator byte.
 
@@ -905,7 +905,7 @@ function lengthBytesUTF8(str) {
   }
   return len;
 }
-ASMModule["lengthBytesUTF8"] = lengthBytesUTF8;
+Module["lengthBytesUTF8"] = lengthBytesUTF8;
 
 // Given a pointer 'ptr' to a null-terminated UTF16LE-encoded string in the emscripten HEAP, returns
 // a copy of that string as a Javascript String object.
@@ -1056,13 +1056,13 @@ function lengthBytesUTF32(str) {
 
 
 function demangle(func) {
-  var hasLibcxxabi = !!ASMModule['___cxa_demangle'];
+  var hasLibcxxabi = !!Module['___cxa_demangle'];
   if (hasLibcxxabi) {
     try {
       var buf = _malloc(func.length);
       writeStringToMemory(func.substr(1), buf);
       var status = _malloc(4);
-      var ret = ASMModule['___cxa_demangle'](buf, 0, 0, status);
+      var ret = Module['___cxa_demangle'](buf, 0, 0, status);
       if (getValue(status, 'i32') === 0 && ret) {
         return Pointer_stringify(ret);
       }
@@ -1104,10 +1104,10 @@ function jsStackTrace() {
 
 function stackTrace() {
   var js = jsStackTrace();
-  if (ASMModule['extraStackTrace']) js += '\n' + ASMModule['extraStackTrace']();
+  if (Module['extraStackTrace']) js += '\n' + Module['extraStackTrace']();
   return demangleAll(js);
 }
-ASMModule["stackTrace"] = stackTrace;
+Module["stackTrace"] = stackTrace;
 
 // Memory management
 
@@ -1125,18 +1125,18 @@ var buffer;
 var HEAP8, HEAPU8, HEAP16, HEAPU16, HEAP32, HEAPU32, HEAPF32, HEAPF64;
 
 function updateGlobalBuffer(buf) {
-  ASMModule['buffer'] = buffer = buf;
+  Module['buffer'] = buffer = buf;
 }
 
 function updateGlobalBufferViews() {
-  ASMModule['HEAP8'] = HEAP8 = new Int8Array(buffer);
-  ASMModule['HEAP16'] = HEAP16 = new Int16Array(buffer);
-  ASMModule['HEAP32'] = HEAP32 = new Int32Array(buffer);
-  ASMModule['HEAPU8'] = HEAPU8 = new Uint8Array(buffer);
-  ASMModule['HEAPU16'] = HEAPU16 = new Uint16Array(buffer);
-  ASMModule['HEAPU32'] = HEAPU32 = new Uint32Array(buffer);
-  ASMModule['HEAPF32'] = HEAPF32 = new Float32Array(buffer);
-  ASMModule['HEAPF64'] = HEAPF64 = new Float64Array(buffer);
+  Module['HEAP8'] = HEAP8 = new Int8Array(buffer);
+  Module['HEAP16'] = HEAP16 = new Int16Array(buffer);
+  Module['HEAP32'] = HEAP32 = new Int32Array(buffer);
+  Module['HEAPU8'] = HEAPU8 = new Uint8Array(buffer);
+  Module['HEAPU16'] = HEAPU16 = new Uint16Array(buffer);
+  Module['HEAPU32'] = HEAPU32 = new Uint32Array(buffer);
+  Module['HEAPF32'] = HEAPF32 = new Float32Array(buffer);
+  Module['HEAPF64'] = HEAPF64 = new Float64Array(buffer);
 }
 
 var STATIC_BASE = 0, STATICTOP = 0, staticSealed = false; // static area
@@ -1164,7 +1164,7 @@ function abortStackOverflow(allocSize) {
 }
 
 function abortOnCannotGrowMemory() {
-  abort('Cannot enlarge memory arrays. Either (1) compile with  -s TOTAL_MEMORY=X  with X higher than the current value ' + TOTAL_MEMORY + ', (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which adjusts the size at runtime but prevents some optimizations, (3) set ASMModule.TOTAL_MEMORY to a higher value before the program runs, or if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ');
+  abort('Cannot enlarge memory arrays. Either (1) compile with  -s TOTAL_MEMORY=X  with X higher than the current value ' + TOTAL_MEMORY + ', (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which adjusts the size at runtime but prevents some optimizations, (3) set Module.TOTAL_MEMORY to a higher value before the program runs, or if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ');
 }
 
 function enlargeMemory() {
@@ -1172,8 +1172,8 @@ function enlargeMemory() {
 }
 
 
-var TOTAL_STACK = ASMModule['TOTAL_STACK'] || 5242880;
-var TOTAL_MEMORY = ASMModule['TOTAL_MEMORY'] || 16777216;
+var TOTAL_STACK = Module['TOTAL_STACK'] || 5242880;
+var TOTAL_MEMORY = Module['TOTAL_MEMORY'] || 16777216;
 
 var totalMemory = 64*1024;
 while (totalMemory < TOTAL_MEMORY || totalMemory < 2*TOTAL_STACK) {
@@ -1184,7 +1184,7 @@ while (totalMemory < TOTAL_MEMORY || totalMemory < 2*TOTAL_STACK) {
   }
 }
 if (totalMemory !== TOTAL_MEMORY) {
-  ASMModule.printErr('increasing TOTAL_MEMORY to ' + totalMemory + ' to be compliant with the asm.js spec (and given that TOTAL_STACK=' + TOTAL_STACK + ')');
+  Module.printErr('increasing TOTAL_MEMORY to ' + totalMemory + ' to be compliant with the asm.js spec (and given that TOTAL_STACK=' + TOTAL_STACK + ')');
   TOTAL_MEMORY = totalMemory;
 }
 
@@ -1196,8 +1196,8 @@ assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' 
 
 
 // Use a provided buffer, if there is one, or else allocate a new one
-if (ASMModule['buffer']) {
-  buffer = ASMModule['buffer'];
+if (Module['buffer']) {
+  buffer = Module['buffer'];
   assert(buffer.byteLength === TOTAL_MEMORY, 'provided buffer should be ' + TOTAL_MEMORY + ' bytes, but it is ' + buffer.byteLength);
 } else {
   buffer = new ArrayBuffer(TOTAL_MEMORY);
@@ -1210,16 +1210,16 @@ updateGlobalBufferViews();
 HEAP16[1] = 0x6373;
 if (HEAPU8[2] !== 0x73 || HEAPU8[3] !== 0x63) throw 'Runtime error: expected the system to be little-endian!';
 
-ASMModule['HEAP'] = HEAP;
-ASMModule['buffer'] = buffer;
-ASMModule['HEAP8'] = HEAP8;
-ASMModule['HEAP16'] = HEAP16;
-ASMModule['HEAP32'] = HEAP32;
-ASMModule['HEAPU8'] = HEAPU8;
-ASMModule['HEAPU16'] = HEAPU16;
-ASMModule['HEAPU32'] = HEAPU32;
-ASMModule['HEAPF32'] = HEAPF32;
-ASMModule['HEAPF64'] = HEAPF64;
+Module['HEAP'] = HEAP;
+Module['buffer'] = buffer;
+Module['HEAP8'] = HEAP8;
+Module['HEAP16'] = HEAP16;
+Module['HEAP32'] = HEAP32;
+Module['HEAPU8'] = HEAPU8;
+Module['HEAPU16'] = HEAPU16;
+Module['HEAPU32'] = HEAPU32;
+Module['HEAPF32'] = HEAPF32;
+Module['HEAPF64'] = HEAPF64;
 
 function callRuntimeCallbacks(callbacks) {
   while(callbacks.length > 0) {
@@ -1252,11 +1252,11 @@ var runtimeExited = false;
 
 
 function preRun() {
-  // compatibility - merge in anything from ASMModule['preRun'] at this time
-  if (ASMModule['preRun']) {
-    if (typeof ASMModule['preRun'] == 'function') ASMModule['preRun'] = [ASMModule['preRun']];
-    while (ASMModule['preRun'].length) {
-      addOnPreRun(ASMModule['preRun'].shift());
+  // compatibility - merge in anything from Module['preRun'] at this time
+  if (Module['preRun']) {
+    if (typeof Module['preRun'] == 'function') Module['preRun'] = [Module['preRun']];
+    while (Module['preRun'].length) {
+      addOnPreRun(Module['preRun'].shift());
     }
   }
   callRuntimeCallbacks(__ATPRERUN__);
@@ -1282,11 +1282,11 @@ function exitRuntime() {
 
 function postRun() {
   checkStackCookie();
-  // compatibility - merge in anything from ASMModule['postRun'] at this time
-  if (ASMModule['postRun']) {
-    if (typeof ASMModule['postRun'] == 'function') ASMModule['postRun'] = [ASMModule['postRun']];
-    while (ASMModule['postRun'].length) {
-      addOnPostRun(ASMModule['postRun'].shift());
+  // compatibility - merge in anything from Module['postRun'] at this time
+  if (Module['postRun']) {
+    if (typeof Module['postRun'] == 'function') Module['postRun'] = [Module['postRun']];
+    while (Module['postRun'].length) {
+      addOnPostRun(Module['postRun'].shift());
     }
   }
   callRuntimeCallbacks(__ATPOSTRUN__);
@@ -1295,27 +1295,27 @@ function postRun() {
 function addOnPreRun(cb) {
   __ATPRERUN__.unshift(cb);
 }
-ASMModule["addOnPreRun"] = addOnPreRun;
+Module["addOnPreRun"] = addOnPreRun;
 
 function addOnInit(cb) {
   __ATINIT__.unshift(cb);
 }
-ASMModule["addOnInit"] = addOnInit;
+Module["addOnInit"] = addOnInit;
 
 function addOnPreMain(cb) {
   __ATMAIN__.unshift(cb);
 }
-ASMModule["addOnPreMain"] = addOnPreMain;
+Module["addOnPreMain"] = addOnPreMain;
 
 function addOnExit(cb) {
   __ATEXIT__.unshift(cb);
 }
-ASMModule["addOnExit"] = addOnExit;
+Module["addOnExit"] = addOnExit;
 
 function addOnPostRun(cb) {
   __ATPOSTRUN__.unshift(cb);
 }
-ASMModule["addOnPostRun"] = addOnPostRun;
+Module["addOnPostRun"] = addOnPostRun;
 
 // Tools
 
@@ -1327,7 +1327,7 @@ function intArrayFromString(stringy, dontAddNull, length /* optional */) {
   if (dontAddNull) u8array.length = numBytesWritten;
   return u8array;
 }
-ASMModule["intArrayFromString"] = intArrayFromString;
+Module["intArrayFromString"] = intArrayFromString;
 
 function intArrayToString(array) {
   var ret = [];
@@ -1341,7 +1341,7 @@ function intArrayToString(array) {
   }
   return ret.join('');
 }
-ASMModule["intArrayToString"] = intArrayToString;
+Module["intArrayToString"] = intArrayToString;
 
 function writeStringToMemory(string, buffer, dontAddNull) {
   var array = intArrayFromString(string, dontAddNull);
@@ -1352,14 +1352,14 @@ function writeStringToMemory(string, buffer, dontAddNull) {
     i = i + 1;
   }
 }
-ASMModule["writeStringToMemory"] = writeStringToMemory;
+Module["writeStringToMemory"] = writeStringToMemory;
 
 function writeArrayToMemory(array, buffer) {
   for (var i = 0; i < array.length; i++) {
     HEAP8[((buffer++)>>0)]=array[i];
   }
 }
-ASMModule["writeArrayToMemory"] = writeArrayToMemory;
+Module["writeArrayToMemory"] = writeArrayToMemory;
 
 function writeAsciiToMemory(str, buffer, dontAddNull) {
   for (var i = 0; i < str.length; ++i) {
@@ -1369,7 +1369,7 @@ function writeAsciiToMemory(str, buffer, dontAddNull) {
   // Null-terminate the pointer to the HEAP.
   if (!dontAddNull) HEAP8[((buffer)>>0)]=0;
 }
-ASMModule["writeAsciiToMemory"] = writeAsciiToMemory;
+Module["writeAsciiToMemory"] = writeAsciiToMemory;
 
 function unSign(value, bits, ignore) {
   if (value >= 0) {
@@ -1461,8 +1461,8 @@ function getUniqueRunDependency(id) {
 
 function addRunDependency(id) {
   runDependencies++;
-  if (ASMModule['monitorRunDependencies']) {
-    ASMModule['monitorRunDependencies'](runDependencies);
+  if (Module['monitorRunDependencies']) {
+    Module['monitorRunDependencies'](runDependencies);
   }
   if (id) {
     assert(!runDependencyTracking[id]);
@@ -1479,31 +1479,31 @@ function addRunDependency(id) {
         for (var dep in runDependencyTracking) {
           if (!shown) {
             shown = true;
-            ASMModule.printErr('still waiting on run dependencies:');
+            Module.printErr('still waiting on run dependencies:');
           }
-          ASMModule.printErr('dependency: ' + dep);
+          Module.printErr('dependency: ' + dep);
         }
         if (shown) {
-          ASMModule.printErr('(end of list)');
+          Module.printErr('(end of list)');
         }
       }, 10000);
     }
   } else {
-    ASMModule.printErr('warning: run dependency added without ID');
+    Module.printErr('warning: run dependency added without ID');
   }
 }
-ASMModule["addRunDependency"] = addRunDependency;
+Module["addRunDependency"] = addRunDependency;
 
 function removeRunDependency(id) {
   runDependencies--;
-  if (ASMModule['monitorRunDependencies']) {
-    ASMModule['monitorRunDependencies'](runDependencies);
+  if (Module['monitorRunDependencies']) {
+    Module['monitorRunDependencies'](runDependencies);
   }
   if (id) {
     assert(runDependencyTracking[id]);
     delete runDependencyTracking[id];
   } else {
-    ASMModule.printErr('warning: run dependency removed without ID');
+    Module.printErr('warning: run dependency removed without ID');
   }
   if (runDependencies == 0) {
     if (runDependencyWatcher !== null) {
@@ -1517,10 +1517,10 @@ function removeRunDependency(id) {
     }
   }
 }
-ASMModule["removeRunDependency"] = removeRunDependency;
+Module["removeRunDependency"] = removeRunDependency;
 
-ASMModule["preloadedImages"] = {}; // maps url to image data
-ASMModule["preloadedAudios"] = {}; // maps url to audio data
+Module["preloadedImages"] = {}; // maps url to image data
+Module["preloadedAudios"] = {}; // maps url to audio data
 
 
 
@@ -1544,8 +1544,8 @@ var /* show errors on likely calls to FS when it was not included */ FS = {
 
   ErrnoError: function ErrnoError() { FS.error() },
 };
-ASMModule['FS_createDataFile'] = FS.createDataFile;
-ASMModule['FS_createPreloadedFile'] = FS.createPreloadedFile;
+Module['FS_createDataFile'] = FS.createDataFile;
+Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
 
 
 // === Body ===
@@ -1608,7 +1608,7 @@ function copyTempDouble(ptr) {
 
 
    
-  ASMModule["_i64Add"] = _i64Add;
+  Module["_i64Add"] = _i64Add;
 
   
   function __ZSt18uncaught_exceptionv() { // std::uncaught_exception()
@@ -1665,7 +1665,7 @@ function copyTempDouble(ptr) {
       }
       var typeArray = Array.prototype.slice.call(arguments);
   
-      var pointer = ASMModule['___cxa_is_pointer_type'](throwntype);
+      var pointer = Module['___cxa_is_pointer_type'](throwntype);
       // can_catch receives a **, add indirection
       if (!___cxa_find_matching_catch.buffer) ___cxa_find_matching_catch.buffer = _malloc(4);
       HEAP32[((___cxa_find_matching_catch.buffer)>>2)]=thrown;
@@ -1675,7 +1675,7 @@ function copyTempDouble(ptr) {
       // type of the thrown object. Find one which matches, and
       // return the type of the catch block which should be called.
       for (var i = 0; i < typeArray.length; i++) {
-        if (typeArray[i] && ASMModule['___cxa_can_catch'](typeArray[i], throwntype, thrown)) {
+        if (typeArray[i] && Module['___cxa_can_catch'](typeArray[i], throwntype, thrown)) {
           thrown = HEAP32[((thrown)>>2)]; // undo indirection
           info.adjusted = thrown;
           return ((asm["setTempRet0"](typeArray[i]),thrown)|0);
@@ -1705,13 +1705,13 @@ function copyTempDouble(ptr) {
     }
 
    
-  ASMModule["_memset"] = _memset;
+  Module["_memset"] = _memset;
 
    
-  ASMModule["_bitshift64Lshr"] = _bitshift64Lshr;
+  Module["_bitshift64Lshr"] = _bitshift64Lshr;
 
   function _abort() {
-      ASMModule['abort']();
+      Module['abort']();
     }
 
   function ___cxa_find_matching_catch_2() {
@@ -1721,11 +1721,11 @@ function copyTempDouble(ptr) {
   
   function _free() {
   }
-  ASMModule["_free"] = _free;function ___cxa_free_exception(ptr) {
+  Module["_free"] = _free;function ___cxa_free_exception(ptr) {
       try {
         return _free(ptr);
       } catch(e) { // XXX FIXME
-        ASMModule.printErr('exception during cxa_free_exception: ' + e);
+        Module.printErr('exception during cxa_free_exception: ' + e);
       }
     }
 
@@ -1734,12 +1734,12 @@ function copyTempDouble(ptr) {
       HEAPU8.set(HEAPU8.subarray(src, src+num), dest);
       return dest;
     } 
-  ASMModule["_memcpy"] = _memcpy;
+  Module["_memcpy"] = _memcpy;
 
   
    
-  ASMModule["___muldsi3"] = ___muldsi3; 
-  ASMModule["___muldi3"] = ___muldi3;
+  Module["___muldsi3"] = ___muldsi3; 
+  Module["___muldi3"] = ___muldi3;
 
   function _sbrk(bytes) {
       // Implement a Linux-like 'memory area' for our 'process'.
@@ -1763,14 +1763,14 @@ function copyTempDouble(ptr) {
     }
 
    
-  ASMModule["_memmove"] = _memmove;
+  Module["_memmove"] = _memmove;
 
   function ___gxx_personality_v0() {
     }
 
 
    
-  ASMModule["_pthread_self"] = _pthread_self;
+  Module["_pthread_self"] = _pthread_self;
 
   
   function _malloc(bytes) {
@@ -1782,7 +1782,7 @@ function copyTempDouble(ptr) {
       var ptr = Runtime.dynamicAlloc(bytes + 8);
       return (ptr+8) & 0xFFFFFFF8;
     }
-  ASMModule["_malloc"] = _malloc;function ___cxa_allocate_exception(size) {
+  Module["_malloc"] = _malloc;function ___cxa_allocate_exception(size) {
       return _malloc(size);
     }
 STACK_BASE = STACKTOP = Runtime.alignMemory(STATICTOP);
@@ -1797,29 +1797,29 @@ assert(DYNAMIC_BASE < TOTAL_MEMORY, "TOTAL_MEMORY not big enough for stack");
 
 
 
-function nullFunc_viddd(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'viddd'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_viddd(x) { Module["printErr"]("Invalid function pointer called with signature 'viddd'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_iiii(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'iiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_iiii(x) { Module["printErr"]("Invalid function pointer called with signature 'iiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_viiiii(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'viiiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_viiiii(x) { Module["printErr"]("Invalid function pointer called with signature 'viiiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_vi(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'vi'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_vi(x) { Module["printErr"]("Invalid function pointer called with signature 'vi'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_vii(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'vii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_vii(x) { Module["printErr"]("Invalid function pointer called with signature 'vii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_ii(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'ii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_ii(x) { Module["printErr"]("Invalid function pointer called with signature 'ii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_viii(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'viii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_viii(x) { Module["printErr"]("Invalid function pointer called with signature 'viii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_v(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'v'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_v(x) { Module["printErr"]("Invalid function pointer called with signature 'v'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_viiiiii(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'viiiiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_viiiiii(x) { Module["printErr"]("Invalid function pointer called with signature 'viiiiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-function nullFunc_viiii(x) { ASMModule["printErr"]("Invalid function pointer called with signature 'viiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  ASMModule["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
+function nullFunc_viiii(x) { Module["printErr"]("Invalid function pointer called with signature 'viiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
 function invoke_viddd(index,a1,a2,a3,a4) {
   try {
-    ASMModule["dynCall_viddd"](index,a1,a2,a3,a4);
+    Module["dynCall_viddd"](index,a1,a2,a3,a4);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1828,7 +1828,7 @@ function invoke_viddd(index,a1,a2,a3,a4) {
 
 function invoke_iiii(index,a1,a2,a3) {
   try {
-    return ASMModule["dynCall_iiii"](index,a1,a2,a3);
+    return Module["dynCall_iiii"](index,a1,a2,a3);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1837,7 +1837,7 @@ function invoke_iiii(index,a1,a2,a3) {
 
 function invoke_viiiii(index,a1,a2,a3,a4,a5) {
   try {
-    ASMModule["dynCall_viiiii"](index,a1,a2,a3,a4,a5);
+    Module["dynCall_viiiii"](index,a1,a2,a3,a4,a5);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1846,7 +1846,7 @@ function invoke_viiiii(index,a1,a2,a3,a4,a5) {
 
 function invoke_vi(index,a1) {
   try {
-    ASMModule["dynCall_vi"](index,a1);
+    Module["dynCall_vi"](index,a1);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1855,7 +1855,7 @@ function invoke_vi(index,a1) {
 
 function invoke_vii(index,a1,a2) {
   try {
-    ASMModule["dynCall_vii"](index,a1,a2);
+    Module["dynCall_vii"](index,a1,a2);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1864,7 +1864,7 @@ function invoke_vii(index,a1,a2) {
 
 function invoke_ii(index,a1) {
   try {
-    return ASMModule["dynCall_ii"](index,a1);
+    return Module["dynCall_ii"](index,a1);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1873,7 +1873,7 @@ function invoke_ii(index,a1) {
 
 function invoke_viii(index,a1,a2,a3) {
   try {
-    ASMModule["dynCall_viii"](index,a1,a2,a3);
+    Module["dynCall_viii"](index,a1,a2,a3);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1882,7 +1882,7 @@ function invoke_viii(index,a1,a2,a3) {
 
 function invoke_v(index) {
   try {
-    ASMModule["dynCall_v"](index);
+    Module["dynCall_v"](index);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1891,7 +1891,7 @@ function invoke_v(index) {
 
 function invoke_viiiiii(index,a1,a2,a3,a4,a5,a6) {
   try {
-    ASMModule["dynCall_viiiiii"](index,a1,a2,a3,a4,a5,a6);
+    Module["dynCall_viiiiii"](index,a1,a2,a3,a4,a5,a6);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -1900,16 +1900,16 @@ function invoke_viiiiii(index,a1,a2,a3,a4,a5,a6) {
 
 function invoke_viiii(index,a1,a2,a3,a4) {
   try {
-    ASMModule["dynCall_viiii"](index,a1,a2,a3,a4);
+    Module["dynCall_viiii"](index,a1,a2,a3,a4);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
   }
 }
 
-ASMModule.asmGlobalArg = { "Math": Math, "Int8Array": Int8Array, "Int16Array": Int16Array, "Int32Array": Int32Array, "Uint8Array": Uint8Array, "Uint16Array": Uint16Array, "Uint32Array": Uint32Array, "Float32Array": Float32Array, "Float64Array": Float64Array, "NaN": NaN, "Infinity": Infinity };
+Module.asmGlobalArg = { "Math": Math, "Int8Array": Int8Array, "Int16Array": Int16Array, "Int32Array": Int32Array, "Uint8Array": Uint8Array, "Uint16Array": Uint16Array, "Uint32Array": Uint32Array, "Float32Array": Float32Array, "Float64Array": Float64Array, "NaN": NaN, "Infinity": Infinity };
 
-ASMModule.asmLibraryArg = { "abort": abort, "assert": assert, "abortStackOverflow": abortStackOverflow, "nullFunc_viddd": nullFunc_viddd, "nullFunc_iiii": nullFunc_iiii, "nullFunc_viiiii": nullFunc_viiiii, "nullFunc_vi": nullFunc_vi, "nullFunc_vii": nullFunc_vii, "nullFunc_ii": nullFunc_ii, "nullFunc_viii": nullFunc_viii, "nullFunc_v": nullFunc_v, "nullFunc_viiiiii": nullFunc_viiiiii, "nullFunc_viiii": nullFunc_viiii, "invoke_viddd": invoke_viddd, "invoke_iiii": invoke_iiii, "invoke_viiiii": invoke_viiiii, "invoke_vi": invoke_vi, "invoke_vii": invoke_vii, "invoke_ii": invoke_ii, "invoke_viii": invoke_viii, "invoke_v": invoke_v, "invoke_viiiiii": invoke_viiiiii, "invoke_viiii": invoke_viiii, "___cxa_throw": ___cxa_throw, "_abort": _abort, "_sbrk": _sbrk, "___cxa_find_matching_catch_2": ___cxa_find_matching_catch_2, "_emscripten_memcpy_big": _emscripten_memcpy_big, "___gxx_personality_v0": ___gxx_personality_v0, "___resumeException": ___resumeException, "___cxa_find_matching_catch": ___cxa_find_matching_catch, "___cxa_free_exception": ___cxa_free_exception, "___cxa_allocate_exception": ___cxa_allocate_exception, "__ZSt18uncaught_exceptionv": __ZSt18uncaught_exceptionv, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT };
+Module.asmLibraryArg = { "abort": abort, "assert": assert, "abortStackOverflow": abortStackOverflow, "nullFunc_viddd": nullFunc_viddd, "nullFunc_iiii": nullFunc_iiii, "nullFunc_viiiii": nullFunc_viiiii, "nullFunc_vi": nullFunc_vi, "nullFunc_vii": nullFunc_vii, "nullFunc_ii": nullFunc_ii, "nullFunc_viii": nullFunc_viii, "nullFunc_v": nullFunc_v, "nullFunc_viiiiii": nullFunc_viiiiii, "nullFunc_viiii": nullFunc_viiii, "invoke_viddd": invoke_viddd, "invoke_iiii": invoke_iiii, "invoke_viiiii": invoke_viiiii, "invoke_vi": invoke_vi, "invoke_vii": invoke_vii, "invoke_ii": invoke_ii, "invoke_viii": invoke_viii, "invoke_v": invoke_v, "invoke_viiiiii": invoke_viiiiii, "invoke_viiii": invoke_viiii, "___cxa_throw": ___cxa_throw, "_abort": _abort, "_sbrk": _sbrk, "___cxa_find_matching_catch_2": ___cxa_find_matching_catch_2, "_emscripten_memcpy_big": _emscripten_memcpy_big, "___gxx_personality_v0": ___gxx_personality_v0, "___resumeException": ___resumeException, "___cxa_find_matching_catch": ___cxa_find_matching_catch, "___cxa_free_exception": ___cxa_free_exception, "___cxa_allocate_exception": ___cxa_allocate_exception, "__ZSt18uncaught_exceptionv": __ZSt18uncaught_exceptionv, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT };
 // EMSCRIPTEN_START_ASM
 var asm = (function(global, env, buffer) {
   'almost asm';
@@ -8927,7 +8927,7 @@ var FUNCTION_TABLE_viiii = [b9,b9,b9,b9,b9,b9,b9,b9,__ZNK10__cxxabiv117__class_t
   return { _main: _main, _bitshift64Lshr: _bitshift64Lshr, _emscripten_bind_Particle_getPosition_0: _emscripten_bind_Particle_getPosition_0, _emscripten_bind_MagneticField_setForce_1: _emscripten_bind_MagneticField_setForce_1, _emscripten_bind_MagneticField_MagneticField_1: _emscripten_bind_MagneticField_MagneticField_1, _emscripten_bind_ParticleSystem_addEmitter_1: _emscripten_bind_ParticleSystem_addEmitter_1, _emscripten_bind_Vector_getY_0: _emscripten_bind_Vector_getY_0, _emscripten_bind_MagneticField_getOffset_0: _emscripten_bind_MagneticField_getOffset_0, _emscripten_bind_ParticleSystem_step_1: _emscripten_bind_ParticleSystem_step_1, _emscripten_bind_Vector___destroy___0: _emscripten_bind_Vector___destroy___0, _emscripten_bind_Vector_getZ_0: _emscripten_bind_Vector_getZ_0, _emscripten_bind_ParticleEmitter_setVelocity_1: _emscripten_bind_ParticleEmitter_setVelocity_1, _emscripten_bind_Vector_Vector_3: _emscripten_bind_Vector_Vector_3, _emscripten_bind_VoidPtr___destroy___0: _emscripten_bind_VoidPtr___destroy___0, _memset: _memset, _emscripten_bind_Particle_getAcceleration_0: _emscripten_bind_Particle_getAcceleration_0, _emscripten_bind_ParticleEmitter_getOffset_0: _emscripten_bind_ParticleEmitter_getOffset_0, _emscripten_bind_ParticleSystem_nextParticle_0: _emscripten_bind_ParticleSystem_nextParticle_0, _memcpy: _memcpy, _emscripten_bind_ParticleEmitter_setCharge_1: _emscripten_bind_ParticleEmitter_setCharge_1, _emscripten_bind_ParticleSystem___destroy___0: _emscripten_bind_ParticleSystem___destroy___0, _emscripten_bind_ParticleEmitter_setSpread_1: _emscripten_bind_ParticleEmitter_setSpread_1, ___muldsi3: ___muldsi3, _emscripten_bind_ParticleSystem_addMagneticField_1: _emscripten_bind_ParticleSystem_addMagneticField_1, ___muldi3: ___muldi3, _emscripten_bind_Particle___destroy___0: _emscripten_bind_Particle___destroy___0, _i64Add: _i64Add, _pthread_self: _pthread_self, _emscripten_bind_ParticleSystem_initParticleLoop_0: _emscripten_bind_ParticleSystem_initParticleLoop_0, _emscripten_bind_ParticleEmitter_getPosition_0: _emscripten_bind_ParticleEmitter_getPosition_0, _emscripten_bind_Vector_set_3: _emscripten_bind_Vector_set_3, _emscripten_bind_Particle_Particle_0: _emscripten_bind_Particle_Particle_0, _emscripten_bind_ParticleEmitter_setEmissionRate_1: _emscripten_bind_ParticleEmitter_setEmissionRate_1, _emscripten_bind_ParticleSystem_ParticleSystem_1: _emscripten_bind_ParticleSystem_ParticleSystem_1, ___errno_location: ___errno_location, _emscripten_bind_Particle_getVelocity_0: _emscripten_bind_Particle_getVelocity_0, _free: _free, _emscripten_bind_ParticleEmitter_ParticleEmitter_1: _emscripten_bind_ParticleEmitter_ParticleEmitter_1, _emscripten_bind_ParticleEmitter___destroy___0: _emscripten_bind_ParticleEmitter___destroy___0, _emscripten_bind_Particle_getDof_0: _emscripten_bind_Particle_getDof_0, _emscripten_bind_Vector_getX_0: _emscripten_bind_Vector_getX_0, _malloc: _malloc, _emscripten_bind_MagneticField_getPosition_0: _emscripten_bind_MagneticField_getPosition_0, _memmove: _memmove, _emscripten_bind_MagneticField___destroy___0: _emscripten_bind_MagneticField___destroy___0, _emscripten_bind_ParticleSystem_pushRecycle_1: _emscripten_bind_ParticleSystem_pushRecycle_1, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_viddd: dynCall_viddd, dynCall_iiii: dynCall_iiii, dynCall_viiiii: dynCall_viiiii, dynCall_vi: dynCall_vi, dynCall_vii: dynCall_vii, dynCall_ii: dynCall_ii, dynCall_viii: dynCall_viii, dynCall_v: dynCall_v, dynCall_viiiiii: dynCall_viiiiii, dynCall_viiii: dynCall_viiii };
 })
 // EMSCRIPTEN_END_ASM
-(ASMModule.asmGlobalArg, ASMModule.asmLibraryArg, buffer);
+(Module.asmGlobalArg, Module.asmLibraryArg, buffer);
 
 var real__main = asm["_main"]; asm["_main"] = function() {
 assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
@@ -9192,63 +9192,63 @@ assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. w
 assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
 return real__emscripten_bind_ParticleSystem_pushRecycle_1.apply(null, arguments);
 };
-var _main = ASMModule["_main"] = asm["_main"];
-var _emscripten_bind_Particle_getPosition_0 = ASMModule["_emscripten_bind_Particle_getPosition_0"] = asm["_emscripten_bind_Particle_getPosition_0"];
-var _emscripten_bind_MagneticField_setForce_1 = ASMModule["_emscripten_bind_MagneticField_setForce_1"] = asm["_emscripten_bind_MagneticField_setForce_1"];
-var _emscripten_bind_MagneticField_MagneticField_1 = ASMModule["_emscripten_bind_MagneticField_MagneticField_1"] = asm["_emscripten_bind_MagneticField_MagneticField_1"];
-var _emscripten_bind_ParticleSystem_addEmitter_1 = ASMModule["_emscripten_bind_ParticleSystem_addEmitter_1"] = asm["_emscripten_bind_ParticleSystem_addEmitter_1"];
-var _emscripten_bind_Vector_getY_0 = ASMModule["_emscripten_bind_Vector_getY_0"] = asm["_emscripten_bind_Vector_getY_0"];
-var _emscripten_bind_MagneticField_getOffset_0 = ASMModule["_emscripten_bind_MagneticField_getOffset_0"] = asm["_emscripten_bind_MagneticField_getOffset_0"];
-var _bitshift64Lshr = ASMModule["_bitshift64Lshr"] = asm["_bitshift64Lshr"];
-var _emscripten_bind_ParticleSystem_step_1 = ASMModule["_emscripten_bind_ParticleSystem_step_1"] = asm["_emscripten_bind_ParticleSystem_step_1"];
-var _emscripten_bind_Vector_getZ_0 = ASMModule["_emscripten_bind_Vector_getZ_0"] = asm["_emscripten_bind_Vector_getZ_0"];
-var _emscripten_bind_Vector___destroy___0 = ASMModule["_emscripten_bind_Vector___destroy___0"] = asm["_emscripten_bind_Vector___destroy___0"];
-var _emscripten_bind_ParticleEmitter_setVelocity_1 = ASMModule["_emscripten_bind_ParticleEmitter_setVelocity_1"] = asm["_emscripten_bind_ParticleEmitter_setVelocity_1"];
-var _emscripten_bind_Particle___destroy___0 = ASMModule["_emscripten_bind_Particle___destroy___0"] = asm["_emscripten_bind_Particle___destroy___0"];
-var _emscripten_bind_VoidPtr___destroy___0 = ASMModule["_emscripten_bind_VoidPtr___destroy___0"] = asm["_emscripten_bind_VoidPtr___destroy___0"];
-var _memset = ASMModule["_memset"] = asm["_memset"];
-var _emscripten_bind_ParticleSystem_ParticleSystem_1 = ASMModule["_emscripten_bind_ParticleSystem_ParticleSystem_1"] = asm["_emscripten_bind_ParticleSystem_ParticleSystem_1"];
-var _emscripten_bind_ParticleEmitter_getOffset_0 = ASMModule["_emscripten_bind_ParticleEmitter_getOffset_0"] = asm["_emscripten_bind_ParticleEmitter_getOffset_0"];
-var _emscripten_bind_ParticleSystem_nextParticle_0 = ASMModule["_emscripten_bind_ParticleSystem_nextParticle_0"] = asm["_emscripten_bind_ParticleSystem_nextParticle_0"];
-var _memcpy = ASMModule["_memcpy"] = asm["_memcpy"];
-var _emscripten_bind_ParticleEmitter_setCharge_1 = ASMModule["_emscripten_bind_ParticleEmitter_setCharge_1"] = asm["_emscripten_bind_ParticleEmitter_setCharge_1"];
-var _emscripten_bind_ParticleSystem___destroy___0 = ASMModule["_emscripten_bind_ParticleSystem___destroy___0"] = asm["_emscripten_bind_ParticleSystem___destroy___0"];
-var _emscripten_bind_ParticleEmitter_setSpread_1 = ASMModule["_emscripten_bind_ParticleEmitter_setSpread_1"] = asm["_emscripten_bind_ParticleEmitter_setSpread_1"];
-var _emscripten_bind_Particle_getVelocity_0 = ASMModule["_emscripten_bind_Particle_getVelocity_0"] = asm["_emscripten_bind_Particle_getVelocity_0"];
-var _emscripten_bind_ParticleSystem_addMagneticField_1 = ASMModule["_emscripten_bind_ParticleSystem_addMagneticField_1"] = asm["_emscripten_bind_ParticleSystem_addMagneticField_1"];
-var ___muldi3 = ASMModule["___muldi3"] = asm["___muldi3"];
-var _emscripten_bind_Vector_Vector_3 = ASMModule["_emscripten_bind_Vector_Vector_3"] = asm["_emscripten_bind_Vector_Vector_3"];
-var _i64Add = ASMModule["_i64Add"] = asm["_i64Add"];
-var _pthread_self = ASMModule["_pthread_self"] = asm["_pthread_self"];
-var _emscripten_bind_ParticleSystem_initParticleLoop_0 = ASMModule["_emscripten_bind_ParticleSystem_initParticleLoop_0"] = asm["_emscripten_bind_ParticleSystem_initParticleLoop_0"];
-var _emscripten_bind_ParticleEmitter_getPosition_0 = ASMModule["_emscripten_bind_ParticleEmitter_getPosition_0"] = asm["_emscripten_bind_ParticleEmitter_getPosition_0"];
-var _emscripten_bind_Vector_set_3 = ASMModule["_emscripten_bind_Vector_set_3"] = asm["_emscripten_bind_Vector_set_3"];
-var _emscripten_bind_Particle_Particle_0 = ASMModule["_emscripten_bind_Particle_Particle_0"] = asm["_emscripten_bind_Particle_Particle_0"];
-var _emscripten_bind_ParticleEmitter_setEmissionRate_1 = ASMModule["_emscripten_bind_ParticleEmitter_setEmissionRate_1"] = asm["_emscripten_bind_ParticleEmitter_setEmissionRate_1"];
-var _emscripten_bind_Particle_getAcceleration_0 = ASMModule["_emscripten_bind_Particle_getAcceleration_0"] = asm["_emscripten_bind_Particle_getAcceleration_0"];
-var ___errno_location = ASMModule["___errno_location"] = asm["___errno_location"];
-var ___muldsi3 = ASMModule["___muldsi3"] = asm["___muldsi3"];
-var _free = ASMModule["_free"] = asm["_free"];
-var runPostSets = ASMModule["runPostSets"] = asm["runPostSets"];
-var _emscripten_bind_ParticleEmitter_ParticleEmitter_1 = ASMModule["_emscripten_bind_ParticleEmitter_ParticleEmitter_1"] = asm["_emscripten_bind_ParticleEmitter_ParticleEmitter_1"];
-var _emscripten_bind_ParticleEmitter___destroy___0 = ASMModule["_emscripten_bind_ParticleEmitter___destroy___0"] = asm["_emscripten_bind_ParticleEmitter___destroy___0"];
-var _emscripten_bind_Particle_getDof_0 = ASMModule["_emscripten_bind_Particle_getDof_0"] = asm["_emscripten_bind_Particle_getDof_0"];
-var _emscripten_bind_Vector_getX_0 = ASMModule["_emscripten_bind_Vector_getX_0"] = asm["_emscripten_bind_Vector_getX_0"];
-var _malloc = ASMModule["_malloc"] = asm["_malloc"];
-var _emscripten_bind_MagneticField_getPosition_0 = ASMModule["_emscripten_bind_MagneticField_getPosition_0"] = asm["_emscripten_bind_MagneticField_getPosition_0"];
-var _memmove = ASMModule["_memmove"] = asm["_memmove"];
-var _emscripten_bind_MagneticField___destroy___0 = ASMModule["_emscripten_bind_MagneticField___destroy___0"] = asm["_emscripten_bind_MagneticField___destroy___0"];
-var _emscripten_bind_ParticleSystem_pushRecycle_1 = ASMModule["_emscripten_bind_ParticleSystem_pushRecycle_1"] = asm["_emscripten_bind_ParticleSystem_pushRecycle_1"];
-var dynCall_viddd = ASMModule["dynCall_viddd"] = asm["dynCall_viddd"];
-var dynCall_iiii = ASMModule["dynCall_iiii"] = asm["dynCall_iiii"];
-var dynCall_viiiii = ASMModule["dynCall_viiiii"] = asm["dynCall_viiiii"];
-var dynCall_vi = ASMModule["dynCall_vi"] = asm["dynCall_vi"];
-var dynCall_vii = ASMModule["dynCall_vii"] = asm["dynCall_vii"];
-var dynCall_ii = ASMModule["dynCall_ii"] = asm["dynCall_ii"];
-var dynCall_viii = ASMModule["dynCall_viii"] = asm["dynCall_viii"];
-var dynCall_v = ASMModule["dynCall_v"] = asm["dynCall_v"];
-var dynCall_viiiiii = ASMModule["dynCall_viiiiii"] = asm["dynCall_viiiiii"];
-var dynCall_viiii = ASMModule["dynCall_viiii"] = asm["dynCall_viiii"];
+var _main = Module["_main"] = asm["_main"];
+var _emscripten_bind_Particle_getPosition_0 = Module["_emscripten_bind_Particle_getPosition_0"] = asm["_emscripten_bind_Particle_getPosition_0"];
+var _emscripten_bind_MagneticField_setForce_1 = Module["_emscripten_bind_MagneticField_setForce_1"] = asm["_emscripten_bind_MagneticField_setForce_1"];
+var _emscripten_bind_MagneticField_MagneticField_1 = Module["_emscripten_bind_MagneticField_MagneticField_1"] = asm["_emscripten_bind_MagneticField_MagneticField_1"];
+var _emscripten_bind_ParticleSystem_addEmitter_1 = Module["_emscripten_bind_ParticleSystem_addEmitter_1"] = asm["_emscripten_bind_ParticleSystem_addEmitter_1"];
+var _emscripten_bind_Vector_getY_0 = Module["_emscripten_bind_Vector_getY_0"] = asm["_emscripten_bind_Vector_getY_0"];
+var _emscripten_bind_MagneticField_getOffset_0 = Module["_emscripten_bind_MagneticField_getOffset_0"] = asm["_emscripten_bind_MagneticField_getOffset_0"];
+var _bitshift64Lshr = Module["_bitshift64Lshr"] = asm["_bitshift64Lshr"];
+var _emscripten_bind_ParticleSystem_step_1 = Module["_emscripten_bind_ParticleSystem_step_1"] = asm["_emscripten_bind_ParticleSystem_step_1"];
+var _emscripten_bind_Vector_getZ_0 = Module["_emscripten_bind_Vector_getZ_0"] = asm["_emscripten_bind_Vector_getZ_0"];
+var _emscripten_bind_Vector___destroy___0 = Module["_emscripten_bind_Vector___destroy___0"] = asm["_emscripten_bind_Vector___destroy___0"];
+var _emscripten_bind_ParticleEmitter_setVelocity_1 = Module["_emscripten_bind_ParticleEmitter_setVelocity_1"] = asm["_emscripten_bind_ParticleEmitter_setVelocity_1"];
+var _emscripten_bind_Particle___destroy___0 = Module["_emscripten_bind_Particle___destroy___0"] = asm["_emscripten_bind_Particle___destroy___0"];
+var _emscripten_bind_VoidPtr___destroy___0 = Module["_emscripten_bind_VoidPtr___destroy___0"] = asm["_emscripten_bind_VoidPtr___destroy___0"];
+var _memset = Module["_memset"] = asm["_memset"];
+var _emscripten_bind_ParticleSystem_ParticleSystem_1 = Module["_emscripten_bind_ParticleSystem_ParticleSystem_1"] = asm["_emscripten_bind_ParticleSystem_ParticleSystem_1"];
+var _emscripten_bind_ParticleEmitter_getOffset_0 = Module["_emscripten_bind_ParticleEmitter_getOffset_0"] = asm["_emscripten_bind_ParticleEmitter_getOffset_0"];
+var _emscripten_bind_ParticleSystem_nextParticle_0 = Module["_emscripten_bind_ParticleSystem_nextParticle_0"] = asm["_emscripten_bind_ParticleSystem_nextParticle_0"];
+var _memcpy = Module["_memcpy"] = asm["_memcpy"];
+var _emscripten_bind_ParticleEmitter_setCharge_1 = Module["_emscripten_bind_ParticleEmitter_setCharge_1"] = asm["_emscripten_bind_ParticleEmitter_setCharge_1"];
+var _emscripten_bind_ParticleSystem___destroy___0 = Module["_emscripten_bind_ParticleSystem___destroy___0"] = asm["_emscripten_bind_ParticleSystem___destroy___0"];
+var _emscripten_bind_ParticleEmitter_setSpread_1 = Module["_emscripten_bind_ParticleEmitter_setSpread_1"] = asm["_emscripten_bind_ParticleEmitter_setSpread_1"];
+var _emscripten_bind_Particle_getVelocity_0 = Module["_emscripten_bind_Particle_getVelocity_0"] = asm["_emscripten_bind_Particle_getVelocity_0"];
+var _emscripten_bind_ParticleSystem_addMagneticField_1 = Module["_emscripten_bind_ParticleSystem_addMagneticField_1"] = asm["_emscripten_bind_ParticleSystem_addMagneticField_1"];
+var ___muldi3 = Module["___muldi3"] = asm["___muldi3"];
+var _emscripten_bind_Vector_Vector_3 = Module["_emscripten_bind_Vector_Vector_3"] = asm["_emscripten_bind_Vector_Vector_3"];
+var _i64Add = Module["_i64Add"] = asm["_i64Add"];
+var _pthread_self = Module["_pthread_self"] = asm["_pthread_self"];
+var _emscripten_bind_ParticleSystem_initParticleLoop_0 = Module["_emscripten_bind_ParticleSystem_initParticleLoop_0"] = asm["_emscripten_bind_ParticleSystem_initParticleLoop_0"];
+var _emscripten_bind_ParticleEmitter_getPosition_0 = Module["_emscripten_bind_ParticleEmitter_getPosition_0"] = asm["_emscripten_bind_ParticleEmitter_getPosition_0"];
+var _emscripten_bind_Vector_set_3 = Module["_emscripten_bind_Vector_set_3"] = asm["_emscripten_bind_Vector_set_3"];
+var _emscripten_bind_Particle_Particle_0 = Module["_emscripten_bind_Particle_Particle_0"] = asm["_emscripten_bind_Particle_Particle_0"];
+var _emscripten_bind_ParticleEmitter_setEmissionRate_1 = Module["_emscripten_bind_ParticleEmitter_setEmissionRate_1"] = asm["_emscripten_bind_ParticleEmitter_setEmissionRate_1"];
+var _emscripten_bind_Particle_getAcceleration_0 = Module["_emscripten_bind_Particle_getAcceleration_0"] = asm["_emscripten_bind_Particle_getAcceleration_0"];
+var ___errno_location = Module["___errno_location"] = asm["___errno_location"];
+var ___muldsi3 = Module["___muldsi3"] = asm["___muldsi3"];
+var _free = Module["_free"] = asm["_free"];
+var runPostSets = Module["runPostSets"] = asm["runPostSets"];
+var _emscripten_bind_ParticleEmitter_ParticleEmitter_1 = Module["_emscripten_bind_ParticleEmitter_ParticleEmitter_1"] = asm["_emscripten_bind_ParticleEmitter_ParticleEmitter_1"];
+var _emscripten_bind_ParticleEmitter___destroy___0 = Module["_emscripten_bind_ParticleEmitter___destroy___0"] = asm["_emscripten_bind_ParticleEmitter___destroy___0"];
+var _emscripten_bind_Particle_getDof_0 = Module["_emscripten_bind_Particle_getDof_0"] = asm["_emscripten_bind_Particle_getDof_0"];
+var _emscripten_bind_Vector_getX_0 = Module["_emscripten_bind_Vector_getX_0"] = asm["_emscripten_bind_Vector_getX_0"];
+var _malloc = Module["_malloc"] = asm["_malloc"];
+var _emscripten_bind_MagneticField_getPosition_0 = Module["_emscripten_bind_MagneticField_getPosition_0"] = asm["_emscripten_bind_MagneticField_getPosition_0"];
+var _memmove = Module["_memmove"] = asm["_memmove"];
+var _emscripten_bind_MagneticField___destroy___0 = Module["_emscripten_bind_MagneticField___destroy___0"] = asm["_emscripten_bind_MagneticField___destroy___0"];
+var _emscripten_bind_ParticleSystem_pushRecycle_1 = Module["_emscripten_bind_ParticleSystem_pushRecycle_1"] = asm["_emscripten_bind_ParticleSystem_pushRecycle_1"];
+var dynCall_viddd = Module["dynCall_viddd"] = asm["dynCall_viddd"];
+var dynCall_iiii = Module["dynCall_iiii"] = asm["dynCall_iiii"];
+var dynCall_viiiii = Module["dynCall_viiiii"] = asm["dynCall_viiiii"];
+var dynCall_vi = Module["dynCall_vi"] = asm["dynCall_vi"];
+var dynCall_vii = Module["dynCall_vii"] = asm["dynCall_vii"];
+var dynCall_ii = Module["dynCall_ii"] = asm["dynCall_ii"];
+var dynCall_viii = Module["dynCall_viii"] = asm["dynCall_viii"];
+var dynCall_v = Module["dynCall_v"] = asm["dynCall_v"];
+var dynCall_viiiiii = Module["dynCall_viiiiii"] = asm["dynCall_viiiiii"];
+var dynCall_viiii = Module["dynCall_viiii"] = asm["dynCall_viiii"];
 ;
 
 Runtime.stackAlloc = asm['stackAlloc'];
@@ -9280,12 +9280,12 @@ var preloadStartTime = null;
 var calledMain = false;
 
 dependenciesFulfilled = function runCaller() {
-  // If run has never been called, and we should call run (INVOKE_RUN is true, and ASMModule.noInitialRun is not false)
-  if (!ASMModule['calledRun']) run();
-  if (!ASMModule['calledRun']) dependenciesFulfilled = runCaller; // try this again later, after new deps are fulfilled
+  // If run has never been called, and we should call run (INVOKE_RUN is true, and Module.noInitialRun is not false)
+  if (!Module['calledRun']) run();
+  if (!Module['calledRun']) dependenciesFulfilled = runCaller; // try this again later, after new deps are fulfilled
 }
 
-ASMModule['callMain'] = ASMModule.callMain = function callMain(args) {
+Module['callMain'] = Module.callMain = function callMain(args) {
   assert(runDependencies == 0, 'cannot call main when async dependencies remain! (listen on __ATMAIN__)');
   assert(__ATPRERUN__.length == 0, 'cannot call main when preRun functions remain to be called');
 
@@ -9299,7 +9299,7 @@ ASMModule['callMain'] = ASMModule.callMain = function callMain(args) {
       argv.push(0);
     }
   }
-  var argv = [allocate(intArrayFromString(ASMModule['thisProgram']), 'i8', ALLOC_NORMAL) ];
+  var argv = [allocate(intArrayFromString(Module['thisProgram']), 'i8', ALLOC_NORMAL) ];
   pad();
   for (var i = 0; i < argc-1; i = i + 1) {
     argv.push(allocate(intArrayFromString(args[i]), 'i8', ALLOC_NORMAL));
@@ -9311,7 +9311,7 @@ ASMModule['callMain'] = ASMModule.callMain = function callMain(args) {
 
   try {
 
-    var ret = ASMModule['_main'](argc, argv, 0);
+    var ret = Module['_main'](argc, argv, 0);
 
 
     // if we're not running an evented main loop, it's time to exit
@@ -9324,10 +9324,10 @@ ASMModule['callMain'] = ASMModule.callMain = function callMain(args) {
       return;
     } else if (e == 'SimulateInfiniteLoop') {
       // running an evented main loop, don't immediately exit
-      ASMModule['noExitRuntime'] = true;
+      Module['noExitRuntime'] = true;
       return;
     } else {
-      if (e && typeof e === 'object' && e.stack) ASMModule.printErr('exception thrown: ' + [e, e.stack]);
+      if (e && typeof e === 'object' && e.stack) Module.printErr('exception thrown: ' + [e, e.stack]);
       throw e;
     }
   } finally {
@@ -9339,12 +9339,12 @@ ASMModule['callMain'] = ASMModule.callMain = function callMain(args) {
 
 
 function run(args) {
-  args = args || ASMModule['arguments'];
+  args = args || Module['arguments'];
 
   if (preloadStartTime === null) preloadStartTime = Date.now();
 
   if (runDependencies > 0) {
-    ASMModule.printErr('run() called, but dependencies remain, so not running');
+    Module.printErr('run() called, but dependencies remain, so not running');
     return;
   }
 
@@ -9353,11 +9353,11 @@ function run(args) {
   preRun();
 
   if (runDependencies > 0) return; // a preRun added a dependency, run will be called later
-  if (ASMModule['calledRun']) return; // run may have just been called through dependencies being fulfilled just in this very frame
+  if (Module['calledRun']) return; // run may have just been called through dependencies being fulfilled just in this very frame
 
   function doRun() {
-    if (ASMModule['calledRun']) return; // run may have just been called while the async setStatus time below was happening
-    ASMModule['calledRun'] = true;
+    if (Module['calledRun']) return; // run may have just been called while the async setStatus time below was happening
+    Module['calledRun'] = true;
 
     if (ABORT) return;
 
@@ -9366,21 +9366,21 @@ function run(args) {
     preMain();
 
     if (ENVIRONMENT_IS_WEB && preloadStartTime !== null) {
-      ASMModule.printErr('pre-main prep time: ' + (Date.now() - preloadStartTime) + ' ms');
+      Module.printErr('pre-main prep time: ' + (Date.now() - preloadStartTime) + ' ms');
     }
 
-    if (ASMModule['onRuntimeInitialized']) ASMModule['onRuntimeInitialized']();
+    if (Module['onRuntimeInitialized']) Module['onRuntimeInitialized']();
 
-    if (ASMModule['_main'] && shouldRunNow) ASMModule['callMain'](args);
+    if (Module['_main'] && shouldRunNow) Module['callMain'](args);
 
     postRun();
   }
 
-  if (ASMModule['setStatus']) {
-    ASMModule['setStatus']('Running...');
+  if (Module['setStatus']) {
+    Module['setStatus']('Running...');
     setTimeout(function() {
       setTimeout(function() {
-        ASMModule['setStatus']('');
+        Module['setStatus']('');
       }, 1);
       doRun();
     }, 1);
@@ -9389,16 +9389,16 @@ function run(args) {
   }
   checkStackCookie();
 }
-ASMModule['run'] = ASMModule.run = run;
+Module['run'] = Module.run = run;
 
 function exit(status, implicit) {
-  if (implicit && ASMModule['noExitRuntime']) {
-    ASMModule.printErr('exit(' + status + ') implicitly called by end of main(), but noExitRuntime, so not exiting the runtime (you can use emscripten_force_exit, if you want to force a true shutdown)');
+  if (implicit && Module['noExitRuntime']) {
+    Module.printErr('exit(' + status + ') implicitly called by end of main(), but noExitRuntime, so not exiting the runtime (you can use emscripten_force_exit, if you want to force a true shutdown)');
     return;
   }
 
-  if (ASMModule['noExitRuntime']) {
-    ASMModule.printErr('exit(' + status + ') called, but noExitRuntime, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)');
+  if (Module['noExitRuntime']) {
+    Module.printErr('exit(' + status + ') called, but noExitRuntime, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)');
   } else {
 
     ABORT = true;
@@ -9407,7 +9407,7 @@ function exit(status, implicit) {
 
     exitRuntime();
 
-    if (ASMModule['onExit']) ASMModule['onExit'](status);
+    if (Module['onExit']) Module['onExit'](status);
   }
 
   if (ENVIRONMENT_IS_NODE) {
@@ -9418,14 +9418,14 @@ function exit(status, implicit) {
   // if we reach here, we must throw an exception to halt the current execution
   throw new ExitStatus(status);
 }
-ASMModule['exit'] = ASMModule.exit = exit;
+Module['exit'] = Module.exit = exit;
 
 var abortDecorators = [];
 
 function abort(what) {
   if (what !== undefined) {
-    ASMModule.print(what);
-    ASMModule.printErr(what);
+    Module.print(what);
+    Module.printErr(what);
     what = JSON.stringify(what)
   } else {
     what = '';
@@ -9444,24 +9444,24 @@ function abort(what) {
   }
   throw output;
 }
-ASMModule['abort'] = ASMModule.abort = abort;
+Module['abort'] = Module.abort = abort;
 
 // {{PRE_RUN_ADDITIONS}}
 
-if (ASMModule['preInit']) {
-  if (typeof ASMModule['preInit'] == 'function') ASMModule['preInit'] = [ASMModule['preInit']];
-  while (ASMModule['preInit'].length > 0) {
-    ASMModule['preInit'].pop()();
+if (Module['preInit']) {
+  if (typeof Module['preInit'] == 'function') Module['preInit'] = [Module['preInit']];
+  while (Module['preInit'].length > 0) {
+    Module['preInit'].pop()();
   }
 }
 
 // shouldRunNow refers to calling main(), not run().
 var shouldRunNow = true;
-if (ASMModule['noInitialRun']) {
+if (Module['noInitialRun']) {
   shouldRunNow = false;
 }
 
-ASMModule["noExitRuntime"] = true;
+Module["noExitRuntime"] = true;
 
 run();
 
@@ -9484,12 +9484,12 @@ WrapperObject.prototype = Object.create(WrapperObject.prototype);
 WrapperObject.prototype.constructor = WrapperObject;
 WrapperObject.prototype.__class__ = WrapperObject;
 WrapperObject.__cache__ = {};
-ASMModule['WrapperObject'] = WrapperObject;
+Module['WrapperObject'] = WrapperObject;
 
 function getCache(__class__) {
   return (__class__ || WrapperObject).__cache__;
 }
-ASMModule['getCache'] = getCache;
+Module['getCache'] = getCache;
 
 function wrapPointer(ptr, __class__) {
   var cache = getCache(__class__);
@@ -9499,14 +9499,14 @@ function wrapPointer(ptr, __class__) {
   ret.ptr = ptr;
   return cache[ptr] = ret;
 }
-ASMModule['wrapPointer'] = wrapPointer;
+Module['wrapPointer'] = wrapPointer;
 
 function castObject(obj, __class__) {
   return wrapPointer(obj.ptr, __class__);
 }
-ASMModule['castObject'] = castObject;
+Module['castObject'] = castObject;
 
-ASMModule['NULL'] = wrapPointer(0);
+Module['NULL'] = wrapPointer(0);
 
 function destroy(obj) {
   if (!obj['__destroy__']) throw 'Error: Cannot destroy object. (Did you create it yourself?)';
@@ -9514,22 +9514,22 @@ function destroy(obj) {
   // Remove from cache, so the object can be GC'd and refs added onto it released
   delete getCache(obj.__class__)[obj.ptr];
 }
-ASMModule['destroy'] = destroy;
+Module['destroy'] = destroy;
 
 function compare(obj1, obj2) {
   return obj1.ptr === obj2.ptr;
 }
-ASMModule['compare'] = compare;
+Module['compare'] = compare;
 
 function getPointer(obj) {
   return obj.ptr;
 }
-ASMModule['getPointer'] = getPointer;
+Module['getPointer'] = getPointer;
 
 function getClass(obj) {
   return obj.__class__;
 }
-ASMModule['getClass'] = getClass;
+Module['getClass'] = getClass;
 
 // Converts a value into a C-style string, storing it in temporary space
 
@@ -9544,11 +9544,11 @@ var ensureStringCache = {
     if (this.needed) {
       // clear the temps
       for (var i = 0; i < this.temps.length; i++) {
-        ASMModule['_free'](this.temps[i]);
+        Module['_free'](this.temps[i]);
       }
       this.temps.length = 0;
       // prepare to allocate a bigger buffer
-      ASMModule['_free'](this.buffer);
+      Module['_free'](this.buffer);
       this.buffer = 0;
       this.size += this.needed;
       // clean up
@@ -9556,7 +9556,7 @@ var ensureStringCache = {
     }
     if (!this.buffer) { // happens first time, or when we need to grow
       this.size += 100; // heuristic, avoid many small grow events
-      this.buffer = ASMModule['_malloc'](this.size);
+      this.buffer = Module['_malloc'](this.size);
       assert(this.buffer);
     }
     this.pos = 0;
@@ -9570,7 +9570,7 @@ var ensureStringCache = {
       // we failed to allocate in the buffer, this time around :(
       assert(len > 0); // null terminator, at least
       this.needed += len;
-      ret = ASMModule['_malloc'](len);
+      ret = Module['_malloc'](len);
       this.temps.push(ret);
     } else {
       // we can allocate in the buffer
@@ -9597,7 +9597,7 @@ Particle.prototype = Object.create(WrapperObject.prototype);
 Particle.prototype.constructor = Particle;
 Particle.prototype.__class__ = Particle;
 Particle.__cache__ = {};
-ASMModule['Particle'] = Particle;
+Module['Particle'] = Particle;
 
 Particle.prototype['getAcceleration'] = Particle.prototype.getAcceleration = function() {
   var self = this.ptr;
@@ -9633,7 +9633,7 @@ MagneticField.prototype = Object.create(WrapperObject.prototype);
 MagneticField.prototype.constructor = MagneticField;
 MagneticField.prototype.__class__ = MagneticField;
 MagneticField.__cache__ = {};
-ASMModule['MagneticField'] = MagneticField;
+Module['MagneticField'] = MagneticField;
 
 MagneticField.prototype['getPosition'] = MagneticField.prototype.getPosition = function() {
   var self = this.ptr;
@@ -9667,7 +9667,7 @@ Vector.prototype = Object.create(WrapperObject.prototype);
 Vector.prototype.constructor = Vector;
 Vector.prototype.__class__ = Vector;
 Vector.__cache__ = {};
-ASMModule['Vector'] = Vector;
+Module['Vector'] = Vector;
 
 Vector.prototype['set'] = Vector.prototype.set = function(arg0, arg1, arg2) {
   var self = this.ptr;
@@ -9706,7 +9706,7 @@ ParticleEmitter.prototype = Object.create(WrapperObject.prototype);
 ParticleEmitter.prototype.constructor = ParticleEmitter;
 ParticleEmitter.prototype.__class__ = ParticleEmitter;
 ParticleEmitter.__cache__ = {};
-ASMModule['ParticleEmitter'] = ParticleEmitter;
+Module['ParticleEmitter'] = ParticleEmitter;
 
 ParticleEmitter.prototype['getPosition'] = ParticleEmitter.prototype.getPosition = function() {
   var self = this.ptr;
@@ -9752,7 +9752,7 @@ VoidPtr.prototype = Object.create(WrapperObject.prototype);
 VoidPtr.prototype.constructor = VoidPtr;
 VoidPtr.prototype.__class__ = VoidPtr;
 VoidPtr.__cache__ = {};
-ASMModule['VoidPtr'] = VoidPtr;
+Module['VoidPtr'] = VoidPtr;
 
   VoidPtr.prototype['__destroy__'] = VoidPtr.prototype.__destroy__ = function() {
   var self = this.ptr;
@@ -9768,7 +9768,7 @@ ParticleSystem.prototype = Object.create(WrapperObject.prototype);
 ParticleSystem.prototype.constructor = ParticleSystem;
 ParticleSystem.prototype.__class__ = ParticleSystem;
 ParticleSystem.__cache__ = {};
-ASMModule['ParticleSystem'] = ParticleSystem;
+Module['ParticleSystem'] = ParticleSystem;
 
 ParticleSystem.prototype['pushRecycle'] = ParticleSystem.prototype.pushRecycle = function(arg0) {
   var self = this.ptr;
@@ -9812,7 +9812,7 @@ ParticleSystem.prototype['addEmitter'] = ParticleSystem.prototype.addEmitter = f
   function setupEnums() {
     
   }
-  if (ASMModule['calledRun']) setupEnums();
+  if (Module['calledRun']) setupEnums();
   else addOnPreMain(setupEnums);
 })();
 

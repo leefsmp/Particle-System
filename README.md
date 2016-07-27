@@ -2,7 +2,7 @@
 
 ##Description
 
-A Particle System experiment designed to benchmark web technologies from a non trivial piece of code: ES6, Emscripten and Web Assembly (yet to come)
+A Particle System experiment designed to benchmark web technologies from a non trivial piece of code: ES6, Emscripten and Web Assembly
 
 ##Setup/Usage Instructions
 
@@ -46,6 +46,12 @@ The two tests are available online from the following locations:
 [ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/ES6vsASM.html)
 
 [ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/ES6vsWASM.html)
+
+
+I've been testing against the following browsers: Chrome, Chrome Canary, Firefox, Firefox Nightly and Safari.
+Only Canary and Firefox Nightly supports WASM, so the following benchmark only indicate those.
+Running WASM in a browser that doesn't support it is using a fallback which ends up being very very slow ...
+
 
 
 ## License
