@@ -25,7 +25,7 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 - Building the the ES6 Particle System Library and the Test pages:
 
-   	  . npm install
+      . npm install
       . npm run build-lib-dev / npm run build-lib-prod
       (prod version is minified and without source map)
       . npm run build-tests
@@ -43,9 +43,9 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 The two tests are available online from the following locations:
 
-[ES6vsASM.html](http://leefsmp.github.io/Particle-System/Test/ES6vsASM.html)
+[ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/ES6vsASM.html)
 
-[ES6vsWASM.html](http://leefsmp.github.io/Particle-System/Test/ES6vsWASM.html)
+[ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/ES6vsWASM.html)
 
 
 ## License
