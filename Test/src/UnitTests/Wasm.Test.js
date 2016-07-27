@@ -26,7 +26,16 @@ export default class WasmTest extends UnitTestBase {
   /////////////////////////////////////////////////////////////
   initialize (config) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
+
+      while (true) {
+
+        if(Module.ParticleSystem) {
+          break;
+        }
+
+        this.sleep(100)
+      }
 
       this.ps = new Module.ParticleSystem(
         config.maxParticles)
