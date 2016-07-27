@@ -52,7 +52,7 @@ I've been testing against the following browsers: Chrome, Chrome Canary, Firefox
 Only Canary and Firefox Nightly supports WASM, so the following benchmark only indicate those.
 Running WASM in a browser that doesn't support it is using a fallback which ends up being very very slow ...
 
-
+![Benchmark results](Test/src/resources/img/benchmark.png)
 
 ## License
 
