@@ -25,12 +25,11 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 - Building the the ES6 Particle System Library and the Test pages:
 
-   	. npm install
-       . npm run build-lib-dev / npm run build-lib-prod 
-       (prod version is minified and without source map)
-       . npm run build-tests
-       . 
-      (open file in browser or serve it from the HTTP server of your choice)
+   	  . npm install
+      . npm run build-lib-dev / npm run build-lib-prod
+      (prod version is minified and without source map)
+      . npm run build-tests
+
 
 - Running the tests:
   

@@ -15,7 +15,7 @@ export default class ASMTest extends UnitTestBase {
 
     return new Promise((resolve, reject) => {
 
-      this.ps = new ASMModule.ParticleSystem(
+      this.ps = new Module.ParticleSystem(
         config.maxParticles)
 
       config.emitters.forEach((emitterConfig) => {
@@ -116,7 +116,8 @@ export default class ASMTest extends UnitTestBase {
   /////////////////////////////////////////////////////////////
   finalize () {
 
-    ASMModule.destroy(this.ps)
+    // must be explicitly disposed
+    Module.destroy(this.ps)
   }
 }
 
