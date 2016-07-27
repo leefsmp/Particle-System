@@ -27,7 +27,7 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
         . npm install
         . npm run build-lib-dev / npm run build-lib-prod
-      (prod version is minified and without source map)
+        (prod version is minified and without source map)
         . npm run build-tests
 
 
