@@ -33,7 +33,7 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 - Running the tests:
   
-  Serve **ES6vsASM.html** and **ES6vsWASM.html** with the HTTP server of your choice... 
+  Serve **ES6vsASM.html** and **ES6vsWASM.html** with the HTTP server of your choice ...
  
  If you want to test ES6vsWASM.html (the Web Assembly version), you need a browser that supports Web Assembly. 
  
