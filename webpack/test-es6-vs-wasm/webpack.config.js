@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
 
-  devtool: 'eval-source-map',
+  devtool: false,
 
   entry: {
 
@@ -23,16 +23,27 @@ module.exports = {
 
     new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/),
 
-    new webpack.optimize.UglifyJsPlugin({
-      compress: false,
-      minimize: false,
-      mangle: false
-    }),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+
+    new webpack.optimize.MinChunkSizePlugin({
+      minChunkSize: 51200
+    }),
+
+    new webpack.optimize.UglifyJsPlugin({
+      output: {
+        comments: false
+      },
+      compress: {
+        warnings: false
+      },
+      minimize: true,
+      mangle: true
+    }),
 
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"development"'
+      'process.env.NODE_ENV': '"production"'
     }),
 
     new webpack.ProvidePlugin({
