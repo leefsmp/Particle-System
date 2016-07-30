@@ -28,6 +28,7 @@ export default class WasmTest extends UnitTestBase {
 
     return new Promise(async(resolve, reject) => {
 
+      // waits for ParticleSystem to be loaded from wasm
       while (true) {
 
         if(Module.ParticleSystem) {
@@ -138,6 +139,7 @@ export default class WasmTest extends UnitTestBase {
   /////////////////////////////////////////////////////////////
   finalize () {
 
+    // must be explicitly disposed
     Module.destroy(this.ps)
   }
 }

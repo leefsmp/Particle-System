@@ -6,7 +6,11 @@
 
 int main() {
 
+//	// Create new particle system with 10 particles max
+//
 //	ParticleSystem* ps = new ParticleSystem(10);
+//
+//	// Add a particle emitter and set its properties
 //
 //	ParticleEmitter* pEmitter = ps->addEmitter(0);
 //
@@ -17,16 +21,22 @@ int main() {
 //	pEmitter->setVelocity(5);
 //	pEmitter->setCharge(-1);
 //
+//	// Add a magnetic field and set its properties
+//
 //	MagneticField* pField = ps->addMagneticField(1);
 //
 //	pField->getPosition()->set(10,0,0);
 //	pField->getOffset()->set(0,0,0);
 //	pField->setForce(1);
 //
+//	// runs for 10 steps
 //	for (int i=0; i < 10; ++i) {
 //
 //		ps->step(1);
 //	}
+//
+//
+//	// Dump particles position
 //
 //	int idx;
 //
@@ -45,8 +55,8 @@ int main() {
 //	}
 //
 //	delete ps;
-
-	//scanf("Press any key to exit");
+//
+//	scanf("Press Enter to exit");
 
 	return 0;
 };

@@ -2,7 +2,7 @@
 
 ##Description
 
-A Particle System experiment designed to benchmark web technologies from a non trivial piece of code: ES6, Emscripten and Web Assembly (yet to come)
+A Particle System experiment designed to benchmark web technologies from a non trivial piece of code: ES6, Emscripten and Web Assembly
 
 ##Setup/Usage Instructions
 
@@ -25,16 +25,15 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 - Building the the ES6 Particle System Library and the Test pages:
 
-   	. npm install
-       . npm run build-lib-dev / npm run build-lib-prod 
-       (prod version is minified and without source map)
-       . npm run build-tests
-       . 
-      (open file in browser or serve it from the HTTP server of your choice)
+        . npm install
+        . npm run build-lib-dev / npm run build-lib-prod
+        (prod version is minified and without source map)
+        . npm run build-tests
+
 
 - Running the tests:
   
-  Serve **ES6vsASM.html** and **ES6vsWASM.html** with the HTTP server of your choice... 
+  Serve **ES6vsASM.html** and **ES6vsWASM.html** with the HTTP server of your choice ...
  
  If you want to test ES6vsWASM.html (the Web Assembly version), you need a browser that supports Web Assembly. 
  
@@ -44,10 +43,16 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 The two tests are available online from the following locations:
 
-[ES6vsASM.html](http://leefsmp.github.io/Particle-System/Test/ES6vsASM.html)
+[ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/ES6vsASM.html)
 
-[ES6vsWASM.html](http://leefsmp.github.io/Particle-System/Test/ES6vsWASM.html)
+[ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/ES6vsWASM.html)
 
+
+I've been testing against the following browsers: Chrome, Chrome Canary, Firefox, Firefox Nightly and Safari.
+Only Canary and Firefox Nightly supports WASM, so the following benchmark only indicate those.
+Running WASM in a browser that doesn't support it is using a fallback which ends up being very very slow ...
+
+![Benchmark results](Test/src/resources/img/benchmark.png)
 
 ## License
 
