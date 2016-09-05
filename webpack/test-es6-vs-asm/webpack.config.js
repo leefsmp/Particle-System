@@ -9,7 +9,7 @@ module.exports = {
 
     'Test': [
       'babel-polyfill',
-      './Test/src/es6-vs-asm.js'
+      './Test/src/test-vs/es6-vs-asm.js'
     ]
   },
 
@@ -58,8 +58,7 @@ module.exports = {
     root: [
       path.resolve('./ES6/src'),
       path.resolve('./Test/src'),
-      path.resolve('./Test/src/utils'),
-      path.resolve('./Emscripten/dist/asmjs')
+      path.resolve('./Test/src/utils')
     ]
   },
 

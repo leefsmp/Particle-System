@@ -1,7 +1,8 @@
 import ParticleEmitter from './ParticleEmitter'
 import MagneticField from './MagneticField'
-import EventsEmitter from 'EventsEmitter'
+import EventsEmitter from './EventsEmitter'
 import Particle from './Particle'
+import Vector from './Vector'
 
 export default class ParticleSystem extends EventsEmitter {
 
@@ -9,17 +10,32 @@ export default class ParticleSystem extends EventsEmitter {
   //
   //
   ///////////////////////////////////////////////////////////////////
-  constructor (opts) {
+  constructor (maxParticles) {
 
     super()
 
-    this.dof = opts.dof || { x: 1, y: 1, z: 1 }
-    this.maxParticles = opts.maxParticles
-    this.emittedParticles = 0
-    this.recycleBin = []
-    this.particles = []
-    this.emitters = []
-    this.fields = []
+    this._maxParticles = maxParticles
+    this._dof = new Vector(1, 1, 1)
+    this._emittedParticles = 0
+    this._particleIdx = 0
+    this._recycleBin = []
+    this._particles = []
+    this._emitters = []
+    this._fields = []
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  setMaxParticles (maxParticles) {
+
+    this._maxParticles = maxParticles
+  }
+
+  getMaxParticles () {
+
+    return this._maxParticles
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -28,15 +44,15 @@ export default class ParticleSystem extends EventsEmitter {
   ///////////////////////////////////////////////////////////////////
   getObjectById (id) {
 
-    for (var emitters of this.emitters) {
-      if (emitters.id === id) {
-        return emitters
+    for (var emitter of this._emitters) {
+      if (emitter.getId() === id) {
+        return emitter
       }
     }
 
-    for (var fields of this.fields) {
-      if (fields.id === id) {
-        return fields
+    for (var field of this._fields) {
+      if (field.getId() === id) {
+        return field
       }
     }
 
@@ -44,19 +60,53 @@ export default class ParticleSystem extends EventsEmitter {
   }
 
   ///////////////////////////////////////////////////////////////////
-  // clean up all objects and fire 'particle.destroy'
-  // for each particle
+  // Returns emitter by id
+  //
+  ///////////////////////////////////////////////////////////////////
+  getEmitter (id) {
+
+    for (var emitter of this._emitters) {
+      if (emitter.getId() === id) {
+        return emitter
+      }
+    }
+
+    return null
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // Returns magnetic field by id
+  //
+  ///////////////////////////////////////////////////////////////////
+  getMagneticField (id) {
+
+    for (var field of this._fields) {
+      if (field.getId() === id) {
+        return field
+      }
+    }
+
+    return null
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  setDof (x, y, z) {
+
+    this._dof = new Vector(x, y, z)
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // clean up all objects
   //
   ///////////////////////////////////////////////////////////////////
   destroy () {
 
-    this.particles.forEach((particle) => {
+    this._recycleBin = []
 
-      this.emit('particle.destroy', particle)
-    })
-
-    this.recycleBin = []
-    this.particles = []
+    this._particles = []
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -67,7 +117,7 @@ export default class ParticleSystem extends EventsEmitter {
 
     var emitter = new ParticleEmitter(id)
 
-    this.emitters.push(emitter)
+    this._emitters.push(emitter)
 
     return emitter
   }
@@ -80,7 +130,7 @@ export default class ParticleSystem extends EventsEmitter {
 
     var field = new MagneticField(id)
 
-    this.fields.push(field)
+    this._fields.push(field)
 
     return field
   }
@@ -100,10 +150,15 @@ export default class ParticleSystem extends EventsEmitter {
   //
   ///////////////////////////////////////////////////////////////////
   addNewParticles (dt) {
-    this.emitters.forEach((emitter) => {
+
+    this._emitters.forEach((emitter) => {
+
       for (var i = 0; i < emitter.emitNumber(dt); ++i) {
+
         var particle = this.popRecycle()
+
         if (particle) {
+
           emitter.emitParticle(particle)
         }
       }
@@ -116,15 +171,11 @@ export default class ParticleSystem extends EventsEmitter {
   ///////////////////////////////////////////////////////////////////
   pushRecycle (particle) {
 
-    --this.emittedParticles
+    --this._emittedParticles
 
-    particle.recycled = true
+    particle._recycled = true
 
-    this.emit('particle.recycle',
-      particle)
-
-    this.recycleBin.push(
-      particle)
+    this._recycleBin.push(particle)
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -133,29 +184,24 @@ export default class ParticleSystem extends EventsEmitter {
   ///////////////////////////////////////////////////////////////////
   popRecycle () {
 
-    if (this.emittedParticles > this.maxParticles - 1) {
+    if (this._emittedParticles > this._maxParticles - 1) {
       return null
     }
 
-    ++this.emittedParticles
+    ++this._emittedParticles
 
-    var particle = this.recycleBin.pop()
+    var particle = this._recycleBin.pop()
 
     if (particle) {
 
       particle.reset()
 
-      this.emit('particle.recycle',
-        particle)
-
       return particle
     }
 
-    particle = new Particle(this.dof)
+    particle = new Particle(this._dof)
 
-    this.emit('particle.new', particle)
-
-    this.particles.push(particle)
+    this._particles.push(particle)
 
     return particle
   }
@@ -166,27 +212,19 @@ export default class ParticleSystem extends EventsEmitter {
   ///////////////////////////////////////////////////////////////////
   filterParticle (particle) {
 
-    if (particle.recycled) {
-      return false
+    if (particle._recycled) {
+
+      return true
     }
 
-    if (particle.lifeTime < 0) {
+    if (particle._lifeTime < 0) {
+
       this.pushRecycle(particle)
-      return false
+
+      return true
     }
 
-    var filter = this.emit(
-      'particle.filter',
-      particle)
-
-    if (filter !== undefined) {
-      if (!filter) {
-        this.pushRecycle(particle)
-      }
-      return filter
-    }
-
-    return true
+    return false
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -195,14 +233,40 @@ export default class ParticleSystem extends EventsEmitter {
   ///////////////////////////////////////////////////////////////////
   filterParticles (dt) {
 
-    this.particles.forEach((particle) => {
+    this._particles.forEach((particle) => {
 
-      if (this.filterParticle(particle)) {
+      if (!this.filterParticle(particle)) {
 
-        particle.submitToFields(this.fields)
+        particle.submitToFields(this._fields)
+
         particle.step(dt)
       }
     })
   }
+
+  ///////////////////////////////////////////////////////////////////
+  // initialize particle index
+  //
+  ///////////////////////////////////////////////////////////////////
+  initParticleLoop () {
+
+    this._particleIdx = 0
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // initialize particule index
+  //
+  ///////////////////////////////////////////////////////////////////
+  nextParticle () {
+
+    if(this._particleIdx < this._particles.length) {
+
+      return this._particles[this._particleIdx++]
+    }
+
+    return { ptr:0 } //compatibility with asm.js/wasm
+  }
 }
 
+export { ParticleSystem as ParticleSystem }
+export { Vector as Vector }

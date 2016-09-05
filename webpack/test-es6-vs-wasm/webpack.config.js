@@ -9,7 +9,7 @@ module.exports = {
 
     'Test': [
       'babel-polyfill',
-      './Test/src/es6-vs-wasm.js'
+      './Test/src/test-vs/es6-vs-wasm.js'
     ]
   },
 

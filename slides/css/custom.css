@@ -1,0 +1,63 @@
+
+.reveal.slide .slides > section,
+.reveal.slide .slides > section > section,
+.reveal.convex .slides > section,
+.reveal.convex .slides > section > section {
+     min-height: 100% !important;
+     display: flex !important;
+     flex-direction: column !important;
+     justify-content: center !important;
+     position: absolute !important;
+     top: 0 !important;
+     align-items: center !important;
+}
+
+section > h1, section > h2 {
+     position: absolute !important;
+     top: 100px;
+     margin-left: auto !important;
+     margin-right: auto !important;
+     left: 0 !important;
+     right: 0 !important;
+     text-align: center !important;
+}
+
+.print-pdf .reveal.slide .slides > section,
+.print-pdf .reveal.slide .slides > section > section,
+.print-pdf .reveal.convex .slides > section,
+.print-pdf .reveal.convex .slides > section > section {
+     min-height: 770px !important;
+     position: relative !important;
+}
+
+.reveal .iframe-fullscreen {
+     height: calc(100vh);
+     width: calc(100vw);
+     position: relative;
+     max-height: 100%;
+     max-width: 100%;
+     top: -20px;
+}
+
+.reveal h2,
+.reveal h3 {
+  text-transform: none;
+}
+
+.reveal pre {
+     width: 70%;
+}
+
+.reveal section img {
+     margin: 0;
+     background: none;
+     border: none;
+     box-shadow: none;
+}
+
+.reveal hr {
+    border: 1px solid #076b00;
+    background-color: #a9dc24;
+    height: 1px;
+    width: 55%;
+}

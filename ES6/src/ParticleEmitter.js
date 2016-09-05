@@ -5,53 +5,77 @@ export default class ParticleEmitter extends BaseObject {
 
   constructor (id) {
 
-    super(id, 'emitter')
+    super(id, 0)
 
-    this.spread       = 2 * Math.PI / 180
-    this.emissionRate = 500
-    this.velocity     = 10
-    this.charge       = 1
+    this._spread       = 2 * Math.PI / 180
+    this._emissionRate = 500
+    this._velocity     = 10
+    this._charge       = 1
   }
 
   emitNumber (dt) {
 
-    return Math.floor(this.emissionRate * dt)
+    return Math.floor(this._emissionRate * dt)
   }
 
   emitParticle (particle) {
 
-    //inlining for perf
+    var angle1 = this._spread * (2 * Math.random() - 1)
+    var angle2 = this._spread * (2 * Math.random() - 1)
 
-    //particle.velocity = this.ramdomVelocity()
-
-    var angle1 = this.spread * (2 * Math.random() - 1)
-    var angle2 = this.spread * (2 * Math.random() - 1)
-
-    particle.velocity.x = this.velocity *
+    particle._velocity._x = this._velocity *
       Math.cos(angle1) * Math.cos(angle2)
 
-    particle.velocity.y = this.velocity *
+    particle._velocity._y = this._velocity *
       Math.sin(angle1) * Math.cos(angle2)
 
-    particle.velocity.z = this.velocity *
+    particle._velocity._z = this._velocity *
       Math.sin(angle2)
 
-    particle.position.x = this.position.x
-    particle.position.y = this.position.y
-    particle.position.z = this.position.z
+    particle._position._x = this._position._x
+    particle._position._y = this._position._y
+    particle._position._z = this._position._z
 
-    particle.charge = this.charge
+    particle._charge = this._charge
   }
 
-  ramdomVelocity () {
+  setEmissionRate (emissionRate) {
 
-    //random angles in [-spread, spread]
-    var angle1 = this.spread * (2 * Math.random() - 1)
-    var angle2 = this.spread * (2 * Math.random() - 1)
+    this._emissionRate = emissionRate
+  }
 
-    return new Vector(
-      this.velocity * Math.cos(angle1) * Math.cos(angle2),
-      this.velocity * Math.sin(angle1) * Math.cos(angle2),
-      this.velocity * Math.sin(angle2))
+  getEmissionRate () {
+
+    return this._emissionRate
+  }
+
+  setVelocity (velocity) {
+
+    this._velocity = velocity
+  }
+
+  getVelocity () {
+
+    return this._velocity
+  }
+
+  setSpread (spread) {
+
+    this._spread = spread
+  }
+
+  getSpread () {
+
+    return this._spread
+  }
+
+  setCharge (charge) {
+
+    this._charge = charge
+  }
+
+  getCharge () {
+
+    return this._charge
   }
 }

@@ -77,7 +77,7 @@ double Vector::getZ() {
 //
 //
 ///////////////////////////////////////////////////////////////////
-double Vector::magnitude() const{
+double Vector::magnitude() {
 
 	return sqrt(x * x + y * y + z * z);
 }
@@ -86,7 +86,7 @@ double Vector::magnitude() const{
 //
 //
 ///////////////////////////////////////////////////////////////////
- Vector Vector::asUnitVector () const {
+ Vector Vector::asUnitVector () {
 
     double m = this->magnitude();
 
@@ -148,12 +148,12 @@ Vector Vector::vectorTo(const Vector& v) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-bool Vector::withinSphere (const Vector& center, double radius) {
+bool Vector::withinSphere (Vector* center, double radius) {
 
 	double magnitudeSqr =
-      (x - center.x) * (x - center.x) +
-      (y - center.y) * (y - center.y) +
-      (z - center.z) * (z - center.z);
+      (x - center->x) * (x - center->x) +
+      (y - center->y) * (y - center->y) +
+      (z - center->z) * (z - center->z);
 
     return magnitudeSqr < radius * radius;
 }

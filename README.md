@@ -43,16 +43,16 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 The two tests are available online from the following locations:
 
-[ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/ES6vsASM.html)
+[ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/ES6-vs-ASM.html)
 
-[ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/ES6vsWASM.html)
+[ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/ES6-vs-WASM.html)
 
 
 I've been testing against the following browsers: Chrome, Chrome Canary, Firefox, Firefox Nightly and Safari.
 Only Canary and Firefox Nightly supports WASM, so the following benchmark only indicate those.
 Running WASM in a browser that doesn't support it is using a fallback which ends up being very very slow ...
 
-![Benchmark results](Test/src/resources/img/benchmark.png)
+![Benchmark results](Test/resources/img/benchmark.png)
 
 ## License
 

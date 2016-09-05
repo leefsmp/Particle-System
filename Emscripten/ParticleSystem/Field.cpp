@@ -4,7 +4,7 @@
 // constructor
 //
 ///////////////////////////////////////////////////////////////////
-Field::Field(int id): Object(id) {
+Field::Field(int id, int type): BaseObject(id, type) {
 
 }
 

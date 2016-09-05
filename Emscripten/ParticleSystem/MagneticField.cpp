@@ -1,11 +1,12 @@
 #include "MagneticField.h"
+#include <stdio.h>
 #include <math.h>
 
 ///////////////////////////////////////////////////////////////////
 // constructor
 //
 ///////////////////////////////////////////////////////////////////
-MagneticField::MagneticField(int id): Field (id) {
+MagneticField::MagneticField(int id): Field (id, 1) {
 
 }
 
@@ -16,6 +17,11 @@ MagneticField::MagneticField(int id): Field (id) {
 void MagneticField::setForce(double force) {
 
 	_force = force;
+}
+
+double MagneticField::getForce() {
+
+	return _force;
 }
 
 ///////////////////////////////////////////////////////////////////

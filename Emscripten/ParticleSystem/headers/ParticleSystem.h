@@ -2,24 +2,25 @@
 
 #include "ParticleEmitter.h"
 #include "MagneticField.h"
+#include "EventEmitter.h"
 #include "Particle.h"
 #include "Vector.h"
 #include <vector>
 #include <queue>
 
-class ParticleSystem {
+class ParticleSystem: public EventEmitter {
 
 private:
 
-	std::vector<Particle*>::const_iterator _pIt;
-	std::vector<ParticleEmitter*> _emitters; 
-	std::vector<Particle*> _particles;
-	std::queue<Particle*> _recycleBin;
-	std::vector<Field*> _fields;
+	std::vector <Particle*>::const_iterator _pIt;
+	std::vector <ParticleEmitter*> _emitters;
+	std::vector <Particle*> _particles;
+	std::queue <Particle*> _recycleBin;
+	std::vector <Field*> _fields;
 
 	int _emittedParticles;
 	int _maxParticles;
-    Vector _dof;
+  Vector _dof;
    
 public:
 
@@ -33,7 +34,21 @@ public:
 	//
 	//
 	///////////////////////////////////////////////////////////////////
-	~ParticleSystem();
+	~ParticleSystem ();
+
+	///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  void setMaxParticles(int maxParticles);
+
+  int getMaxParticles();
+
+	///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+	void setDof(double x, double y, double z);
 
 	///////////////////////////////////////////////////////////////////
 	//
@@ -51,7 +66,19 @@ public:
 	// Returns object by id
 	//
 	///////////////////////////////////////////////////////////////////
-	Object* getObjectById(int id);
+	BaseObject* getObjectById(int id);
+
+	///////////////////////////////////////////////////////////////////
+  // Returns emitter by id
+  //
+  ///////////////////////////////////////////////////////////////////
+  ParticleEmitter* getEmitter(int id);
+
+  ///////////////////////////////////////////////////////////////////
+  // Returns magnetic field by id
+  //
+  ///////////////////////////////////////////////////////////////////
+  MagneticField* getMagneticField(int id);
 
 	///////////////////////////////////////////////////////////////////
 	// clean up all objects and fire 'particle.destroy'

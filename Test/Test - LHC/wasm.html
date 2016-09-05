@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-us">
+
+  <head>
+    <meta name="viewport" content="width=device-width, height=device-height, minimal-ui, minimum-scale=1.0, initial-scale=1, user-scalable=no"/>
+    <link rel="shortcut icon" href="../resources/img/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../resources/lmv/style.min.css" type="text/css"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Viewer Test | WASM</title>
+  </head>
+
+  <body>
+
+    <div id="viewer" class="viewer"></div>
+
+    <script>
+
+      var Module = Module || {}
+
+      //'WEB' / 'WORKER' / 'NODE' / 'SHELL'
+      Module['ENVIRONMENT'] = 'WEB'
+
+      var wasmRoot = '../../Emscripten/dist/wasm/'
+
+      Module.wasmBinaryFile = wasmRoot + 'ParticleSystem.wasm'
+
+      var xhr = new XMLHttpRequest()
+      xhr.open('GET', wasmRoot + 'ParticleSystem.wasm', true)
+      xhr.responseType = 'arraybuffer'
+
+      xhr.onload = function() {
+
+        Module.wasmBinary = xhr.response
+
+        var script = document.createElement('script')
+        script.src = wasmRoot + 'ParticleSystem.js'
+        document.body.appendChild(script)
+      }
+
+      xhr.send(null)
+
+      Module.extensions = {
+        'Viewing.Extension.Particle': {
+          maxParticles: 0,
+          autoStart: false
+        },
+        'Viewing.Extension.Particle.LHC': {}
+      }
+
+      Module.model = '../resources/models/LHC/0.svf'
+
+    </script>
+
+    <script type="text/javascript" src="../resources/lmv/three.min.js"></script>
+    <script type="text/javascript" src="../resources/lmv/viewer3D.min.js"></script>
+    <script type="text/javascript" src="../dist/test-viewer.bundle.js"></script>
+
+  </body>
+
+</html>

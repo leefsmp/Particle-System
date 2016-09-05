@@ -3,26 +3,28 @@ import Vector from './Vector'
 export default class Particle {
 
   constructor (dof) {
-    this.velocity     = new Vector()
-    this.position     = new Vector()
-    this.acceleration = new Vector()
-    this.recycled     = false
-    this.radius       = 0.03
-    this.dof          = dof
-    this.lifeTime     = 30
-    this.charge       = 1
+
+    this._velocity     = new Vector()
+    this._position     = new Vector()
+    this._acceleration = new Vector()
+    this._recycled     = false
+    this._radius       = 0.03
+    this._dof          = dof
+    this._lifeTime     = 30
+    this._charge       = 1
+    this.ptr           = 1  //compat with wasm
   }
 
   reset () {
-    this.recycled = false
-    this.lifeTime = 30
+    this._recycled = false
+    this._lifeTime = 30
   }
 
   submitToFields (fields) {
 
-    this.acceleration.x = 0
-    this.acceleration.y = 0
-    this.acceleration.z = 0
+    this._acceleration._x = 0
+    this._acceleration._y = 0
+    this._acceleration._z = 0
 
     fields.forEach((field) => {
 
@@ -32,22 +34,50 @@ export default class Particle {
 
   step (dt) {
 
-    this.lifeTime -= dt
+    this._lifeTime -= dt
 
-    if (this.dof.x) {
-      this.velocity.x += this.acceleration.x * dt
-      this.position.x += this.velocity.x * dt
-    }
+    this._velocity._x += this._acceleration._x * dt
+    this._velocity._y += this._acceleration._y * dt
+    this._velocity._z += this._acceleration._z * dt
 
-    if (this.dof.y) {
-      this.velocity.y += this.acceleration.y * dt
-      this.position.y += this.velocity.y * dt
-    }
+    this._position._x += this._velocity._x * this._dof._x * dt
+    this._position._y += this._velocity._y * this._dof._y * dt
+    this._position._z += this._velocity._z * this._dof._z * dt
+  }
 
-    if (this.dof.z) {
-      this.velocity.z += this.acceleration.z * dt
-      this.position.z += this.velocity.z * dt
-    }
+  getRecycled () {
+
+    return this._recycled
+  }
+
+  getLifeTime () {
+
+    return this._lifeTime
+  }
+
+  setLifeTime (lifeTime) {
+
+    this._lifeTime = lifeTime
+  }
+
+  getAcceleration () {
+
+    return this._acceleration
+  }
+
+  getPosition () {
+
+    return this._position
+  }
+
+  getCharge () {
+
+    return this._charge
+  }
+
+  getRadius () {
+
+    return this._radius
   }
 }
 

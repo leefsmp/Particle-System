@@ -1,56 +1,125 @@
 
 interface Vector {
 
-        void Vector(double x, double y, double z);
+        void Vector (double x, double y, double z);
 
-        void set(double x, double y, double z);
+        boolean withinSphere (Vector center, double radius);
+        void set (double x, double y, double z);
+        double magnitude();
 
-        double getX();
-        double getY();
-        double getZ();
+        double getX ();
+        double getY ();
+        double getZ ();
+};
+
+interface BaseObject {
+
+        void BaseObject (long id, long type);
+        long getType();
+        long getId();
+
+        void setPosition(double x, double y, double z);
+
+        void setTransformable(boolean transformable);
+        boolean getTransformable();
+
+        void setSelectable(boolean selectable);
+        boolean getSelectable();
 };
 
 interface ParticleEmitter {
 
-        void ParticleEmitter(long id);
+        void ParticleEmitter (long id);
 
-        Vector getPosition();
-        Vector getOffset();
+        void setPosition (double x, double y, double z);
+        Vector getPosition ();
 
-       	void setEmissionRate(double emissionRate);
-       	void setVelocity(double velocity);
-       	void setSpread(double spread);
-       	void setCharge(double charge);
+        void setOffset (double x, double y, double z);
+        Vector getOffset ();
+
+        void setTransformable(boolean transformable);
+        void setSelectable(boolean selectable);
+
+       	void setEmissionRate (double emissionRate);
+       	double getEmissionRate ();
+
+       	void setVelocity (double velocity);
+       	double getVelocity ();
+
+       	void setSpread (double spread);
+       	double getSpread ();
+
+       	void setCharge (double charge);
+       	double getCharge ();
 };
 
 interface MagneticField {
 
-        void MagneticField(long id);
+        void MagneticField (long id);
 
-        Vector getPosition();
-        Vector getOffset();
+        void setTransformable(boolean transformable);
+        void setSelectable(boolean selectable);
 
-       	void setForce(double force);
+        void setPosition (double x, double y, double z);
+         Vector getPosition ();
+
+       	void setOffset (double x, double y, double z);
+       	Vector getOffset ();
+
+       	void setForce (double force);
+       	double getForce ();
 };
 
 interface Particle {
 
         void Particle();
 
-        Vector getAcceleration();
-        Vector getVelocity();
-        Vector getPosition();
-        Vector getDof();
+        Vector getAcceleration ();
+        Vector getVelocity ();
+        Vector getPosition ();
+        Vector getDof ();
+
+        void setLifeTime (double lifeTime);
+        double getLifeTime();
+
+        boolean getRecycled();
+        double getRadius();
+};
+
+interface EmString {
+
+    void EmString();
+    void EmString(DOMString s);
+    [Const] DOMString c_str();
+};
+
+interface EventHandler {
+
+        void EventHandler ();
+
+        boolean handleEvent (EmString data);
 };
 
 interface ParticleSystem {
 
-        void ParticleSystem(long maxParticles);
-        void pushRecycle(Particle particle);
-        void initParticleLoop();
-        Particle nextParticle();
-        void step(double dt);
+        void ParticleSystem (long maxParticles);
+        void destroy();
+
+        void setDof (double x, double y, double z);
+
+        void setMaxParticles (long maxParticles);
+        long getMaxParticles ();
+
+        MagneticField getMagneticField(long id);
+        ParticleEmitter getEmitter(long id);
+        BaseObject getObjectById(long id);
+
+        void initParticleLoop ();
+        Particle nextParticle ();
+        void step (double dt);
 
         MagneticField addMagneticField(long id);
         ParticleEmitter addEmitter(long id);
+
+        void on (EmString eventName, EventHandler handler);
 };

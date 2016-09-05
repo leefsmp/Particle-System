@@ -46,6 +46,11 @@ Vector* Particle::getDof() {
 	return &_dof;
 }
 
+void Particle::setDof(Vector* dof) {
+
+	_dof.set(*dof);
+}
+
 ///////////////////////////////////////////////////////////////////
 //
 //
@@ -78,9 +83,23 @@ bool Particle::getRecycled() {
 //
 //
 ///////////////////////////////////////////////////////////////////
-double Particle::getLifetime() {
+double Particle::getLifeTime () {
 
 	return _lifeTime;
+}
+
+void Particle::setLifeTime (double lifeTime) {
+
+	_lifeTime = lifeTime;
+}
+
+///////////////////////////////////////////////////////////////////
+//
+//
+///////////////////////////////////////////////////////////////////
+double Particle::getRadius () {
+
+	return _radius;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -91,20 +110,14 @@ void Particle::step(double dt) {
 
 	_lifeTime -= dt;
 
-    if (_dof.x) {
-      _velocity.x += _acceleration.x * dt;
-      _position.x += _velocity.x * dt;
-    }			    
+    _velocity.x += _acceleration.x * dt;
+    _position.x += _velocity.x * _dof.x * dt;
 				    
-    if (_dof.y) {    
-      _velocity.y += _acceleration.y * dt;
-      _position.y += _velocity.y * dt;
-    }			    
+    _velocity.y += _acceleration.y * dt;
+    _position.y += _velocity.y * _dof.y * dt;
 				    
-    if (_dof.z) {    
-      _velocity.z += _acceleration.z * dt;
-      _position.z += _velocity.z * dt;
-    }
+    _velocity.z += _acceleration.z * dt;
+    _position.z += _velocity.z * _dof.z * dt;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -114,5 +127,5 @@ void Particle::step(double dt) {
 void Particle::reset() {
 
 	_recycled = false;
-    _lifeTime = 30.0;
+  _lifeTime = 30.0;
 }

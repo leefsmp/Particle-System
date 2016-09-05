@@ -1,5 +1,5 @@
 
-export default class EventEmitter {
+export default class EventsEmitter {
 
   ///////////////////////////////////////////////////////////////////
   //

@@ -15,18 +15,29 @@ export default class UnitTestBase extends EventsEmitter {
     this.config = config
   }
 
-  initialize () {
+  /////////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////////
+  initialize (config) {
 
+    throw new Error('Unimplemented method initialize')
   }
 
-  doTest () {
+  doTest (config) {
 
+    throw new Error('Unimplemented method doTest')
   }
 
-  finalize () {
+  finalize (config) {
 
+    throw new Error('Unimplemented method finalize')
   }
 
+  /////////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////////
   run () {
 
     return new Promise(async(resolve, reject) => {
@@ -39,11 +50,24 @@ export default class UnitTestBase extends EventsEmitter {
 
       const elapsedMs = this.stopwatch.getElapsedMs()
 
-      this.finalize()
+      this.finalize(this.config)
 
       resolve ({
         elapsedMs
       })
+    })
+  }
+
+  /////////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////////
+  static sleep (ms) {
+
+    return new Promise((resolve) => {
+      setTimeout(()=>{
+        resolve()
+      }, ms)
     })
   }
 }

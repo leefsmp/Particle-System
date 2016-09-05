@@ -1,18 +1,22 @@
 
 export default class Vector {
 
-  constructor (x, y, z) {
-    this.x = x || 0
-    this.y = y || 0
-    this.z = z || 0
+  constructor (x = 0, y = 0, z = 0) {
+    this._x = x
+    this._y = y
+    this._z = z
   }
+
+  getX () { return this._x }
+  getY () { return this._y }
+  getZ () { return this._z }
 
   magnitude () {
 
     return Math.sqrt(
-      this.x * this.x +
-      this.y * this.y +
-      this.z * this.z)
+      this._x * this._x +
+      this._y * this._y +
+      this._z * this._z)
   }
 
   asUnitVector () {
@@ -20,9 +24,9 @@ export default class Vector {
     var m = this.magnitude()
 
     return new Vector(
-      this.x / m,
-      this.y / m,
-      this.z / m)
+      this._x / m,
+      this._y / m,
+      this._z / m)
   }
 
   scaled (scaleFactor) {
@@ -30,25 +34,25 @@ export default class Vector {
     var m = this.magnitude()
 
     return new Vector(
-      this.x * scaleFactor / m,
-      this.y * scaleFactor / m,
-      this.z * scaleFactor / m)
+      this._x * scaleFactor / m,
+      this._y * scaleFactor / m,
+      this._z * scaleFactor / m)
   }
 
   multiply (scaleFactor) {
 
-    this.x *= scaleFactor
-    this.y *= scaleFactor
-    this.z *= scaleFactor
+    this._x *= scaleFactor
+    this._y *= scaleFactor
+    this._z *= scaleFactor
 
     return this
   }
 
   add (vector) {
 
-    this.x += vector.x
-    this.y += vector.y
-    this.z += vector.z
+    this._x += vector._x
+    this._y += vector._y
+    this._z += vector._z
 
     return this
   }
@@ -56,18 +60,18 @@ export default class Vector {
   vectorTo (vector) {
 
     return new Vector(
-      vector.x - this.x,
-      vector.y - this.y,
-      vector.z - this.z
+      vector._x - this._x,
+      vector._y - this._y,
+      vector._z - this._z
     )
   }
 
   withinSphere (center, radius) {
 
     var magnitudeSqr =
-      (this.x - center.x) * (this.x - center.x) +
-      (this.y - center.y) * (this.y - center.y) +
-      (this.z - center.z) * (this.z - center.z)
+      (this._x - center._x) * (this._x - center._x) +
+      (this._y - center._y) * (this._y - center._y) +
+      (this._z - center._z) * (this._z - center._z)
 
     return magnitudeSqr < radius * radius
   }
@@ -81,7 +85,7 @@ export default class Vector {
 
   copy () {
 
-    return new Vector(this.x, this.y, this.z)
+    return new Vector(this._x, this._y, this._z)
   }
 
   static fromArray (data) {

@@ -4,11 +4,16 @@
   "description": "Particle System ES6/ASM.js/WebASM Project",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-lib-dev": "webpack --watch --progress --colors --config ./webpack/particleLib/webpack.config.development.js",
-    "build-lib-prod": "webpack --progress --colors --config ./webpack/particleLib/webpack.config.production.js",
+    "build-lib-dev": "webpack --watch --progress --colors --config ./webpack/particleLib/babel/webpack.config.development.js",
+    "build-lib-prod": "webpack --progress --colors --config ./webpack/particleLib/babel/webpack.config.production.js",
+    "build-lib-traceur-dev": "webpack --watch --progress --colors --config ./webpack/particleLib/traceur/webpack.config.development.js",
+    "build-lib-traceur-prod": "webpack --progress --colors --config ./webpack/particleLib/traceur/webpack.config.production.js",
     "build-asm-test": "webpack --progress --colors --config ./webpack/test-es6-vs-asm/webpack.config.js",
     "build-wasm-test": "webpack --progress --colors --config ./webpack/test-es6-vs-wasm/webpack.config.js",
-    "build-tests": "npm run build-asm-test && npm run build-wasm-test"
+    "build-viewer-test": "webpack --progress --colors --config ./webpack/test-viewer/webpack.config.js",
+    "build-three-test": "webpack --progress --colors --config ./webpack/test-three.js/webpack.config.js",
+    "build-transpiler-test": "webpack --progress --colors --config ./webpack/test-babel-vs-traceur/webpack.config.js",
+    "build-tests": "npm run build-asm-test && npm run build-wasm-test && npm run build-transpiler-test && npm run build-viewer-test && npm run build-three-test"
   },
   "author": "Philippe Leefsma",
   "dependencies": {
@@ -17,7 +22,9 @@
     "babel-polyfill": "^6.5.0",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
+    "babylonjs": "2.4.0",
     "css-loader": "^0.23.1",
+    "dat-gui": "0.5.0",
     "debug": "2.2.0",
     "file-loader": "^0.8.5",
     "image-webpack-loader": "^1.6.3",
@@ -26,8 +33,11 @@
     "json-loader": "^0.5.4",
     "jsoneditor": "^5.5.6",
     "lodash": "^4.11.1",
+    "stats-js": "1.0.0-alpha1",
     "style-loader": "^0.13.0",
-    "systemjs": "0.19.22",
-    "webpack": "^1.12.13"
+    "systemjs": "^0.19.22",
+    "three-js": "79.0.0",
+    "webpack": "^1.12.13",
+    "webpack-traceur-loader": "^0.3.0"
   }
 }

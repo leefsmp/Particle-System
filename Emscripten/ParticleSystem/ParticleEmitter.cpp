@@ -6,7 +6,7 @@
 // constructor
 //
 ///////////////////////////////////////////////////////////////////
-ParticleEmitter::ParticleEmitter(int id): Object(id) {
+ParticleEmitter::ParticleEmitter(int id): BaseObject(id, 0) {
 
 }
 
@@ -19,13 +19,23 @@ void ParticleEmitter::setEmissionRate(double emissionRate) {
 	_emissionRate = emissionRate;
 }
 
+double ParticleEmitter::getEmissionRate () {
+
+	return _emissionRate;
+}
+
 ///////////////////////////////////////////////////////////////////
 //
 //
 ///////////////////////////////////////////////////////////////////
-void ParticleEmitter::setVelocity(double velocity) {
+void ParticleEmitter::setVelocity (double velocity) {
 
 	_velocity = velocity;
+}
+
+double ParticleEmitter::getVelocity () {
+
+	return _velocity;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -37,6 +47,11 @@ void ParticleEmitter::setSpread(double spread) {
 	_spread = spread;
 }
 
+double ParticleEmitter::getSpread () {
+
+	return _spread;
+}
+
 ///////////////////////////////////////////////////////////////////
 //
 //
@@ -44,6 +59,11 @@ void ParticleEmitter::setSpread(double spread) {
 void ParticleEmitter::setCharge(double charge) {
 
 	_charge = charge;
+}
+
+double ParticleEmitter::getCharge () {
+
+	return _charge;
 }
 
 ///////////////////////////////////////////////////////////////////

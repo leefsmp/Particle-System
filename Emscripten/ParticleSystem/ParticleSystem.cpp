@@ -10,31 +10,20 @@
 // constructor
 //
 ///////////////////////////////////////////////////////////////////
-ParticleSystem::ParticleSystem(int maxParticles) {
+ParticleSystem::ParticleSystem (int maxParticles) {
 
 	_maxParticles = maxParticles;
 
 	_emittedParticles = 0;
 
 	_dof.set(1, 1, 1);
-
-	for(int i = 0; i <_maxParticles; ++i) {
-	
-		Particle* pParticle = new Particle();
-
-		_particles.push_back(pParticle);
-
-		pParticle->getDof()->set(_dof);
-
-		pushRecycle(pParticle);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////
 //
 //
 ///////////////////////////////////////////////////////////////////
-ParticleSystem::~ParticleSystem() {
+ParticleSystem::~ParticleSystem () {
 
 	for (std::vector<ParticleEmitter*>::iterator 
 		it = _emitters.begin(); 
@@ -56,10 +45,48 @@ ParticleSystem::~ParticleSystem() {
 }
 
 ///////////////////////////////////////////////////////////////////
+//
+//
+///////////////////////////////////////////////////////////////////
+void ParticleSystem::destroy () {
+
+	for (std::vector<Particle*>::iterator
+		it = _particles.begin();
+		it != _particles.end(); ++it) {
+			delete (*it);
+	}
+
+	_particles.clear();
+}
+
+///////////////////////////////////////////////////////////////////
+//
+//
+///////////////////////////////////////////////////////////////////
+void ParticleSystem::setMaxParticles (int maxParticles) {
+
+  _maxParticles = maxParticles;
+}
+
+int ParticleSystem::getMaxParticles () {
+
+  return _maxParticles;
+}
+
+///////////////////////////////////////////////////////////////////
+//
+//
+///////////////////////////////////////////////////////////////////
+void ParticleSystem::setDof (double x, double y, double z) {
+
+  _dof.set(x, y, z);
+}
+
+///////////////////////////////////////////////////////////////////
 // Returns object by id
 //
 ///////////////////////////////////////////////////////////////////
-Object* ParticleSystem::getObjectById(int id) {
+BaseObject* ParticleSystem::getObjectById (int id) {
 
 	for (std::vector<ParticleEmitter*>::iterator 
 		it = _emitters.begin(); 
@@ -83,10 +110,46 @@ Object* ParticleSystem::getObjectById(int id) {
 }
 
 ///////////////////////////////////////////////////////////////////
+// Returns emitter by id
+//
+///////////////////////////////////////////////////////////////////
+ParticleEmitter* ParticleSystem::getEmitter (int id) {
+
+for (std::vector<ParticleEmitter*>::iterator
+		it = _emitters.begin();
+		it != _emitters.end(); ++it) {
+
+			if((*it)->getId() == id) {
+				return (ParticleEmitter*)(*it);
+			}
+	}
+
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////
+// Returns magnetic field by id
+//
+///////////////////////////////////////////////////////////////////
+MagneticField* ParticleSystem::getMagneticField (int id) {
+
+  	for (std::vector<Field*>::iterator
+  		it = _fields.begin();
+  		it != _fields.end(); ++it) {
+
+  			if((*it)->getId() == id) {
+  				return (MagneticField*)(*it);
+  			}
+  	}
+
+  	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////
 //
 //
 ///////////////////////////////////////////////////////////////////
-void ParticleSystem::initParticleLoop() {
+void ParticleSystem::initParticleLoop () {
 
 	_pIt = _particles.begin();
 }
@@ -95,7 +158,7 @@ void ParticleSystem::initParticleLoop() {
 //
 //
 ///////////////////////////////////////////////////////////////////
-Particle* ParticleSystem::nextParticle() {
+Particle* ParticleSystem::nextParticle () {
 
 	return (_pIt != _particles.end() ? (*(_pIt++)) : NULL);
 }
@@ -104,7 +167,7 @@ Particle* ParticleSystem::nextParticle() {
 // Adds emitter object
 //
 ///////////////////////////////////////////////////////////////////
-ParticleEmitter* ParticleSystem::addEmitter(int id) {
+ParticleEmitter* ParticleSystem::addEmitter (int id) {
 
 	ParticleEmitter* pEmitter = new ParticleEmitter(id);
 
@@ -117,7 +180,7 @@ ParticleEmitter* ParticleSystem::addEmitter(int id) {
 // Adds emitter object
 //
 ///////////////////////////////////////////////////////////////////
-MagneticField* ParticleSystem::addMagneticField(int id) {
+MagneticField* ParticleSystem::addMagneticField (int id) {
 
 	MagneticField* pField = new MagneticField(id);
 
@@ -130,7 +193,7 @@ MagneticField* ParticleSystem::addMagneticField(int id) {
 // updates simulation
 //
 ///////////////////////////////////////////////////////////////////
-void ParticleSystem::step(double dt) {
+void ParticleSystem::step (double dt) {
 
 	addNewParticles(dt);
 	filterParticles(dt);
@@ -140,7 +203,7 @@ void ParticleSystem::step(double dt) {
 // add new particles step
 //
 ///////////////////////////////////////////////////////////////////
-void ParticleSystem::addNewParticles(double dt) {
+void ParticleSystem::addNewParticles (double dt) {
 
 	for(std::vector<ParticleEmitter*>::iterator it = 
 		_emitters.begin(); 
@@ -162,25 +225,31 @@ void ParticleSystem::addNewParticles(double dt) {
 // pop a particle from recycle bin
 //
 ///////////////////////////////////////////////////////////////////
-Particle* ParticleSystem::popRecycle() {
+Particle* ParticleSystem::popRecycle () {
 
 	if(_emittedParticles > _maxParticles - 1) {
 
 		return NULL;
 	}
 
-    if (_recycleBin.empty()) {
-
-		return NULL;
-	}
-
 	++_emittedParticles;
 
-	Particle* pParticle = _recycleBin.front();
+  if (!_recycleBin.empty()) {
 
-	_recycleBin.pop();
-	
-	pParticle->reset();
+		Particle* pParticle = _recycleBin.front();
+
+    _recycleBin.pop();
+
+    pParticle->reset();
+
+    return pParticle;
+	}
+
+	Particle* pParticle = new Particle();
+
+  _particles.push_back(pParticle);
+
+  pParticle->setDof(&_dof);
 
 	return pParticle;
 }
@@ -189,13 +258,13 @@ Particle* ParticleSystem::popRecycle() {
 // push a particle to the recycle bin
 //
 ///////////////////////////////////////////////////////////////////
-void ParticleSystem::pushRecycle(Particle* pParticle) {
+void ParticleSystem::pushRecycle (Particle* pParticle) {
+
+    --_emittedParticles;
 
     pParticle->setRecycled(true);
 
     _recycleBin.push(pParticle);
-
-    --_emittedParticles;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -206,16 +275,16 @@ bool ParticleSystem::filterParticle (Particle* pParticle) {
 
 	if (pParticle->getRecycled()) {
 
-      return false;
-    }
-
-    if (pParticle->getLifetime() < 0) {
-
-      pushRecycle(pParticle);
-      return false;
-    }
-
     return true;
+  }
+
+  if (pParticle->getLifeTime() < 0) {
+
+    pushRecycle(pParticle);
+    return true;
+  }
+
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -224,17 +293,21 @@ bool ParticleSystem::filterParticle (Particle* pParticle) {
 ///////////////////////////////////////////////////////////////////
 void ParticleSystem::filterParticles (double dt) {
 
-	for(std::vector<Particle*>::iterator pIt = _particles.begin(); 
+	for(std::vector<Particle*>::iterator
+	  pIt = _particles.begin();
 		pIt != _particles.end(); ++pIt) {
 		
-		if(filterParticle((*pIt))) {
+		if(!filterParticle((*pIt))) {
 			
 			(*pIt)->getAcceleration()->set(0, 0, 0);
 
-			for(std::vector<Field*>::iterator fIt = _fields.begin(); 
+			for(std::vector<Field*>::iterator
+			  fIt = _fields.begin();
 				fIt != _fields.end(); ++fIt) {
-			
-				(*fIt)->applyForce((*pIt));
+
+        MagneticField* pField = (MagneticField*)(*fIt);
+
+				pField->applyForce((*pIt));
 			}
 
 			(*pIt)->step(dt);

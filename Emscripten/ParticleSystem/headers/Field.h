@@ -1,8 +1,8 @@
 #pragma once
-#include "Object.h"
+#include "BaseObject.h"
 #include "Particle.h"
 
-class Field: public Object {
+class Field: public BaseObject {
 
 public:
 
@@ -10,12 +10,12 @@ public:
   //
   //
   ///////////////////////////////////////////////////////////////////
-  Field(int id);
+  Field(int id, int type);
 
   ///////////////////////////////////////////////////////////////////
   //
   //
   ///////////////////////////////////////////////////////////////////
-  void applyForce (Particle* pParticle); 
+  virtual void applyForce (Particle* pParticle);
 };
 
