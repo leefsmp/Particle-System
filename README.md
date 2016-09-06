@@ -43,7 +43,7 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 Performance Tests:
 
-[ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-ASM.html)
+<a href="http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-ASM.html" target="_blank">ES6 vs ASM</a>
 
 [ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-WASM.html)
 
