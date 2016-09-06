@@ -88,9 +88,9 @@ interface Particle {
 
 interface EmString {
 
-    void EmString();
-    void EmString(DOMString s);
-    [Const] DOMString c_str();
+        void EmString();
+        void EmString(DOMString s);
+        [Const] DOMString c_str();
 };
 
 interface EventHandler {

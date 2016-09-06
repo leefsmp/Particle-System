@@ -18,6 +18,7 @@ export default class SettingsPanel extends DockingPanel {
     this.particleSystem = particleSystem
 
     $(this.container).addClass('particle')
+    $(this.container).addClass('settings')
 
     var gui = new dat.GUI({
       autoPlace: false
@@ -126,7 +127,7 @@ export default class SettingsPanel extends DockingPanel {
 
         emitterFolder.add(
           this.selectedObjectGUI,
-          'emissionRate', 0, 10000).name('Emission Rate').
+          'emissionRate', 0, 5000).name('Emission Rate').
           onChange(() => {
             this.selectedObjectGUI.update()
           })

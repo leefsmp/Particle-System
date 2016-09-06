@@ -33,20 +33,35 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 - Running the tests:
   
-  Serve **ES6vsASM.html** and **ES6vsWASM.html** with the HTTP server of your choice ...
+  Serve Test/. with the HTTP server of your choice ...
  
- If you want to test ES6vsWASM.html (the Web Assembly version), you need a browser that supports Web Assembly. 
+ If you want to test Web Assembly versions, you need a browser that supports Web Assembly.
  
  At the moment [Chrome Canary](https://www.google.com/chrome/browser/canary.html), [Firefox Nighly](https://nightly.mozilla.org/) and soon in Microsoft Edge.
 
 ## Live Tests
 
-The two tests are available online from the following locations:
+Performance Tests:
 
-[ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/ES6-vs-ASM.html)
+[ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-ASM.html)
 
-[ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/ES6-vs-WASM.html)
+[ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-WASM.html)
 
+Autodesk Forge Viewer Test:
+
+[ES6](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/es6.html)
+
+[asm.js](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/asm.html)
+
+[wasm](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/wasm.html)
+
+Three.js Tests:
+
+[ES6](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/es6.html)
+
+[asm.js](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/asm.html)
+
+[wasm](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/wasm.html)
 
 I've been testing against the following browsers: Chrome, Chrome Canary, Firefox, Firefox Nightly and Safari.
 Only Canary and Firefox Nightly supports WASM, so the following benchmark only indicate those.

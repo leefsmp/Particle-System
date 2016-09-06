@@ -16,7 +16,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../../Test/dist'),
     filename: 'es6-vs-wasm.bundle.js',
-    publicPath: './dist/'
+    publicPath: '../dist/'
   },
 
   plugins: [

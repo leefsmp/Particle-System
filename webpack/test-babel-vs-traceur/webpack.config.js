@@ -16,7 +16,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../../Test/dist'),
     filename: 'babel-vs-traceur.bundle.js',
-    publicPath: './dist/'
+    publicPath: '../dist/'
   },
 
   plugins: [

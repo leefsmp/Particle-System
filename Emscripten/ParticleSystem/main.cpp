@@ -65,8 +65,6 @@ void runTest() {
 
 int main() {
 
-  printf("Particle System - Main");
-
   //runTest();
 
 	return 0;

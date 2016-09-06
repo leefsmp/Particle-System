@@ -238,18 +238,18 @@ Particle* ParticleSystem::popRecycle () {
 
 		Particle* pParticle = _recycleBin.front();
 
-    _recycleBin.pop();
+    	_recycleBin.pop();
 
-    pParticle->reset();
+    	pParticle->reset();
 
-    return pParticle;
+    	return pParticle;
 	}
 
 	Particle* pParticle = new Particle();
 
-  _particles.push_back(pParticle);
+  	_particles.push_back(pParticle);
 
-  pParticle->setDof(&_dof);
+  	pParticle->setDof(&_dof);
 
 	return pParticle;
 }
@@ -305,7 +305,7 @@ void ParticleSystem::filterParticles (double dt) {
 			  fIt = _fields.begin();
 				fIt != _fields.end(); ++fIt) {
 
-        MagneticField* pField = (MagneticField*)(*fIt);
+        		MagneticField* pField = (MagneticField*)(*fIt);
 
 				pField->applyForce((*pIt));
 			}

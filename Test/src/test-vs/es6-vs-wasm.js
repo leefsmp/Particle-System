@@ -32,7 +32,7 @@ $(document).ready( ()=> {
         y: 0,
         z: 0
       },
-      emissionRate: 4000,
+      emissionRate: 1000,
       velocity: 100,
       spread: 0.1,
       charge: 100
@@ -75,7 +75,6 @@ $('.test-btn').click(() => {
 
     const testConfig = editor.get()
 
-
     console.log('--------- Running ES6 Test --------- ')
 
     const test1 = new DynamicTest(
@@ -99,6 +98,7 @@ $('.test-btn').click(() => {
       Module.ParticleSystem)
 
     const res2 = await test2.run()
+
 
     var results = `
       ES6 (ms): ${res1.elapsedMs.toFixed(3)}

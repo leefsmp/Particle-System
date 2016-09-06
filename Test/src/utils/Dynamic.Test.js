@@ -15,14 +15,14 @@ export default class DynamicTest extends UnitTestBase {
   /////////////////////////////////////////////////////////////
   initialize (config) {
 
-    return new Promise(async(resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
       this.ps = new this.ParticleSystem(
         config.maxParticles)
 
       config.emitters.forEach((emitterConfig) => {
 
-        var emitter = this.ps.addEmitter(emitterConfig.id)
+        let emitter = this.ps.addEmitter(emitterConfig.id)
 
         emitter.setPosition(
           emitterConfig.position.x,
@@ -44,7 +44,7 @@ export default class DynamicTest extends UnitTestBase {
 
       config.fields.forEach((fieldConfig) => {
 
-        var field = this.ps.addMagneticField(fieldConfig.id)
+        let field = this.ps.addMagneticField(fieldConfig.id)
 
         field.setPosition(
           fieldConfig.position.x,
@@ -64,19 +64,21 @@ export default class DynamicTest extends UnitTestBase {
   /////////////////////////////////////////////////////////////
   dumpParticles (particleSystem) {
 
-    var idx = 0
+    let idx = 0
+
+    let particle
 
     particleSystem.initParticleLoop()
 
     while (true) {
 
-      var particle = particleSystem.nextParticle()
+      particle = particleSystem.nextParticle()
 
       if(!particle.ptr) {
         break
       }
 
-      var pos = particle.getPosition()
+      let pos = particle.getPosition()
 
       console.log('Particle' +
         '[' + (idx++) + ']: [' +
@@ -92,11 +94,11 @@ export default class DynamicTest extends UnitTestBase {
   /////////////////////////////////////////////////////////////
   doTest (config) {
 
-    return new Promise(async(resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
       if (config.dumpParticles) {
 
-        for (var i = 0; i < config.nbSteps; ++i) {
+        for (let i = 0; i < config.nbSteps; ++i) {
           console.log('-------- Step ' + (i + 1) + ' --------')
           this.ps.step(config.timeStep)
           this.dumpParticles(this.ps)
@@ -104,7 +106,7 @@ export default class DynamicTest extends UnitTestBase {
 
       } else {
 
-        for (var i = 0; i < config.nbSteps; ++i) {
+        for (let i = 0; i < config.nbSteps; ++i) {
           this.ps.step(config.timeStep)
         }
       }

@@ -4,6 +4,7 @@ import TrackballControls from './TrackballControls'
 import TransformControls from './TransformControls'
 import SettingsPanel from './SettingsPanel'
 import 'jsoneditor/dist/jsoneditor.min.css'
+import ConfigPanel from './ConfigPanel'
 import JSONEditor from 'jsoneditor'
 import Stopwatch from 'Stopwatch'
 import THREELib from 'three-js'
@@ -27,7 +28,7 @@ const vertexShader = `
 
     vColor = color;
 
-    gl_PointSize = 2.0;
+    gl_PointSize = 4.0;
 
     gl_Position = projectionMatrix *
       modelViewMatrix *
@@ -171,6 +172,11 @@ class ThreeJsApp {
       'mouseup',
       this.onMouseUpHandler,
       false)
+
+    this.configPanel = new ConfigPanel(
+      domContainer)
+
+    this.configPanel.setVisible(true)
   }
 
   /////////////////////////////////////////////////////////////
@@ -425,7 +431,6 @@ class ThreeJsApp {
       if (!particle.ptr) {
 
         break
-
       }
 
       this.updateParticle(particle, index)
@@ -686,7 +691,7 @@ var defaultTestConfig = {
     velocity: 100,
     spread: 0.1,
     charge: 100
-  } ],
+  }],
 
   fields: [ {
     id: 1,
