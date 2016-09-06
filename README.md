@@ -43,25 +43,25 @@ A Particle System experiment designed to benchmark web technologies from a non t
 
 Performance Tests:
 
-<a href="http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-ASM.html" target="_blank">ES6 vs ASM</a>
+ * [ES6 vs ASM](http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-ASM.html)
 
-[ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-WASM.html)
+ * [ES6 vs WASM](http://leefsmp.github.io/Particle-System/Test/Test%20-%20vs/ES6-vs-WASM.html)
 
 Autodesk Forge Viewer Test:
 
-[ES6](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/es6.html)
+ * [ES6](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/es6.html)
 
-[asm.js](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/asm.html)
+ * [asm.js](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/asm.html)
 
-[wasm](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/wasm.html)
+ * [wasm](http://leefsmp.github.io/Particle-System/Test/Test%20-%20viewer/wasm.html)
 
 Three.js Tests:
 
-[ES6](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/es6.html)
+ * [ES6](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/es6.html)
 
-[asm.js](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/asm.html)
+ * [asm.js](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/asm.html)
 
-[wasm](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/wasm.html)
+ * [wasm](http://leefsmp.github.io/Particle-System/Test/Test%20-%20three.js/wasm.html)
 
 I've been testing against the following browsers: Chrome, Chrome Canary, Firefox, Firefox Nightly and Safari.
 Only Canary and Firefox Nightly supports WASM, so the following benchmark only indicate those.
