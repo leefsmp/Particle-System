@@ -176,7 +176,7 @@ class ThreeJsApp {
     this.configPanel = new ConfigPanel(
       domContainer)
 
-    this.configPanel.setVisible(true)
+    //this.configPanel.setVisible(true)
   }
 
   /////////////////////////////////////////////////////////////
@@ -407,38 +407,49 @@ class ThreeJsApp {
   /////////////////////////////////////////////////////////////
   update () {
 
-    this.bufferGeometry.attributes.position.needsUpdate = true
+    try {
 
-    requestAnimationFrame(this.updateHandler)
+      this.bufferGeometry.attributes.position.needsUpdate = true
 
-    this.ps.step(
-      this.stopwatch.getElapsedMs() * 0.001)
+      requestAnimationFrame(this.updateHandler)
 
-    this.controls.update()
+      this.ps.step(
+        this.stopwatch.getElapsedMs() * 0.001)
 
-    this.ps.initParticleLoop()
+      this.ps.initParticleLoop()
 
-    let index = -1
+      let index = -1
 
-    let particle
+      let particle
 
-    while (true) {
+      while (true) {
 
-      particle = this.ps.nextParticle()
+        particle = this.ps.nextParticle()
 
-      ++index
+        ++index
 
-      if (!particle.ptr) {
+        if (!particle.ptr) {
 
-        break
+          break
+        }
+
+        this.updateParticle(particle, index)
       }
 
-      this.updateParticle(particle, index)
+      this.controls.update()
+
+      this.fps.tick()
+
+      this.render()
+
+    } catch (ex) {
+
+      this.controls.update()
+
+      this.fps.tick()
+
+      this.render()
     }
-
-    this.fps.tick()
-
-    this.render()
   }
 
   /////////////////////////////////////////////////////////////

@@ -4272,7 +4272,51 @@
     (return)
   )
   (func $__ZN14ParticleSystem15setMaxParticlesEi (param $$this i32) (param $$maxParticles i32)
+    (local $$$lcssa i32)
+    (local $$$pre i32)
+    (local $$$pre5 i32)
+    (local $$$pre6 i32)
+    (local $$$pre7 i32)
     (local $$0 i32)
+    (local $$1 i32)
+    (local $$10 i32)
+    (local $$11 i32)
+    (local $$12 i32)
+    (local $$13 i32)
+    (local $$14 i32)
+    (local $$15 i32)
+    (local $$16 i32)
+    (local $$17 i32)
+    (local $$18 i32)
+    (local $$19 i32)
+    (local $$2 i32)
+    (local $$20 i32)
+    (local $$21 i32)
+    (local $$22 i32)
+    (local $$23 i32)
+    (local $$24 i32)
+    (local $$25 i32)
+    (local $$26 i32)
+    (local $$27 i32)
+    (local $$28 i32)
+    (local $$29 i32)
+    (local $$3 i32)
+    (local $$30 i32)
+    (local $$31 i32)
+    (local $$32 i32)
+    (local $$33 i32)
+    (local $$34 i32)
+    (local $$35 i32)
+    (local $$4 i32)
+    (local $$5 i32)
+    (local $$6 i32)
+    (local $$7 i32)
+    (local $$8 i32)
+    (local $$9 i32)
+    (local $$__new_last2$i$i$i i32)
+    (local $$it$sroa$0$02 i32)
+    (local $$scevgep$i$i$i i32)
+    (local $$scevgep4$i$i$i i32)
     (local $label i32)
     (local $sp i32)
     (set_local $sp
@@ -4283,11 +4327,345 @@
     (set_local $$0
       (i32.add
         (get_local $$this)
+        (i32.const 28)
+      )
+    )
+    (set_local $$1
+      (i32.load
+        (get_local $$0)
+      )
+    )
+    (set_local $$2
+      (i32.add
+        (get_local $$this)
+        (i32.const 32)
+      )
+    )
+    (set_local $$3
+      (i32.load
+        (get_local $$2)
+      )
+    )
+    (set_local $$4
+      (i32.eq
+        (get_local $$1)
+        (get_local $$3)
+      )
+    )
+    (if
+      (i32.eqz
+        (get_local $$4)
+      )
+      (block
+        (set_local $$34
+          (get_local $$3)
+        )
+        (set_local $$it$sroa$0$02
+          (get_local $$1)
+        )
+        (loop $while-out$0 $while-in$1
+          (set_local $$15
+            (i32.load
+              (get_local $$it$sroa$0$02)
+            )
+          )
+          (set_local $$16
+            (i32.eq
+              (get_local $$15)
+              (i32.const 0)
+            )
+          )
+          (if
+            (get_local $$16)
+            (set_local $$19
+              (get_local $$34)
+            )
+            (block
+              (call $__ZdlPv
+                (get_local $$15)
+              )
+              (set_local $$$pre
+                (i32.load
+                  (get_local $$2)
+                )
+              )
+              (set_local $$19
+                (get_local $$$pre)
+              )
+            )
+          )
+          (set_local $$17
+            (i32.add
+              (get_local $$it$sroa$0$02)
+              (i32.const 4)
+            )
+          )
+          (set_local $$18
+            (i32.eq
+              (get_local $$17)
+              (get_local $$19)
+            )
+          )
+          (if
+            (get_local $$18)
+            (block
+              (set_local $$$lcssa
+                (get_local $$19)
+              )
+              (br $while-out$0)
+            )
+            (block
+              (set_local $$34
+                (get_local $$19)
+              )
+              (set_local $$it$sroa$0$02
+                (get_local $$17)
+              )
+            )
+          )
+          (br $while-in$1)
+        )
+        (set_local $$$pre5
+          (i32.load
+            (get_local $$0)
+          )
+        )
+        (set_local $$5
+          (i32.eq
+            (get_local $$$lcssa)
+            (get_local $$$pre5)
+          )
+        )
+        (if
+          (i32.eqz
+            (get_local $$5)
+          )
+          (block
+            (set_local $$__new_last2$i$i$i
+              (get_local $$$pre5)
+            )
+            (set_local $$scevgep$i$i$i
+              (i32.add
+                (get_local $$$lcssa)
+                (i32.const -4)
+              )
+            )
+            (set_local $$6
+              (get_local $$scevgep$i$i$i)
+            )
+            (set_local $$7
+              (i32.sub
+                (get_local $$6)
+                (get_local $$__new_last2$i$i$i)
+              )
+            )
+            (set_local $$8
+              (i32.shr_u
+                (get_local $$7)
+                (i32.const 2)
+              )
+            )
+            (set_local $$9
+              (i32.xor
+                (get_local $$8)
+                (i32.const -1)
+              )
+            )
+            (set_local $$scevgep4$i$i$i
+              (i32.add
+                (get_local $$$lcssa)
+                (i32.shl
+                  (get_local $$9)
+                  (i32.const 2)
+                )
+              )
+            )
+            (i32.store
+              (get_local $$2)
+              (get_local $$scevgep4$i$i$i)
+            )
+          )
+        )
+      )
+    )
+    (set_local $$10
+      (i32.add
+        (get_local $$this)
+        (i32.const 60)
+      )
+    )
+    (set_local $$11
+      (i32.load
+        (get_local $$10)
+      )
+    )
+    (set_local $$12
+      (i32.eq
+        (get_local $$11)
+        (i32.const 0)
+      )
+    )
+    (if
+      (get_local $$12)
+      (block
+        (set_local $$33
+          (i32.add
+            (get_local $$this)
+            (i32.const 80)
+          )
+        )
+        (i32.store
+          (get_local $$33)
+          (get_local $$maxParticles)
+        )
+        (return)
+      )
+    )
+    (set_local $$13
+      (i32.add
+        (get_local $$this)
+        (i32.const 44)
+      )
+    )
+    (set_local $$14
+      (i32.add
+        (get_local $$this)
+        (i32.const 56)
+      )
+    )
+    (set_local $$$pre6
+      (i32.load
+        (get_local $$14)
+      )
+    )
+    (set_local $$21
+      (get_local $$11)
+    )
+    (set_local $$23
+      (get_local $$$pre6)
+    )
+    (loop $while-out$2 $while-in$3
+      (set_local $$20
+        (i32.add
+          (get_local $$21)
+          (i32.const -1)
+        )
+      )
+      (i32.store
+        (get_local $$10)
+        (get_local $$20)
+      )
+      (set_local $$22
+        (i32.add
+          (get_local $$23)
+          (i32.const 1)
+        )
+      )
+      (i32.store
+        (get_local $$14)
+        (get_local $$22)
+      )
+      (set_local $$24
+        (i32.gt_u
+          (get_local $$22)
+          (i32.const 2047)
+        )
+      )
+      (if
+        (get_local $$24)
+        (block
+          (set_local $$27
+            (i32.load
+              (get_local $$13)
+            )
+          )
+          (set_local $$28
+            (i32.load
+              (get_local $$27)
+            )
+          )
+          (call $__ZdlPv
+            (get_local $$28)
+          )
+          (set_local $$29
+            (i32.load
+              (get_local $$13)
+            )
+          )
+          (set_local $$30
+            (i32.add
+              (get_local $$29)
+              (i32.const 4)
+            )
+          )
+          (i32.store
+            (get_local $$13)
+            (get_local $$30)
+          )
+          (set_local $$31
+            (i32.load
+              (get_local $$14)
+            )
+          )
+          (set_local $$32
+            (i32.add
+              (get_local $$31)
+              (i32.const -1024)
+            )
+          )
+          (i32.store
+            (get_local $$14)
+            (get_local $$32)
+          )
+          (set_local $$$pre7
+            (i32.load
+              (get_local $$10)
+            )
+          )
+          (set_local $$26
+            (get_local $$$pre7)
+          )
+          (set_local $$35
+            (get_local $$32)
+          )
+        )
+        (block
+          (set_local $$26
+            (get_local $$20)
+          )
+          (set_local $$35
+            (get_local $$22)
+          )
+        )
+      )
+      (set_local $$25
+        (i32.eq
+          (get_local $$26)
+          (i32.const 0)
+        )
+      )
+      (if
+        (get_local $$25)
+        (br $while-out$2)
+        (block
+          (set_local $$21
+            (get_local $$26)
+          )
+          (set_local $$23
+            (get_local $$35)
+          )
+        )
+      )
+      (br $while-in$3)
+    )
+    (set_local $$33
+      (i32.add
+        (get_local $$this)
         (i32.const 80)
       )
     )
     (i32.store
-      (get_local $$0)
+      (get_local $$33)
       (get_local $$maxParticles)
     )
     (return)

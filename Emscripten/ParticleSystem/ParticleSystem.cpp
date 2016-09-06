@@ -65,12 +65,25 @@ void ParticleSystem::destroy () {
 ///////////////////////////////////////////////////////////////////
 void ParticleSystem::setMaxParticles (int maxParticles) {
 
-  _maxParticles = maxParticles;
+	for (std::vector<Particle*>::iterator
+		it = _particles.begin();
+		it != _particles.end(); ++it) {
+			delete (*it);
+	}
+
+	_particles.clear();
+
+	while(!_recycleBin.empty()) {
+
+		_recycleBin.pop();
+	}
+
+  	_maxParticles = maxParticles;
 }
 
 int ParticleSystem::getMaxParticles () {
 
-  return _maxParticles;
+  	return _maxParticles;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -247,9 +260,12 @@ Particle* ParticleSystem::popRecycle () {
 
 	Particle* pParticle = new Particle();
 
-  	_particles.push_back(pParticle);
+	if (pParticle) {
 
-  	pParticle->setDof(&_dof);
+		_particles.push_back(pParticle);
+
+      	pParticle->setDof(&_dof);
+	}
 
 	return pParticle;
 }

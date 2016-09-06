@@ -20,7 +20,7 @@ private:
 
 	int _emittedParticles;
 	int _maxParticles;
-  Vector _dof;
+  	Vector _dof;
    
 public:
 
