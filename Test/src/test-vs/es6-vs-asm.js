@@ -1,21 +1,18 @@
 
-// Unit Tests
-import DynamicTest from 'Dynamic.Test'
-
-// Libs
-import JSONEditor from 'jsoneditor'
-
-// styles
 import 'jsoneditor/dist/jsoneditor.min.css'
+import JSONEditor from 'jsoneditor'
 import './test.css'
 
-
 /////////////////////////////////////////////////////////////
-//
+// On Document loaded
 //
 /////////////////////////////////////////////////////////////
 $(document).ready( ()=> {
 
+  /////////////////////////////////////////////////////////////
+  // Sets up config editor
+  //
+  /////////////////////////////////////////////////////////////
   var editor = new JSONEditor($('.test-config')[ 0 ], {
     search: false
   })
@@ -59,6 +56,10 @@ $(document).ready( ()=> {
 
   editor.set(defaultTestConfig)
 
+  /////////////////////////////////////////////////////////////
+  // Sets up worker
+  //
+  /////////////////////////////////////////////////////////////
   const refResult = (ref, res) => {
 
     return ref > res ?
@@ -66,36 +67,14 @@ $(document).ready( ()=> {
       `Slower x ${(res/ref).toFixed(2)}`
   }
 
-  $('.test-btn').click(() => {
+  var worker = new Worker('../dist/worker.bundle.js')
 
-    $('.test-results').html(
-      'Running test, please wait ...')
+  worker.onmessage = function(e) {
 
-    setTimeout(async()=> {
+    var res1 = e.data.test1
+    var res2 = e.data.test2
 
-      const testConfig = editor.get()
-
-
-      console.log('--------- Running ES6 Test --------- ')
-
-      const test1 = new DynamicTest(
-        testConfig,
-        Babel.ParticleSystem)
-
-      const res1 = await test1.run()
-
-
-      console.log('--------- Running ASM.js Test --------- ')
-
-      testConfig.destroy = true
-
-      const test2 = new DynamicTest(
-        testConfig,
-        Module.ParticleSystem)
-
-      const res2 = await test2.run()
-
-      var results = `
+    var results = `
         ES6 (ms): ${res1.elapsedMs.toFixed(3)}
         <br>
         <br>
@@ -103,10 +82,38 @@ $(document).ready( ()=> {
         [${refResult(res1.elapsedMs, res2.elapsedMs)}]
       `
 
-      $('.test-results').html(results)
+    $('.test-results').html(results)
+  }
+
+  worker.postMessage({
+    msgId: 'MSG_ID_SCRIPTS',
+    scripts: [
+      { path: '../../Emscripten/dist/asmjs/ParticleSystem.asm.js'},
+      { path: '../../ES6/dist/babel/ParticleSystem.js' }
+    ]
+  })
+
+  /////////////////////////////////////////////////////////////
+  // Run Test Button Clicked
+  //
+  /////////////////////////////////////////////////////////////
+  $('.test-btn').click(() => {
+
+    $('.test-results').html('Running test, please wait ...')
+
+    setTimeout(async()=> {
+
+      const testConfig = editor.get()
+
+      testConfig.test1 = 'ES6'
+      testConfig.test2 = 'ASM.js'
+
+      worker.postMessage({
+        msgId: 'MSG_ID_TEST_CONFIG',
+        config: testConfig
+      })
 
     }, 100)
-
   })
 })
 

@@ -7,15 +7,20 @@ module.exports = {
 
   entry: {
 
-    'Test': [
+    'es6-vs-wasm': [
       'babel-polyfill',
       './Test/src/test-vs/es6-vs-wasm.js'
+    ],
+
+    'worker': [
+      'babel-polyfill',
+      './Test/src/test-vs/worker.js'
     ]
   },
 
   output: {
     path: path.join(__dirname, '../../Test/dist'),
-    filename: 'es6-vs-wasm.bundle.js',
+    filename: '[name].bundle.js',
     publicPath: '../dist/'
   },
 
