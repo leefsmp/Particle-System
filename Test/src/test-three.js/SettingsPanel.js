@@ -47,7 +47,13 @@ export default class SettingsPanel extends DockingPanel {
 
     this.maxParticleCtrl.onFinishChange((value) => {
 
-      this.particleSytemGUI.update()
+      try {
+
+        this.particleSytemGUI.update()
+
+      } catch (ex) {
+
+      }
 
       this.emit('maxParticles.changed', value)
     })
@@ -127,7 +133,7 @@ export default class SettingsPanel extends DockingPanel {
 
         emitterFolder.add(
           this.selectedObjectGUI,
-          'emissionRate', 0, 5000).name('Emission Rate').
+          'emissionRate', 0, 10000).name('Emission Rate').
           onChange(() => {
             this.selectedObjectGUI.update()
           })

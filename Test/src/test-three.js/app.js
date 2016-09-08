@@ -84,10 +84,10 @@ class ThreeJsApp {
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setClearColor(0x9b9b9b)
-  
-    let domContainer = document.getElementById('container')
 
-    $(domContainer).append(
+    this.domContainer = document.getElementById('container')
+
+    $(this.domContainer).append(
       '<div id="particle-toolbar"> </div>')
 
     $('#particle-toolbar').css({
@@ -111,17 +111,21 @@ class ThreeJsApp {
         history: 32
       })
 
-    domContainer.appendChild(
+    this.domContainer.appendChild(
       this.renderer.domElement)
 
     this.onTransformHandler = (e) => {
       this.onTransform(e)
     }
 
+    this.onMouseMoveHandler = (e) => {
+      this.onMouseMove(e)
+    }
+
     this.onMouseDownHandler = (e) => {
       this.onMouseDown(e)
     }
-
+    
     this.onMouseUpHandler = (e) => {
       this.onMouseUp(e)
     }
@@ -158,23 +162,23 @@ class ThreeJsApp {
 
     this.transformControlTx = new THREE.TransformControls(
       this.camera,
-      domContainer)
+      this.domContainer)
 
     this.raycaster = new THREE.Raycaster()
     this.raycaster.params.Points.threshold = 0.1
 
-    domContainer.addEventListener(
+    this.domContainer.addEventListener(
       'mousedown',
       this.onMouseDownHandler,
       false)
 
-    domContainer.addEventListener(
+    this.domContainer.addEventListener(
       'mouseup',
       this.onMouseUpHandler,
       false)
 
     this.configPanel = new ConfigPanel(
-      domContainer)
+      this.domContainer)
 
     //this.configPanel.setVisible(true)
   }
@@ -305,10 +309,8 @@ class ThreeJsApp {
 
     this.scene.add(this.pointCloud)
 
-    let domContainer = document.getElementById('container')
-
     this.panel = new SettingsPanel(
-      domContainer,
+      this.domContainer,
       this.ps)
 
     this.panel.on('maxParticles.changed', (maxParticles) => {
@@ -407,49 +409,38 @@ class ThreeJsApp {
   /////////////////////////////////////////////////////////////
   update () {
 
-    try {
+    this.bufferGeometry.attributes.position.needsUpdate = true
 
-      this.bufferGeometry.attributes.position.needsUpdate = true
+    requestAnimationFrame(this.updateHandler)
 
-      requestAnimationFrame(this.updateHandler)
+    this.ps.step(
+      this.stopwatch.getElapsedMs() * 0.001)
 
-      this.ps.step(
-        this.stopwatch.getElapsedMs() * 0.001)
+    this.ps.initParticleLoop()
 
-      this.ps.initParticleLoop()
+    let index = -1
 
-      let index = -1
+    let particle
 
-      let particle
+    while (true) {
 
-      while (true) {
+      particle = this.ps.nextParticle()
 
-        particle = this.ps.nextParticle()
+      ++index
 
-        ++index
+      if (!particle.ptr) {
 
-        if (!particle.ptr) {
-
-          break
-        }
-
-        this.updateParticle(particle, index)
+        break
       }
 
-      this.controls.update()
-
-      this.fps.tick()
-
-      this.render()
-
-    } catch (ex) {
-
-      this.controls.update()
-
-      this.fps.tick()
-
-      this.render()
+      this.updateParticle(particle, index)
     }
+
+    this.controls.update()
+
+    this.fps.tick()
+
+    this.render()
   }
 
   /////////////////////////////////////////////////////////////
@@ -596,7 +587,7 @@ class ThreeJsApp {
 
     return cone
   }
-
+  
   ///////////////////////////////////////////////////////////////////////////
   //
   //
@@ -611,6 +602,22 @@ class ThreeJsApp {
       event.preventDefault()
       event.stopPropagation()
     }
+    
+    this.domContainer.addEventListener(
+      'mousemove',
+      this.onMouseMoveHandler,
+      false)
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////////////
+  onMouseMove (event) {
+
+    this.domContainer.removeEventListener(
+      'mousemove',
+      this.onMouseMoveHandler)
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -690,7 +697,7 @@ class ThreeJsApp {
 const App = new ThreeJsApp()
 
 var defaultTestConfig = {
-  maxParticles: 10000,
+  maxParticles: 0,
   emitters: [ {
     id: 0,
     position: {

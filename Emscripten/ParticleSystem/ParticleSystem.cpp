@@ -12,9 +12,9 @@
 ///////////////////////////////////////////////////////////////////
 ParticleSystem::ParticleSystem (int maxParticles) {
 
-	_maxParticles = maxParticles;
+	setMaxParticles(maxParticles);
 
-	_emittedParticles = 0;
+	_maxParticles = maxParticles;
 
 	_dof.set(1, 1, 1);
 }
@@ -79,6 +79,22 @@ void ParticleSystem::setMaxParticles (int maxParticles) {
 	}
 
   	_maxParticles = maxParticles;
+
+	for(int i=0; i < maxParticles; ++i) {
+
+		Particle* pParticle = new Particle();
+
+		if (pParticle) {
+
+			_particles.push_back(pParticle);
+
+      		pParticle->setDof(&_dof);
+		}
+
+		pParticle->setRecycled(true);
+
+		_recycleBin.push(pParticle);
+	}
 }
 
 int ParticleSystem::getMaxParticles () {
@@ -240,34 +256,18 @@ void ParticleSystem::addNewParticles (double dt) {
 ///////////////////////////////////////////////////////////////////
 Particle* ParticleSystem::popRecycle () {
 
-	if(_emittedParticles > _maxParticles - 1) {
-
-		return NULL;
-	}
-
-	++_emittedParticles;
-
-  if (!_recycleBin.empty()) {
+  	if (!_recycleBin.empty()) {
 
 		Particle* pParticle = _recycleBin.front();
 
-    	_recycleBin.pop();
+		_recycleBin.pop();
 
-    	pParticle->reset();
+		pParticle->reset();
 
-    	return pParticle;
+		return pParticle;
 	}
 
-	Particle* pParticle = new Particle();
-
-	if (pParticle) {
-
-		_particles.push_back(pParticle);
-
-      	pParticle->setDof(&_dof);
-	}
-
-	return pParticle;
+	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -275,8 +275,6 @@ Particle* ParticleSystem::popRecycle () {
 //
 ///////////////////////////////////////////////////////////////////
 void ParticleSystem::pushRecycle (Particle* pParticle) {
-
-    --_emittedParticles;
 
     pParticle->setRecycled(true);
 
@@ -291,16 +289,16 @@ bool ParticleSystem::filterParticle (Particle* pParticle) {
 
 	if (pParticle->getRecycled()) {
 
-    return true;
-  }
+		return true;
+	}
 
-  if (pParticle->getLifeTime() < 0) {
+	if (pParticle->getLifeTime() < 0) {
 
-    pushRecycle(pParticle);
-    return true;
-  }
+		pushRecycle(pParticle);
+		return true;
+	}
 
-  return false;
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////
