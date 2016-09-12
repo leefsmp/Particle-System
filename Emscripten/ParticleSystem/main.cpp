@@ -13,7 +13,7 @@ void runTest() {
 
 	EventHandler recycleHandler;
 
-  std::string recycleEvent = "particle.recycle";
+  	std::string recycleEvent = "particle.recycle";
 
 	ps->on(&recycleEvent, &recycleHandler);
 
@@ -21,7 +21,7 @@ void runTest() {
 
 	ParticleEmitter* pEmitter = ps->addEmitter(0);
 
-  pEmitter->setOffset(0,0,0);
+  	pEmitter->setOffset(0,0,0);
 	pEmitter->setPosition(0,0,0);
 	pEmitter->setEmissionRate(10);
 	pEmitter->setSpread(0.1);
@@ -65,7 +65,7 @@ void runTest() {
 
 int main() {
 
-  //runTest();
+  	//runTest();
 
 	return 0;
 };

@@ -1,5 +1,5 @@
 
-import DynamicTest from 'Dynamic.Test'
+import DynamicTest from 'DynamicTest'
 
 /////////////////////////////////////////////////////////////
 //
@@ -15,7 +15,7 @@ onmessage = (e) => {
 
         if (scriptInfo.wasm) {
 
-          loadWASM(scriptInfo.path)
+          loadWASM(scriptInfo.wasmPath, scriptInfo.wasmName)
 
         } else {
 
@@ -67,24 +67,26 @@ async function runTest (testConfig) {
 //
 //
 /////////////////////////////////////////////////////////////
-function loadWASM (wasmPath) {
+function loadWASM (wasmPath, wasmName) {
 
   self.Module = {}
 
   //'WEB' / 'WORKER' / 'NODE' / 'SHELL'
   self.Module['ENVIRONMENT'] = 'WORKER'
 
-  self.Module.wasmBinaryFile = wasmPath + '.wasm'
+  self.Module.wasmBinaryFile = `${wasmPath}/${wasmName}.wasm`
+
+  self.Module.memoryInitializerPrefixURL = wasmPath
 
   var xhr = new XMLHttpRequest()
-  xhr.open('GET', wasmPath + '.wasm', true)
+  xhr.open('GET', `${wasmPath}/${wasmName}.wasm`, true)
   xhr.responseType = 'arraybuffer'
 
   xhr.onload = function() {
 
     self.Module.wasmBinary = xhr.response
 
-    importScripts( wasmPath + '.js')
+    importScripts(`${wasmPath}/${wasmName}.js`)
   }
 
   xhr.send(null)

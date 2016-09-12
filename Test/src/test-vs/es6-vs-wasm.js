@@ -88,8 +88,14 @@ $(document).ready( ()=> {
   worker.postMessage({
     msgId: 'MSG_ID_SCRIPTS',
     scripts: [
-      { path: '../../Emscripten/dist/wasm/ParticleSystem', wasm: true},
-      { path: '../../ES6/dist/babel/ParticleSystem.js' }
+      {
+        wasmPath: '../../Emscripten/dist/wasm/',
+        wasmName:'ParticleSystem',
+        wasm: true
+      },
+      {
+        path: '../../ES6/dist/babel/ParticleSystem.js'
+      }
     ]
   })
 

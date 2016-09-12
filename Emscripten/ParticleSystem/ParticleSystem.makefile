@@ -17,7 +17,7 @@ Release_Preprocessor_Definitions=-D GCC_BUILD -D NDEBUG -D _CONSOLE
 Release_Implicitly_Linked_Objects=
 
 # Compiler flags...
-Release_Compiler_Flags=-O2 
+Release_Compiler_Flags=-O3
 
 # Builds all configurations for this project...
 .PHONY: build_all_configurations

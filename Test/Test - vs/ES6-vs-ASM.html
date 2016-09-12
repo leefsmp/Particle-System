@@ -9,6 +9,8 @@
 
   <body>
 
+    <script async type="text/javascript" src="../../Emscripten/dist/asmjs/ParticleSystem.asm.js"></script>
+    <script type="text/javascript" src="../../ES6/dist/babel/ParticleSystem.js"></script>
     <script type="text/javascript" src="../dist/es6-vs-asm.bundle.js"></script>
 
     <div class="test-config-title">
@@ -17,9 +19,19 @@
 
     <div class="test-config"></div>
 
-    <button class="test-btn">
-      Run Test
-    </button>
+    <div>
+
+      <button id="btn-test" class="test-btn">
+        Run Test
+      </button>
+
+      <br style="margin: 10px;">
+
+      <button id="btn-test-worker" class="test-btn">
+        Run Test (Worker Mode)
+      </button>
+
+    </div>
 
     <div class="test-results"></div>
 

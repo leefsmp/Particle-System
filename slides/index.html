@@ -5,7 +5,7 @@
 		<link type='image/x-icon'rel='shortcut icon' href='./img/favicon.png'/>
 		<meta charset="utf-8"/>
 
-		<title>Forge - Connected Data</title>
+		<title>Boost your Web App with C++!</title>
 
 		<meta name="description" content="Autodesk Forge"/>
 
@@ -490,18 +490,18 @@ function main() { // JavaScript
             II - <text style="color:#a9dc24;">Getting Started</text> with Emscripten
           </h2>
           <section>
-            <a href="http://emscripten.org" target="_blank">
-              Download
+            <a href="http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html#installation-instructions" target="_blank">
+              Download the Portable Emscripten SDK
             </a>
             <pre><code contenteditable>
 #Fetch the latest registry of available tools
 ./emsdk update
 
 # Download and install the incoming SDK tools (Binaryen Support)
-./emsdk install incoming
+./emsdk install sdk-incoming-64bit
 
 # Make the "latest" SDK "active"
-./emsdk activate incoming
+./emsdk activate sdk-incoming-64bit
             </code></pre>
           </section>
           <section>
@@ -528,13 +528,13 @@ emcc tests/hello_world.c -o hello.html
           <section>
             <ul>
               <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20vs/ES6-vs-ASM.html" target="_blank">
-                  ES6 vs ams.js
+                <a href="http://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/embind.html#embind" target="_blank">
+                  Embind
                 </a>
               </li>
               <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20vs/ES6-vs-ASM.html" target="_blank">
-                  ES6 vs ams.js
+                <a href="http://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#webidl-binder" target="_blank">
+                  WebIDL Binder
                 </a>
               </li>
             </ul>
@@ -575,9 +575,6 @@ var Module = Module || {}
 
 //'WEB' / 'WORKER' / 'NODE' / 'SHELL'
 Module['ENVIRONMENT'] = 'WEB'
-
-//Default: 16777216
-Module.TOTAL_MEMORY = 16777216 * 2
 
 Module.wasmBinaryFile = './wasm/ParticleSystem.wasm'
 
@@ -787,8 +784,14 @@ function _addAndPrint($left, $right) {
               <a href="http://physics.autodesk.io" target="_blank">
                 http://physics.autodesk.io
               </a>
+              <br>
+              <br>
+              <br>
+              <a href="./samples/ammo.html" target="_blank">
+                three.js demo
+              </a>
             </b>
-            <img src="./img/angrybots.png" height="450" style="position: absolute; top: 25%; left: 5%;">
+            <img src="./img/physics.png" height="350" style="position: absolute; top: 25%; left: 3%;">
           </section>
           <section>
             <b style="margin-bottom: 250px;">Online Unity demos</b>

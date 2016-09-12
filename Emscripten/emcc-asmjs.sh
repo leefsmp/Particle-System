@@ -1,5 +1,9 @@
 #!/bin/sh
 
 mkdir -p dist/asmjs
-emcc -s ABORTING_MALLOC=0 -s NO_EXIT_RUNTIME=1 -s release/ParticleSystem.bc --post-js ParticleSystem/glue.js -o dist/asmjs/ParticleSystem.asm.js
 
+emcc -O3 release/ParticleSystem.bc --post-js ParticleSystem/glue.js -o dist/wasm/ParticleSystem.js \
+    -s NO_EXIT_RUNTIME=1 \
+    -s ABORTING_MALLOC=1 \
+    -s NO_FILESYSTEM=1 \
+    -s AGGRESSIVE_VARIABLE_ELIMINATION=1

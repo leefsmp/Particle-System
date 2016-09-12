@@ -22,9 +22,11 @@
 
       var wasmRoot = '../../Emscripten/dist/wasm/'
 
-      Module.TOTAL_MEMORY = 16777216
-
       Module.wasmBinaryFile = wasmRoot + 'ParticleSystem.wasm'
+
+      Module.memoryInitializerPrefixURL = wasmRoot
+
+      Module.TOTAL_MEMORY = 16777216
 
       var xhr = new XMLHttpRequest()
       xhr.open('GET', wasmRoot + 'ParticleSystem.wasm', true)

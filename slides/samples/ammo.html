@@ -1,0 +1,610 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+
+  <style>
+
+    body {
+      margin: 0;
+      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100&1+0,0+100;Blue+to+Transparent */
+      background: -moz-linear-gradient(top, rgb(47, 106, 209) 0%, rgba(125,185,232,0) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, rgb(47, 106, 209) 0%,rgba(125,185,232,0) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, rgb(47, 106, 209) 0%,rgba(125,185,232,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#007db9e8',GradientType=0 ); /* IE6-9 */
+    }
+
+    #toolbar {
+      position: absolute;
+      z-index: 100;
+      left: 10px;
+      top:90px;
+    }
+
+    #canvas {
+      width: 100vw;
+      height: 100vh;
+    }
+
+  </style>
+
+</head>
+<body>
+
+    <script type="text/javascript" src="http://threejs.org/build/three.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/TrackballControls.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/kripken/ammo.js/master/builds/ammo.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/darsain/fpsmeter/master/dist/fpsmeter.min.js"></script>
+
+
+    <div id="canvas">
+      <div id="toolbar"> </div>
+    </div>
+
+
+    <script>
+
+      
+        ///////////////////////////////////////////////////////////////////////
+        // A stopwatch!
+        //
+        ///////////////////////////////////////////////////////////////////////
+        var Stopwatch = function() {
+
+            var _startTime = new Date().getTime();
+
+            this.start = function (){
+
+                _startTime = new Date().getTime();
+            };
+
+            this.getElapsedMs = function(){
+
+                var elapsedMs = new Date().getTime() - _startTime;
+
+                _startTime = new Date().getTime();
+
+                return elapsedMs;
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        // Simulation Manager
+        //
+        ///////////////////////////////////////////////////////////////////////
+        SimulationManager = function (domContainer, toolbarContainer) {
+
+            var _world = null;
+
+            var _scene = null;
+
+            var _camera = null;
+
+            var _renderer = null;
+
+            var _trackball = null;
+
+            var _physicBodies = {};
+
+            var _intervalId = null;
+
+            var _animationId = null;
+
+            var _stopWatch = new Stopwatch();
+
+            ///////////////////////////////////////////////////////////////////
+            // Random number between (min, max)
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _random(min, max) {
+
+                return min +  (max - min) * Math.random();
+            }
+
+            function _randomInt(min, max) {
+
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Unique GUID
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _guid () {
+
+                var d = new Date().getTime();
+
+                var guid = 'xxxx-xxxx-xxxx-xxxx'.replace(
+                        /[xy]/g,
+                        function (c) {
+                            var r = (d + Math.random() * 16) % 16 | 0;
+                            d = Math.floor(d / 16);
+                            return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
+                        });
+
+                return guid;
+            };
+
+            ///////////////////////////////////////////////////////////////////
+            // Initializes Physics
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _initializePhysics() {
+
+                var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration;
+
+                _world = new Ammo.btDiscreteDynamicsWorld(
+                    new Ammo.btCollisionDispatcher( collisionConfiguration ),
+                    new Ammo.btDbvtBroadphase,
+                    new Ammo.btSequentialImpulseConstraintSolver,
+                    collisionConfiguration);
+
+                _world.setGravity(new Ammo.btVector3(0, -55.0, 0));
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Creates collision shape from mesh
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _createCollisionShape(mesh) {
+
+                var geometry = mesh.geometry;
+
+                var hull = new Ammo.btConvexHullShape();
+
+                geometry.vertices.forEach(function(vertex){
+
+                    hull.addPoint(new Ammo.btVector3(
+                        vertex.x,
+                        vertex.y,
+                        vertex.z));
+                });
+
+                return hull;
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Creates physic rigid body from mesh
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _addRigidBody(mesh, mass) {
+
+                var localInertia = new Ammo.btVector3(0, 0, 0);
+
+                var shape = _createCollisionShape(mesh);
+
+                shape.calculateLocalInertia(mass, localInertia);
+
+                var transform = new Ammo.btTransform;
+
+                transform.setIdentity();
+
+                transform.setOrigin(new Ammo.btVector3(
+                    mesh.position.x,
+                    mesh.position.y,
+                    mesh.position.z));
+
+                transform.setRotation(new Ammo.btQuaternion(
+                    mesh.quaternion.x,
+                    mesh.quaternion.y,
+                    mesh.quaternion.z,
+                    mesh.quaternion.w
+                ));
+
+                var motionState = new Ammo.btDefaultMotionState(transform);
+
+                var rbInfo = new Ammo.btRigidBodyConstructionInfo(
+                    mass,
+                    motionState,
+                    shape,
+                    localInertia);
+
+                var body = new Ammo.btRigidBody(rbInfo);
+
+                body.mesh = mesh;
+
+                _world.addRigidBody(body);
+
+                _physicBodies[_guid()] = body;
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Updates mesh transform from physic body
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _updateMeshTransform(body) {
+
+                var mesh = body.mesh;
+
+                var transform = body.getCenterOfMassTransform();
+
+                var origin = transform.getOrigin();
+
+                mesh.position.set(
+                    origin.x(),
+                    origin.y(),
+                    origin.z());
+
+                var rotation = transform.getRotation();
+
+                mesh.quaternion.set(
+                    rotation.x(),
+                    rotation.y(),
+                    rotation.z(),
+                    rotation.w());
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Creates ramp mesh
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _createRamp(position, rotations) {
+
+                var material = new THREE.MeshLambertMaterial({
+                    color: 0xF74F4F
+                })
+
+                var mesh = new THREE.Mesh(
+                    new THREE.BoxGeometry(50, 2, 10),
+                    material);
+
+                mesh.position.copy(position);
+
+                rotations.forEach(function(rotation){
+
+                    var q = new THREE.Quaternion();
+
+                    q.setFromAxisAngle(
+                        rotation.axis,
+                        rotation.angle);
+
+                    mesh.quaternion.multiply(q);
+                });
+
+                return mesh;
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Initializes three.js scene
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _initializeScene() {
+
+                _renderer = new THREE.WebGLRenderer({
+                  antialias: false ,
+                  alpha: true
+                })
+
+                _renderer.setSize(domContainer.clientWidth, domContainer.clientHeight)
+                _renderer.setPixelRatio(window.devicePixelRatio)
+                //_renderer.setClearColor(0x9b9b9b)
+
+                this.fps = new FPSMeter(toolbarContainer, {
+                  maxFps:    60, //expected
+                  smoothing: 10,
+                  show: 'fps',
+                  decimals: 1,
+                  left: '0px',
+                  top: '-80px',
+                  theme: 'transparent',
+                  heat: 1,
+                  graph: 1,
+                  toggleOn: null,
+                  history: 32
+                })
+
+                domContainer.appendChild(_renderer.domElement)
+
+                _scene = new THREE.Scene
+
+                _camera = new THREE.PerspectiveCamera(35, 1, 1, 1000)
+                _camera.position.set(-50, 90, -150);
+                _camera.lookAt(_scene.position);
+                _camera.aspect = domContainer.clientWidth / domContainer.clientHeight
+                _camera.updateProjectionMatrix()
+
+                _scene.add(_camera);
+
+                _trackball = new THREE.TrackballControls(
+                    _camera, domContainer);
+
+                _trackball.noPan = false;
+                _trackball.panSpeed = 0.5;
+                _trackball.noZoom = false;
+                _trackball.zoomSpeed = 2.0;
+                _trackball.minDistance = 1;
+                _trackball.maxDistance = 300;
+                _trackball.rotateSpeed = 3.5;
+                _trackball.staticMoving = true;
+                _trackball.dynamicDampingFactor = 0.3;
+
+                // [r:rotate, z:zoom, p:pan]
+                _trackball.keys = [82, 90, 80];
+
+                var ambientLight = new THREE.AmbientLight(0x555555);
+                _scene.add(ambientLight);
+
+                var directionalLight = new THREE.DirectionalLight(0xffffff);
+                directionalLight.position.set( -.5, .5, -1.5 ).normalize();
+                _scene.add(directionalLight);
+
+                var material = new THREE.MeshLambertMaterial({
+                    color: 0xdd0000
+                })
+
+                var ramp11 = _createRamp(
+
+                    new THREE.Vector3(-20, 25, 0),
+                    [{
+                        axis: new THREE.Vector3(0, 0, 1),
+                        angle: - Math.PI / 10
+                    }, {
+                        axis: new THREE.Vector3(1, 0, 0),
+                        angle: - Math.PI / 10
+                    }]);
+
+                var ramp12 = _createRamp(
+
+                    new THREE.Vector3(-20, 25, -10),
+                    [{
+                        axis: new THREE.Vector3(0, 0, 1),
+                        angle: - Math.PI / 10
+                    }, {
+                        axis: new THREE.Vector3(1, 0, 0),
+                        angle: Math.PI / 10
+                    }]);
+
+
+                var ramp21 = _createRamp(
+
+                    new THREE.Vector3(25, 5, 0),
+                    [{
+                        axis: new THREE.Vector3(0, 0, 1),
+                        angle: Math.PI / 10
+                    }, {
+                        axis: new THREE.Vector3(1, 0, 0),
+                        angle: - Math.PI / 10
+                    }]);
+
+                var ramp22 = _createRamp(
+
+                    new THREE.Vector3(25, 5, -10),
+                    [{
+                        axis: new THREE.Vector3(0, 0, 1),
+                        angle: Math.PI / 10
+                    }, {
+                        axis: new THREE.Vector3(1, 0, 0),
+                        angle: Math.PI / 10
+                    }]);
+
+
+                var ramp31 = _createRamp(
+
+                    new THREE.Vector3(-20, -10, 0),
+                    [{
+                        axis: new THREE.Vector3(0, 0, 1),
+                        angle: -Math.PI / 10
+                    }, {
+                        axis: new THREE.Vector3(1, 0, 0),
+                        angle: - Math.PI / 10
+                    }]);
+
+                var ramp32 = _createRamp(
+
+                    new THREE.Vector3(-20, -10, -10),
+                    [{
+                        axis: new THREE.Vector3(0, 0, 1),
+                        angle: -Math.PI / 10
+                    }, {
+                        axis: new THREE.Vector3(1, 0, 0),
+                        angle: Math.PI / 10
+                    }]);
+
+                _scene.add(ramp11);
+                _scene.add(ramp12);
+
+                _scene.add(ramp21);
+                _scene.add(ramp22);
+
+                _scene.add(ramp31);
+                _scene.add(ramp32);
+
+                _addRigidBody(ramp11, 0);
+                _addRigidBody(ramp12, 0);
+
+                _addRigidBody(ramp21, 0);
+                _addRigidBody(ramp22, 0);
+
+                _addRigidBody(ramp31, 0);
+                _addRigidBody(ramp32, 0);
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Creates random geometry
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _createRandomGeometry(size) {
+
+                switch(_randomInt(1, 9)) {
+
+                    case 1:
+                        return THREE.BoxGeometry(
+                            size, size, size);
+
+                    case 2:
+                        return THREE.SphereGeometry(
+                            size, 32, 32);
+
+                    case 3:
+                        return new THREE.IcosahedronGeometry(
+                            size, 0);
+
+                    case 4:
+                        return new THREE.OctahedronGeometry(
+                            size, 0);
+
+                    case 5:
+                        return new THREE.TetrahedronGeometry(
+                            size, 0);
+
+                    case 6:
+                        return new THREE.CylinderGeometry(
+                            0, size, size, 20, 4);
+
+                    case 7:
+                        return new THREE.CylinderGeometry(
+                            size, size, size, 20, 4);
+
+                    case 8:
+                        return new THREE.CylinderGeometry(
+                            size * 0.5, size, size, 20, 4);
+
+                    case 9:
+                        return new THREE.CylinderGeometry(
+                            size * 0.5, size * 0.5, size, 20, 4);
+
+                    default:
+                        return null;
+                }
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Add new elements to the scene
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _newElements() {
+
+                function newElement() {
+
+                    var size = _random(1, 4);
+
+                    var mass = size;
+
+                    var color = Math.floor(Math.random() * 16777215);
+
+                    var material = new THREE.MeshLambertMaterial({
+                        color: color
+                    });
+
+                    var mesh = new THREE.Mesh(
+                            _createRandomGeometry(size),
+                            material);
+
+                    mesh.position.x = _random(-40, -20);
+                    mesh.position.y = 50;
+
+                    _scene.add(mesh);
+
+                    _addRigidBody(mesh, mass);
+                }
+
+                // adds a bunch ...
+
+                var nbElems = _random(1, 5);
+
+                for(var i=0; i < nbElems; ++i) {
+
+                    newElement();
+                }
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Update loop
+            //
+            ///////////////////////////////////////////////////////////////////
+            function _update() {
+
+              _animationId = requestAnimationFrame(_update);
+
+              _world.stepSimulation(
+                  _stopWatch.getElapsedMs() * 0.001,
+                  10);
+
+              for(var key in _physicBodies) {
+
+                  _updateMeshTransform(_physicBodies[key]);
+              }
+
+              _trackball.update();
+
+              _renderer.render(_scene, _camera);
+
+              this.fps.tick()
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Starts simulation
+            //
+            ///////////////////////////////////////////////////////////////////
+            this.start = function() {
+
+                _stopWatch.getElapsedMs();
+
+                _update();
+
+                _intervalId = setInterval(
+                    _newElements,
+                    1500);
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Stops simulation
+            //
+            ///////////////////////////////////////////////////////////////////
+            this.stop = function() {
+
+                cancelAnimationFrame(_animationId);
+
+                clearInterval(_intervalId);
+
+                _animationId = null;
+
+                _intervalId = null;
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // resize
+            //
+            ///////////////////////////////////////////////////////////////////
+            this.resize = function() {
+
+              _camera.aspect = domContainer.clientWidth / domContainer.clientHeight
+
+              _camera.updateProjectionMatrix()
+
+              _renderer.setSize(
+                      domContainer.clientWidth,
+                      domContainer.clientHeight)
+
+              _trackball.handleResize()
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            //
+            //
+            ///////////////////////////////////////////////////////////////////
+            _initializePhysics();
+
+            _initializeScene();
+        }
+
+
+        var simulationManager = new SimulationManager(
+          document.getElementById('canvas'),
+          document.getElementById('toolbar')
+        );
+
+        window.addEventListener(
+          'resize',
+          function() {
+            simulationManager.resize()
+          },
+          false)
+
+        simulationManager.start();
+
+    </script>
+
+</body>
+
+</html>

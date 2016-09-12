@@ -1,5 +1,6 @@
 
 import 'jsoneditor/dist/jsoneditor.min.css'
+import DynamicTest from 'DynamicTest'
 import JSONEditor from 'jsoneditor'
 import './test.css'
 
@@ -94,10 +95,10 @@ $(document).ready( ()=> {
   })
 
   /////////////////////////////////////////////////////////////
-  // Run Test Button Clicked
+  // Run Test Button Clicked (Worker Mode)
   //
   /////////////////////////////////////////////////////////////
-  $('.test-btn').click(() => {
+  $('#btn-test-worker').click(() => {
 
     $('.test-results').html('Running test, please wait ...')
 
@@ -112,6 +113,49 @@ $(document).ready( ()=> {
         msgId: 'MSG_ID_TEST_CONFIG',
         config: testConfig
       })
+
+    }, 100)
+  })
+
+  /////////////////////////////////////////////////////////////
+  // Run Test Button Clicked (non-Worker Mode)
+  //
+  /////////////////////////////////////////////////////////////
+  $('#btn-test').click(() => {
+
+    $('.test-results').html('Running test, please wait ...')
+
+    setTimeout(async()=> {
+
+      const testConfig = editor.get()
+
+      console.log(`--------- Running ES6 Test --------- `)
+
+      const test1 = new DynamicTest(
+        testConfig,
+        Babel.ParticleSystem)
+
+      const res1 = await test1.run()
+
+      console.log(`--------- Running ASM Test --------- `)
+
+      testConfig.destroy = true
+
+      const test2 = new DynamicTest(
+        testConfig,
+        Module.ParticleSystem)
+
+      const res2 = await test2.run()
+
+      var results = `
+        ES6 (ms): ${res1.elapsedMs.toFixed(3)}
+        <br>
+        <br>
+        ASM JS (ms): ${res2.elapsedMs.toFixed(3)}
+        [${refResult(res1.elapsedMs, res2.elapsedMs)}]
+      `
+
+      $('.test-results').html(results)
 
     }, 100)
   })
