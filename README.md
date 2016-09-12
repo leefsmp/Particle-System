@@ -39,6 +39,10 @@ A Particle System experiment designed to benchmark web technologies from a non t
  
  At the moment [Chrome Canary](https://www.google.com/chrome/browser/canary.html), [Firefox Nighly](https://nightly.mozilla.org/) and soon in Microsoft Edge.
 
+## Slides
+
+[Boost your Web Application with C++](http://leefsmp.github.io/Particle-System/slides/index.html)
+
 ## Live Tests
 
 Performance Tests:
