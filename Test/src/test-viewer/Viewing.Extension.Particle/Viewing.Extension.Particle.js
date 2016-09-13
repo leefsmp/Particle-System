@@ -140,6 +140,10 @@ class ParticleExtension extends ExtensionBase {
 
           this.viewer.toolController.activateTool(
             this.particleTool.getName())
+
+        } else {
+
+          this.particleTool.clearParticles()
         }
       }
       else {

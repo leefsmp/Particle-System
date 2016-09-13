@@ -3,7 +3,9 @@
 class Test {
 
   public:
-    void sayHello(){
+
+    void sayHello () {
+
       printf("hello, world! (C++)\n");
     }
 };
@@ -11,6 +13,7 @@ class Test {
 int main() {
 
   Test test;
+
   test.sayHello();
 
   return 0;

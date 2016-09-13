@@ -1,967 +1,967 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<link type='image/x-icon'rel='shortcut icon' href='./img/favicon.png'/>
-		<meta charset="utf-8"/>
+<head>
+  <link type='image/x-icon'rel='shortcut icon' href='./img/favicon.png'/>
+  <meta charset="utf-8"/>
 
-		<title>Boost your Web App with C++!</title>
+  <title>Boost your Web App with C++!</title>
 
-		<meta name="description" content="Autodesk Forge"/>
+  <meta name="description" content="Autodesk Forge"/>
 
-		<meta name="apple-mobile-web-app-capable" content="yes"/>
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"/>
 
-		<link rel="stylesheet" href="css/reveal.css"/>
-		<link rel="stylesheet" href="css/theme/league.css" id="theme"/>
-		<link rel="stylesheet" href="lib/css/zenburn.css"/>
-		<link rel="stylesheet" href="css/custom.css"/>
+  <link rel="stylesheet" href="css/reveal.css"/>
+  <link rel="stylesheet" href="css/theme/league.css" id="theme"/>
+  <link rel="stylesheet" href="lib/css/zenburn.css"/>
+  <link rel="stylesheet" href="css/custom.css"/>
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
 
-	</head>
+</head>
 
-	<body>
+<body>
 
-		<div class="reveal">
+<div class="reveal">
 
-			<div class="slides">
+  <div class="slides">
 
-				<!--<section>
-					<h2 style="top: 50px;">Select Theme</h2>
-					<ul>
-						<li>
-							<a href="#" onclick="setTheme('black')">Black</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('white')">White</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('league')">League</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('sky')">Sky</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('beige')">Beige</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('simple')">Simple</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('serif')">Serif</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('black')">Black</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('blood')">Blood</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('night')">Night</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('moon')">Moon</a>
-						</li>
-						<li>
-							<a href="#" onclick="setTheme('solarized')">Solarized</a>
-						</li>
-					</ul>
-				</section>-->
+    <!--<section>
+        <h2 style="top: 50px;">Select Theme</h2>
+        <ul>
+            <li>
+                <a href="#" onclick="setTheme('black')">Black</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('white')">White</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('league')">League</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('sky')">Sky</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('beige')">Beige</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('simple')">Simple</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('serif')">Serif</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('black')">Black</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('blood')">Blood</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('night')">Night</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('moon')">Moon</a>
+            </li>
+            <li>
+                <a href="#" onclick="setTheme('solarized')">Solarized</a>
+            </li>
+        </ul>
+    </section>-->
 
-				<section>
-					<h2 style="top: 40px;">BOOST YOUR WEB APPLICATION</h2>
-					<h2 style="top: 115px;">WITH C++</h2>
+    <section>
+      <h2 style="top: 40px;">BOOST YOUR WEB APPLICATION</h2>
+      <h2 style="top: 115px;">WITH C++</h2>
 
-					<!--<iframe src="./slides/connected-data.html" style="width:800px;height:500px;">-->
-					<!--</iframe>-->
+      <!--<iframe src="./slides/connected-data.html" style="width:800px;height:500px;">-->
+      <!--</iframe>-->
 
-					<p style="bottom: 250px; position: absolute;">
-                      <small style="margin-bottom: 10px;">
-                          <a href="http://http://twitter.com/F3lipek" target="_blank">
-                              Philippe Leefsma
-                          </a>
-                          /
-                          <a href="http://twitter.com/F3lipek" target="_blank">
-                              @F3lipek
-                          </a>
-                          <br>
-                          Forge Partner Development
-                      </small>
-                      <br>
-                      <div style="bottom: 200px; position: absolute;">
-                        <img src="./img/adsk.ico" width="60" height="60"/>
-                        <img src="./img/forge.png" width="60" height="60"/>
-                        <!--<img class="adsk-logo" src="./img/adsk.ico" width="60" height="60" style="position: relative; transform: rotateY(90deg);"/>-->
-                        <!--<img class="adsk-logo" src="./img/forge.png" width="60" height="60" style="position: relative; display: none; transform: rotateY(90deg);"/>-->
-                      </div>
-					</p>
-				</section>
-
-        <section>
-          <h2>AGENDA</h2>
-          <h3>
-            I -
-            <a href="#/2">
-               Emscripten / asm.js / Web Assembly
-            </a>
-            <br>
-            <br>
-            II -
-            <a href="#/13">
-              Getting Started
-            </a>
-            <br>
-            <br>
-            III -
-            <a href="#/20">
-             Performnace Tests & Demos!
-            </a>
-          </h3>
-        </section>
-
-        <section>
-          <h2>I - Emscripten / asm.js / Web Assembly</h2>
-          <small style="margin-top: 30px;">
-            ( Credits to
-            <a href="https://twitter.com/kripken" target="_blank">
-              Alon Zakai
-            </a>
-            /
-            <a href="https://twitter.com/kripken" target="_blank">
-              @kripken
-            </a> for the
-            <a href="http://twitter.com/F3lipek" target="_blank">
-            slides
-            </a>)
-            <br>
-            Mozilla
-          </small>
-        </section>
-
-
-        <section>
-          <section>
-          <a href="http://emscripten.org" target="_blank">
-            <img src="img/emscripten_switch_logo.png">
+      <p style="bottom: 250px; position: absolute;">
+        <small style="margin-bottom: 10px;">
+          <a href="http://http://twitter.com/F3lipek" target="_blank">
+            Philippe Leefsma
+          </a>
+          /
+          <a href="http://twitter.com/F3lipek" target="_blank">
+            @F3lipek
           </a>
           <br>
-          <p>An open source
-            <a href="http://llvm.org" target="_blank">LLVM-based</a>
-            compiler
+          Forge Partner Development
+        </small>
+        <br>
+      <div style="bottom: 200px; position: absolute;">
+        <img src="./img/adsk.ico" width="60" height="60"/>
+        <img src="./img/forge.png" width="60" height="60"/>
+        <!--<img class="adsk-logo" src="./img/adsk.ico" width="60" height="60" style="position: relative; transform: rotateY(90deg);"/>-->
+        <!--<img class="adsk-logo" src="./img/forge.png" width="60" height="60" style="position: relative; display: none; transform: rotateY(90deg);"/>-->
+      </div>
+      </p>
+    </section>
+
+    <section>
+      <h2>AGENDA</h2>
+      <h3>
+        I -
+        <a href="#/2">
+          Emscripten / asm.js / Web Assembly
+        </a>
+        <br>
+        <br>
+        II -
+        <a href="#/13">
+          Getting Started
+        </a>
+        <br>
+        <br>
+        III -
+        <a href="#/20">
+          Performnace Tests & Demos!
+        </a>
+      </h3>
+    </section>
+
+    <section>
+      <h2>I - Emscripten / asm.js / Web Assembly</h2>
+      <small style="margin-top: 30px;">
+        ( Credits to
+        <a href="https://twitter.com/kripken" target="_blank">
+          Alon Zakai
+        </a>
+        /
+        <a href="https://twitter.com/kripken" target="_blank">
+          @kripken
+        </a> for the
+        <a href="http://twitter.com/F3lipek" target="_blank">
+          slides
+        </a>)
+        <br>
+        Mozilla
+      </small>
+    </section>
+
+
+    <section>
+      <section>
+        <a href="http://emscripten.org" target="_blank">
+          <img src="img/emscripten_switch_logo.png">
+        </a>
+        <br>
+        <p>An open source
+          <a href="http://llvm.org" target="_blank">LLVM-based</a>
+          compiler
+          <br>
+          from C/C++ to JavaScript
+        </p>
+        <br>
+        <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)">
+          <b style="color: #f42">C++</b>
+          &nbsp&nbsp
+          <b style="color: #fff">&rArr;</b>
+          &nbsp&nbsp
+          <b style="color: #7af">LLVM</b>
+          &nbsp&nbsp
+          <b style="color: #fff">&rArr;</b>
+          &nbsp&nbsp
+          <b style="color: #8f5">Emscripten</b>
+          &nbsp&nbsp
+          <b style="color: #fff">&rArr;</b>
+          &nbsp&nbsp
+          <b style="color: #f58">JS</b>
+        </p>
+      </section>
+      <section>
+        <img src="./img/LLVM.png" height="250" style="background-color: #b3babd;">
+        <p>
+          Collection of modular & reusable
+          <br>
+          compiler & toolchain technologies
+          <br>
+        <ul style="font-size: 24px;">
+          <li style="margin-bottom: 20px";>
+            <b style="color:#a9dc24;">LLVMCore libraries</b>
             <br>
-            from C/C++ to JavaScript
-          </p>
+            Modern source- and target-independent optimizer
+          </li>
+          <li style="margin-bottom: 20px";>
+            <b style="color:#a9dc24;">Clang</b>
+            <br>
+            "LLVM native" C/C++/Objective-C compiler
+          </li>
+          <li style="margin-bottom: 20px";>
+            <b style="color:#a9dc24;">libc++</b>
+            <br>
+            High-performance implementation
+            <br>
+            of the C++ Standard Library
+          </li>
+          <li style="margin-bottom: 20px";>
+            <b style="color:#a9dc24;">. . .</b>
+          </li>
+        </ul>
+        <a href="http://llvm.org" target="_blank">http://llvm.org</a>
+        </p>
+      </section>
+    </section>
+
+
+    <section>
+      <a href="http://emscripten.org" target="_blank">
+        <img src="img/emscripten_switch_logo.png">
+      </a>
+      <br>
+      <p>
+      <ul>
+        <li style="margin-bottom: 20px";>
+          Began in <b style="color:#a9dc24;">2010</b>
+        </li>
+        <li style="margin-bottom: 20px";>
+          Most of the codebase is not the core compiler
           <br>
-          <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)">
-            <b style="color: #f42">C++</b>
-              &nbsp&nbsp
-            <b style="color: #fff">&rArr;</b>
-              &nbsp&nbsp
-            <b style="color: #7af">LLVM</b>
-              &nbsp&nbsp
-            <b style="color: #fff">&rArr;</b>
-              &nbsp&nbsp
-            <b style="color: #8f5">Emscripten</b>
-              &nbsp&nbsp
-            <b style="color: #fff">&rArr;</b>
-              &nbsp&nbsp
-            <b style="color: #f58">JS</b>
-          </p>
-        </section>
-          <section>
-            <img src="./img/LLVM.png" height="250" style="background-color: #b3babd;">
-            <p>
-              Collection of modular & reusable
-              <br>
-              compiler & toolchain technologies
-              <br>
-              <ul style="font-size: 24px;">
-                <li style="margin-bottom: 20px";>
-                  <b style="color:#a9dc24;">LLVMCore libraries</b>
-                  <br>
-                  Modern source- and target-independent optimizer
-                </li>
-                <li style="margin-bottom: 20px";>
-                  <b style="color:#a9dc24;">Clang</b>
-                  <br>
-                  "LLVM native" C/C++/Objective-C compiler
-                </li>
-                <li style="margin-bottom: 20px";>
-                  <b style="color:#a9dc24;">libc++</b>
-                  <br>
-                  High-performance implementation
-                  <br>
-                  of the C++ Standard Library
-                </li>
-                <li style="margin-bottom: 20px";>
-                  <b style="color:#a9dc24;">. . .</b>
-                </li>
-              </ul>
-              <a href="http://llvm.org" target="_blank">http://llvm.org</a>
-            </p>
-          </section>
-        </section>
+          but
+          <b style="color:#a9dc24;">
+            libraries
+          </b> +
+          <b style="color:#a9dc24;">
+            toolchain
+          </b> +
+          <b style="color:#a9dc24;">
+            test suite
+          </b>
+        </li>
+      </ul>
+      </p>
+    </section>
 
 
-        <section>
-          <a href="http://emscripten.org" target="_blank">
-            <img src="img/emscripten_switch_logo.png">
-          </a>
-          <br>
-          <p>
-            <ul>
-              <li style="margin-bottom: 20px";>
-                Began in <b style="color:#a9dc24;">2010</b>
-              </li>
-              <li style="margin-bottom: 20px";>
-                Most of the codebase is not the core compiler
-                <br>
-                but
-                <b style="color:#a9dc24;">
-                  libraries
-                </b> +
-                <b style="color:#a9dc24;">
-                  toolchain
-                </b> +
-                <b style="color:#a9dc24;">
-                  test suite
-                </b>
-              </li>
-            </ul>
-          </p>
-        </section>
-
-
-        <section>
-          <section>
+    <section>
+      <section>
           <pre><code contenteditable>
-float array[5000]; // C++
+            float array[5000]; // C++
 
-int main() {
-    for (int i = 0; i < 5000; ++i) {
-        array[i] += 1.0f;
-    }
-}
+            int main() {
+            for (int i = 0; i < 5000; ++i) {
+            array[i] += 1.0f;
+            }
+            }
           </code></pre>
-          <p><b>&rArr;</b> <text style="color:#a9dc24;">Emscripten</text> <b>&rArr;</b></p>
+        <p><b>&rArr;</b> <text style="color:#a9dc24;">Emscripten</text> <b>&rArr;</b></p>
           <pre><code contenteditable>
-function main() { // JavaScript
+            function main() { // JavaScript
 
-    var a = 0, b = 0;
-    do {
-        a = (8 + (b << 2)) | 0;
-        HEAPF32[a >> 2] = +HEAPF32[a >> 2] + 1.0;
-        b = (b + 1) | 0;
-    } while ((b | 0) < 5000);
+            var a = 0, b = 0;
+            do {
+            a = (8 + (b << 2)) | 0;
+            HEAPF32[a >> 2] = +HEAPF32[a >> 2] + 1.0;
+            b = (b + 1) | 0;
+            } while ((b | 0) < 5000);
           </code></pre>
-          <p class="fragment">This is <a href="http://asmjs.org" target="_blank">asm.js</a></b></p>
-          </section>
-          <section>
-            <h2 style="color:#a9dc24;">asm.js</h2>
-            <ul style="margin-top: 80px;">
-              <li class="fragment" style="margin-bottom: 20px;">
-                Low-level subset of JavaScript - not a new language
-              </li>
-              <li class="fragment" style="margin-bottom: 20px";>
-                No new semantics, 100% backwards compatible
-              </li>
-              <li class="fragment" style="margin-bottom: 60px";>
-                Extremely easy to optimize by JS engines
-              </li>
-              <div class="fragment">
-                <li style="margin-bottom: 20px";>
-                  Avoids potential slowdowns in code
-                </li>
-                <li style="margin-bottom: 20px";>
-                  No variables with mixed types
-                </li>
-                <li style="margin-bottom: 20px";>
-                  Only low-level assembly-like computation
-                </li>
-                <li style="margin-bottom: 20px";>
-                  . . .
-                </li>
-              </div>
-            </ul>
-          </section>
-        </section>
-
-
-        <section>
-          <h2 style="color:#a9dc24; margin-bottom: 150px;">Web Assembly</h2>
-          <br><br>
-            <table style="border-spacing: 10px 0px">
-              <tr>
-                <td style="margin: 20px">
-                  <img src="img/wasm4.png" style="box-shadow: 12px 12px 8px rgba(0,0,0,0.6)" height=150>
-                </td>
-                <td>
-                  <img src="img/wasm1.png" style="box-shadow: 4px 12px 8px rgba(0,0,0,0.6)" height=50>
-                </td>
-                <td>
-                  <img src="img/wasm3.png" style="box-shadow: -4px 12px 8px rgba(0,0,0,0.6)" height=150 alt="webassembly">
-                </td>
-                <td>
-                  <img src="img/wasm2.png" style="box-shadow: -12px 12px 8px rgba(0,0,0,0.6)" height=50>
-                </td>
-              </tr>
-            </table>
-          <p style="margin-bottom: 80px">
-            <small>( no official logo yet! )</small>
-            <br>
-            <strong style="color:#a9dc24;">Web Assembly</strong> = <b>Binary executable format</b> for the web
-            <br>
-            <b>New web standard</b>, multi-vendor cooperation
-            <br>
-            <br>
-            <img src="./img/vendors.png" height="80"/>
-          </p>
-        </section>
-
-
-        <section>
-          <p>For WebAssembly to succeed we need <strong style="color:#a9dc24;">two things</strong>:</p>
-          <br>
-          <p class="fragment">1. <b style="color:#a9dc24;">Browsers</b> to support WebAssembly natively</p>
-          <br>
-          <p class="fragment">2. <b style="color:#a9dc24;">Compilers</b> that emit WebAssembly</p>
-        </section>
-
-
-        <section>
-          <p>Already a few compilers in the works:</p>
-          <br>
-          <hr class="fragment">
-          <br>
-          <p class="fragment">
-            New WebAssembly backend in <b>LLVM</b>
-            <br>
-            by sunfish and others
-          </p>
-          <br>
-          <p class="fragment">
-            <a href="https://github.com/WebAssembly/ilwasm" target="_blank">ilwasm</a> for <b>.NET/CIL</b>
-          </p>
-          <br>
-          <hr class="fragment">
-          <br>
-          <p class="fragment">
-            Longer-term efforts... We want to test and launch WebAssembly <strong>ASAP</strong>
-            <br>
-            What to do?
-          </p>
-        </section>
-
-
-        <section>
-          <br>
-          <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)">
-            <b style="color: #f42">
-              C++
-            </b>
-              &nbsp&nbsp
-            <b style="color: #fff">
-              &rArr;
-            </b>
-              &nbsp&nbsp
-            <b style="color: #7af">
-              Emscripten
-            </b>
-              &nbsp&nbsp
-            <b style="color: #fff">
-              &rArr;
-            </b>
-              &nbsp&nbsp
-            <b style="color: #8f5">
-              asm.js
-            </b>
-          </p>
-          <p>
-            <strong>+</strong>
-          </p>
-          <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)">
-            <b style="color: #8f5">
-              asm.js
-            </b>
-              &nbsp&nbsp
-            <b style="color: #fff">
-              &rArr;
-            </b>
-              &nbsp&nbsp
-            <b style="color: #7af">
-              asm2wasm
-            </b>
-              &nbsp&nbsp
-            <b style="color: #fff">
-              &rArr;
-            </b>
-              &nbsp&nbsp
-            <b style="color: #f58">
-              WebAssembly
-            </b>
-          </p>
-        </section>
-
-
-        <section>
-          <p>
-            <b style="color:#a9dc24;">
-              asm2wasm
-            </b>: Compile asm.js &rArr; WebAssembly
-          </p>
-          <br>
-          <p class="fragment">
-            Part of <strong style="color:#a9dc24;">Binaryen </strong>
-            (<strong style="color:#a9dc24;">Binary + Emscripten</strong>):
-            <br>
-            an extensible <b>WebAssembly infrastructure library</b>
-            <br>
-            written in <b>C++</b>
-          <p>
-          <br>
+        <p class="fragment">This is <a href="http://asmjs.org" target="_blank">asm.js</a></b></p>
+      </section>
+      <section>
+        <h2 style="color:#a9dc24;">asm.js</h2>
+        <ul style="margin-top: 80px;">
+          <li class="fragment" style="margin-bottom: 20px;">
+            Low-level subset of JavaScript - not a new language
+          </li>
+          <li class="fragment" style="margin-bottom: 20px";>
+            No new semantics, 100% backwards compatible
+          </li>
+          <li class="fragment" style="margin-bottom: 60px";>
+            Extremely easy to optimize by JS engines
+          </li>
           <div class="fragment">
-            <img src="img/binaryen-colors.png" style="width: 75%">
+            <li style="margin-bottom: 20px";>
+              Avoids potential slowdowns in code
+            </li>
+            <li style="margin-bottom: 20px";>
+              No variables with mixed types
+            </li>
+            <li style="margin-bottom: 20px";>
+              Only low-level assembly-like computation
+            </li>
+            <li style="margin-bottom: 20px";>
+              . . .
+            </li>
           </div>
-          <br>
-          <p class="fragment">
-            <a href="https://github.com/WebAssembly/binaryen" target="_blank">
-              https://github.com/WebAssembly/binaryen
-            </a>
-          </p>
-        </section>
+        </ul>
+      </section>
+    </section>
 
 
-        <section>
-          <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)"><b style="color: #f42">C++</b>&nbsp&nbsp<b style="color: #fff">&rArr;</b>&nbsp&nbsp<b style="color: #7af">Emscripten+Binaryen</b>&nbsp&nbsp<b style="color: #fff">&rArr;</b>&nbsp&nbsp<b style="color: #8f5">wasm</b></p>
-          <br>
-          <p>Runnable <b style="color:#a9dc24;">today</b>, using the wasm.js compiled interpreter
-            <br>
-            - a slow polyfill -
-          </p>
-          <br>
-          <p class="fragment">
-            And when browsers have <strong style="color:#a9dc24;">native support</strong> for WebAssembly
-            <br>
-            the same build should just work
-           <br>
-            - fast! -
-          </p>
-        </section>
+    <section>
+      <h2 style="color:#a9dc24; margin-bottom: 150px;">Web Assembly</h2>
+      <br><br>
+      <table style="border-spacing: 10px 0px">
+        <tr>
+          <td style="margin: 20px">
+            <img src="img/wasm4.png" style="box-shadow: 12px 12px 8px rgba(0,0,0,0.6)" height=150>
+          </td>
+          <td>
+            <img src="img/wasm1.png" style="box-shadow: 4px 12px 8px rgba(0,0,0,0.6)" height=50>
+          </td>
+          <td>
+            <img src="img/wasm3.png" style="box-shadow: -4px 12px 8px rgba(0,0,0,0.6)" height=150 alt="webassembly">
+          </td>
+          <td>
+            <img src="img/wasm2.png" style="box-shadow: -12px 12px 8px rgba(0,0,0,0.6)" height=50>
+          </td>
+        </tr>
+      </table>
+      <p style="margin-bottom: 80px">
+        <small>( no official logo yet! )</small>
+        <br>
+        <strong style="color:#a9dc24;">Web Assembly</strong> = <b>Binary executable format</b> for the web
+        <br>
+        <b>New web standard</b>, multi-vendor cooperation
+        <br>
+        <br>
+        <img src="./img/vendors.png" height="80"/>
+      </p>
+    </section>
 
 
-        <section>
-          <h3><b>Summary</b></h3>
-          <br>
-          <hr>
-          <p>
-            Emscripten + Binaryen provide a
-            <br>
-            <b style="color:#a9dc24;">C++ to WebAssembly</b> solution
-            <br>
-            <strong>today</strong>
-          </p>
-          <br>
-          <p class="fragment">
-            Also helping with <b>experiments and prototyping</b>
-            <br>
-            for the <strong style="color:#a9dc24;">WebAssembly design process</strong>
-          </p>
-          <br>
-          <p class="fragment">
-            Binaryen can help grow
-            <br>
-            the <b style="color:#a9dc24;">WebAssembly toolchain ecosystem</b>
-          </p>
-        </section>
+    <section>
+      <p>For WebAssembly to succeed we need <strong style="color:#a9dc24;">two things</strong>:</p>
+      <br>
+      <p class="fragment">1. <b style="color:#a9dc24;">Browsers</b> to support WebAssembly natively</p>
+      <br>
+      <p class="fragment">2. <b style="color:#a9dc24;">Compilers</b> that emit WebAssembly</p>
+    </section>
 
 
-        <section>
-          <h2>
-            II - <text style="color:#a9dc24;">Getting Started</text> with Emscripten
-          </h2>
-          <section>
-            <a href="http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html#installation-instructions" target="_blank">
-              Download the Portable Emscripten SDK
-            </a>
+    <section>
+      <p>Already a few compilers in the works:</p>
+      <br>
+      <hr class="fragment">
+      <br>
+      <p class="fragment">
+        New WebAssembly backend in <b>LLVM</b>
+        <br>
+        by sunfish and others
+      </p>
+      <br>
+      <p class="fragment">
+        <a href="https://github.com/WebAssembly/ilwasm" target="_blank">ilwasm</a> for <b>.NET/CIL</b>
+      </p>
+      <br>
+      <hr class="fragment">
+      <br>
+      <p class="fragment">
+        Longer-term efforts... We want to test and launch WebAssembly <strong>ASAP</strong>
+        <br>
+        What to do?
+      </p>
+    </section>
+
+
+    <section>
+      <br>
+      <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)">
+        <b style="color: #f42">
+          C++
+        </b>
+        &nbsp&nbsp
+        <b style="color: #fff">
+          &rArr;
+        </b>
+        &nbsp&nbsp
+        <b style="color: #7af">
+          Emscripten
+        </b>
+        &nbsp&nbsp
+        <b style="color: #fff">
+          &rArr;
+        </b>
+        &nbsp&nbsp
+        <b style="color: #8f5">
+          asm.js
+        </b>
+      </p>
+      <p>
+        <strong>+</strong>
+      </p>
+      <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)">
+        <b style="color: #8f5">
+          asm.js
+        </b>
+        &nbsp&nbsp
+        <b style="color: #fff">
+          &rArr;
+        </b>
+        &nbsp&nbsp
+        <b style="color: #7af">
+          asm2wasm
+        </b>
+        &nbsp&nbsp
+        <b style="color: #fff">
+          &rArr;
+        </b>
+        &nbsp&nbsp
+        <b style="color: #f58">
+          WebAssembly
+        </b>
+      </p>
+    </section>
+
+
+    <section>
+      <p>
+        <b style="color:#a9dc24;">
+          asm2wasm
+        </b>: Compile asm.js &rArr; WebAssembly
+      </p>
+      <br>
+      <p class="fragment">
+        Part of <strong style="color:#a9dc24;">Binaryen </strong>
+        (<strong style="color:#a9dc24;">Binary + Emscripten</strong>):
+        <br>
+        an extensible <b>WebAssembly infrastructure library</b>
+        <br>
+        written in <b>C++</b>
+      <p>
+        <br>
+      <div class="fragment">
+        <img src="img/binaryen-colors.png" style="width: 75%">
+      </div>
+      <br>
+      <p class="fragment">
+        <a href="https://github.com/WebAssembly/binaryen" target="_blank">
+          https://github.com/WebAssembly/binaryen
+        </a>
+      </p>
+    </section>
+
+
+    <section>
+      <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)"><b style="color: #f42">C++</b>&nbsp&nbsp<b style="color: #fff">&rArr;</b>&nbsp&nbsp<b style="color: #7af">Emscripten+Binaryen</b>&nbsp&nbsp<b style="color: #fff">&rArr;</b>&nbsp&nbsp<b style="color: #8f5">wasm</b></p>
+      <br>
+      <p>Runnable <b style="color:#a9dc24;">today</b>, using the wasm.js compiled interpreter
+        <br>
+        - a slow polyfill -
+      </p>
+      <br>
+      <p class="fragment">
+        And when browsers have <strong style="color:#a9dc24;">native support</strong> for WebAssembly
+        <br>
+        the same build should just work
+        <br>
+        - fast! -
+      </p>
+    </section>
+
+
+    <section>
+      <h3><b>Summary</b></h3>
+      <br>
+      <hr>
+      <p>
+        Emscripten + Binaryen provide a
+        <br>
+        <b style="color:#a9dc24;">C++ to WebAssembly</b> solution
+        <br>
+        <strong>today</strong>
+      </p>
+      <br>
+      <p class="fragment">
+        Also helping with <b>experiments and prototyping</b>
+        <br>
+        for the <strong style="color:#a9dc24;">WebAssembly design process</strong>
+      </p>
+      <br>
+      <p class="fragment">
+        Binaryen can help grow
+        <br>
+        the <b style="color:#a9dc24;">WebAssembly toolchain ecosystem</b>
+      </p>
+    </section>
+
+
+    <section>
+      <h2>
+        II - <text style="color:#a9dc24;">Getting Started</text> with Emscripten
+      </h2>
+      <section>
+        <a href="http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html#installation-instructions" target="_blank">
+          Download the Portable Emscripten SDK
+        </a>
             <pre><code contenteditable>
-#Fetch the latest registry of available tools
-./emsdk update
+              #Fetch the latest registry of available tools
+              ./emsdk update
 
-# Download and install the incoming SDK tools (Binaryen Support)
-./emsdk install sdk-incoming-64bit
+              # Download and install the incoming SDK tools (Binaryen Support)
+              ./emsdk install sdk-incoming-64bit
 
-# Make the "latest" SDK "active"
-./emsdk activate sdk-incoming-64bit
+              # Make the "latest" SDK "active"
+              ./emsdk activate sdk-incoming-64bit
             </code></pre>
-          </section>
-          <section>
-            <img src="./img/emcc-v.png" height="300"/>
-          </section>
-        </section>
+      </section>
+      <section>
+        <img src="./img/emcc-v.png" height="300"/>
+      </section>
+    </section>
 
-        <section>
-          <h2 style="margin-bottom: 50px;">Compiling <text style="color:#a9dc24;">hello_world.c</text></h2>
-          <br>
-          <br>
-          <br>
+    <section>
+      <h2 style="margin-bottom: 50px;">Compiling <text style="color:#a9dc24;">hello_world.c</text></h2>
+      <br>
+      <br>
+      <br>
           <pre><code contenteditable>
-emcc tests/hello_world.c -o hello.html
+            emcc tests/hello_world.c -o hello.html
           </code></pre>
-          <img src="./img/hello-world.png" height="450"/>
-        </section>
+      <img src="./img/hello-world.png" height="450"/>
+    </section>
 
-        <section>
-          <h2>Exposing C++ classes</h2>
-          <h2 style="margin-top: 80px;">
-            to JavaScript
-          </h2>
-          <section>
-            <ul>
-              <li style="margin-bottom: 20px";>
-                <a href="http://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/embind.html#embind" target="_blank">
-                  Embind
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="http://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#webidl-binder" target="_blank">
-                  WebIDL Binder
-                </a>
-              </li>
-            </ul>
-          </section>
-          <section>
+    <section>
+      <h2>Exposing C++ classes</h2>
+      <h2 style="margin-top: 80px;">
+        to JavaScript
+      </h2>
+      <section>
+        <ul>
+          <li style="margin-bottom: 20px";>
+            <a href="http://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/embind.html#embind" target="_blank">
+              Embind
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="http://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#webidl-binder" target="_blank">
+              WebIDL Binder
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section>
             <pre><code contenteditable>
-python ~/emsdk/emscripten/incoming/tools/webidl_binder.py bindings.idl glue
+              python ~/emsdk/emscripten/incoming/tools/webidl_binder.py bindings.idl glue
             </code></pre>
-          </section>
-        </section>
+      </section>
+    </section>
 
-        <section>
-          <h2>Generating <text style="color:#a9dc24;">asm.js</text></h2>
+    <section>
+      <h2>Generating <text style="color:#a9dc24;">asm.js</text></h2>
           <pre><code contenteditable>
-emcc -s ParticleSystem.bc --post-js glue.js -o ParticleSystem.asm.js
+            emcc -s ParticleSystem.bc --post-js glue.js -o ParticleSystem.asm.js
           </code></pre>
-        </section>
+    </section>
 
-        <section>
-          <h2>Generating <text style="color:#a9dc24;">WebAssembly</text></h2>
+    <section>
+      <h2>Generating <text style="color:#a9dc24;">WebAssembly</text></h2>
           <pre style="width: 72%;"><code contenteditable>
-emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
+            emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
           </code></pre>
-        </section>
+    </section>
 
-        <section>
-          <h2><text style="color:#a9dc24;">Loading wasm</text> in your Web Page</h2>
-          <section>
+    <section>
+      <h2><text style="color:#a9dc24;">Loading wasm</text> in your Web Page</h2>
+      <section>
             <pre><code contenteditable>
-var Module = Module || {}
+              var Module = Module || {}
 
-//'WEB' / 'WORKER' / 'NODE' / 'SHELL'
-Module['ENVIRONMENT'] = 'WEB'
+              //'WEB' / 'WORKER' / 'NODE' / 'SHELL'
+              Module['ENVIRONMENT'] = 'WEB'
 
-Module.wasmBinaryFile = './wasm/ParticleSystem.wasm'
+              Module.wasmBinaryFile = './wasm/ParticleSystem.wasm'
 
-var xhr = new XMLHttpRequest()
-xhr.open('GET', './wasm/ParticleSystem.wasm', true)
-xhr.responseType = 'arraybuffer'
+              var xhr = new XMLHttpRequest()
+              xhr.open('GET', './wasm/ParticleSystem.wasm', true)
+              xhr.responseType = 'arraybuffer'
 
-xhr.onload = function() {
+              xhr.onload = function() {
 
-    Module.wasmBinary = xhr.response
+              Module.wasmBinary = xhr.response
 
-    var script = document.createElement('script')
-    script.src = "./wasm/ParticleSystem.js"
-    document.body.appendChild(script)
-}
+              var script = document.createElement('script')
+              script.src = "./wasm/ParticleSystem.js"
+              document.body.appendChild(script)
+              }
 
-xhr.send(null)
+              xhr.send(null)
             </code></pre>
-          </section>
-          <section>
-            <img src="./img/binaryen-loaded.png" height="250"/>
-          </section>
-          <section>
-            <img src="./img/binarayen-notloaded.png" height="400"/>
-          </section>
-        </section>
+      </section>
+      <section>
+        <img src="./img/binaryen-loaded.png" height="250"/>
+      </section>
+      <section>
+        <img src="./img/binarayen-notloaded.png" height="400"/>
+      </section>
+    </section>
 
-        <section>
-          <h2>Debugging</h2>
-          <section>
-            <p style="margin-top: 100px;">Optimized <b>-O2</b> output is minified by default</p>
+    <section>
+      <h2>Debugging</h2>
+      <section>
+        <p style="margin-top: 100px;">Optimized <b>-O2</b> output is minified by default</p>
           <pre><code contenteditable>
-function a(a,b){a=a|0;b=b|0;f(a+b|0);}
+            function a(a,b){a=a|0;b=b|0;f(a+b|0);}
           </code></pre>
-            <img src="./img/badtime.jpg" height="350">
-          </section>
-          <section>
-            <p><b>-g1</b> : preserve whitespace</p>
+        <img src="./img/badtime.jpg" height="350">
+      </section>
+      <section>
+        <p><b>-g1</b> : preserve whitespace</p>
             <pre><code contenteditable>
-function a(a, b) {
-    a = a | 0;
-    b = b | 0;
-    f(a + b | 0);
-}
+              function a(a, b) {
+              a = a | 0;
+              b = b | 0;
+              f(a + b | 0);
+              }
             </code></pre>
-          </section>
-          <section>
-            <p><b>-g2</b> : preserve function names</p>
+      </section>
+      <section>
+        <p><b>-g2</b> : preserve function names</p>
             <pre><code contenteditable>
-function _addAndPrint(a, b) {
-    a = a | 0;
-    b = b | 0;
-    _printAnInteger(a + b | 0);
-}
-          </code></pre>
-        </section>
-          <section>
-            <p><b>-g3 (or just -g)</b> : preserve variable names</p>
-            <pre><code contenteditable>
-function _addAndPrint($left, $right) {
-    $left = $left | 0;
-    $right = $right | 0;
-    _printAnInteger($left + $right | 0);
-}
+              function _addAndPrint(a, b) {
+              a = a | 0;
+              b = b | 0;
+              _printAnInteger(a + b | 0);
+              }
             </code></pre>
-            <br>
-            <p>Not always match exactly original variable names in source<br>but often quite close</p>
-          </section>
-          <section>
-            <p><b>-g4</b> : source maps</p>
-            <br>
-            <p>Show the C/C++ source code in your browser's debugger!</p>
-            <br>
-            <p>Works in Firefox, Chrome and Safari</p>
-          </section>
-        </section>
+      </section>
+      <section>
+        <p><b>-g3 (or just -g)</b> : preserve variable names</p>
+            <pre><code contenteditable>
+              function _addAndPrint($left, $right) {
+              $left = $left | 0;
+              $right = $right | 0;
+              _printAnInteger($left + $right | 0);
+              }
+            </code></pre>
+        <br>
+        <p>Not always match exactly original variable names in source<br>but often quite close</p>
+      </section>
+      <section>
+        <p><b>-g4</b> : source maps</p>
+        <br>
+        <p>Show the C/C++ source code in your browser's debugger!</p>
+        <br>
+        <p>Works in Firefox, Chrome and Safari</p>
+      </section>
+    </section>
 
-        <section>
-          <h2>Performance Tests</h2>
-          <section>
-            <img src="./img/vs-test.png" height="450" style="position: absolute;left: 10%;top: 25%;">
-            <ul>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20vs/ES6-vs-ASM.html" target="_blank">
-                  ES6 vs ams.js
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20vs/ES6-vs-WASM.html" target="_blank">
-                  ES6 vs wasm
-                </a>
-              </li>
-            </ul>
-          </section>
-          <section>
-            <img src="./img/benchmark.png" height="650"  style="position: absolute;top: 22%;">
-          </section>
-          <section>
-            <img src="./img/viewer.png" height="350" style="position: absolute;left: 10px;top: 30%;">
-            <p style="margin-left: 250px;">Autodesk Forge Viewer</p>
-            <ul>
-              <li style="margin-bottom: 20px; margin-top: 50px;">
-                <a href="../Test/Test%20-%20viewer/es6.html" target="_blank">
-                  ES6
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20viewer/asm.html" target="_blank">
-                  asm.js
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20viewer/wasm.html" target="_blank">
-                  wasm
-                </a>
-              </li>
-            </ul>
-          </section>
-          <section>
-            <img src="./img/three.png" height="480" style="position: absolute;left: 30px;top: 30%;">
-            <p style="margin-left: 85px;">THREE.js Test</p>
-            <ul>
-              <li style="margin-bottom: 20px; margin-top: 50px;">
-                <a href="../Test/Test%20-%20three.js/es6.html" target="_blank">
-                  ES6
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20three.js/asm.html" target="_blank">
-                  asm.js
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20three.js/wasm.html" target="_blank">
-                  wasm
-                </a>
-              </li>
-            </ul>
-          </section>
-          <section>
-            <img src="./img/lhc.png" height="320" style="position: absolute;left: 30px;top: 30%;">
-            <p style="margin-left: 55px;">LHC Bonus</p>
-            <ul>
-              <li style="margin-bottom: 20px; margin-top: 50px;">
-                <a href="../Test/Test%20-%20LHC/es6.html" target="_blank">
-                  ES6
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20LHC/asm.html" target="_blank">
-                  asm.js
-                </a>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="../Test/Test%20-%20LHC/wasm.html" target="_blank">
-                  wasm
-                </a>
-              </li>
-            </ul>
-          </section>
-        </section>
-
-
-				<section>
-					<h2>RESOURCES</h2>
-          <section>
-					<ul>
-            <li style="margin-bottom: 20px";>
-              <a href="https://github.io/leefsmp/Particle-System/slides/index.html" target="_blank">
-                https://github.io/leefsmp/Particle-System/slides/index.html
-              </a>
-            </li>
-            <li style="margin-bottom: 20px";>
-              <a href="https://github.com/leefsmp/Particle-System" target="_blank">
-                https://github.com/leefsmp/Particle-System
-              </a>
-            </li>
-            <li style="margin-bottom: 20px";>
-              <a href="https://github.com/kripken/emscripten" target="_blank">
-                https://github.com/kripken/emscripten
-              </a>
-            </li>
-            <li style="margin-bottom: 20px";>
-              <a href="https://webassembly.github.io" target="_blank">
-                https://webassembly.github.io
-              </a>
-            </li>
-						<li style="margin-bottom: 60px";>
-							<a href="http://emscripten.org" target="_blank">
-                http://emscripten.org
-							</a>
-						</li>
-						<li style="margin-bottom: 20px";>
-							<a href="https://forge.autodesk.com" target="_blank">
-                https://forge.autodesk.com
-							</a>
-						</li>
-					</ul>
-          </section>
-          <section>
-            <b style="position: absolute; top: 30%; left: 40%;">
-              Ammo.js (
-              <a href="https://github.com/kripken/ammo.js" target="_blank">
-                Bullet C++ Emscripten port
-              </a>)
-              <br>+<br>
-              Forge Viewer Integration Demo
-              <br>
-              <br>
-              <a href="http://physics.autodesk.io" target="_blank">
-                http://physics.autodesk.io
-              </a>
-              <br>
-              <br>
-              <br>
-              <a href="./samples/ammo.html" target="_blank">
-                three.js demo
-              </a>
-            </b>
-            <img src="./img/physics.png" height="350" style="position: absolute; top: 10%; left: 3%;">
-            <img src="./img/three2.png" height="350" style="position: absolute; top: 50%; left: 12%;">
-          </section>
-          <section>
-            <b style="margin-bottom: 250px;">Online Unity demos</b>
-            <br>
-            <a href="http://beta.unity3d.com/jonas/AngryBots/" target="_blank" style="position: absolute;left:25%;top:40%">
-              <img src="./img/angrybots.png">
+    <section>
+      <h2>Performance Tests</h2>
+      <section>
+        <img src="./img/vs-test.png" height="450" style="position: absolute;left: 10%;top: 25%;">
+        <ul>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20vs/ES6-vs-ASM.html" target="_blank">
+              ES6 vs ams.js
             </a>
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <a href="http://beta.unity3d.com/jonas/DT2/" target="_blank" style="position: absolute; right:25%;top:40%">
-              <img src="./img/DEAD-TRIGGER-2-Icon1.png">
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20vs/ES6-vs-WASM.html" target="_blank">
+              ES6 vs wasm
             </a>
-          </section>
-          <section>
-            <ul style="position:relative; margin-top: 120px;margin-bottom: 40px;">
-              COMPILE CODE TO JS
-              <li style="margin-bottom: 20px";>
-                <text style="color:#a9dc24;">C/C++</text>: Emscripten, Mandreel
-              </li>
-              <li style="margin-bottom: 20px";>
-                <text style="color:#a9dc24;">Java</text>: Google Web Toolkit (GWT)
-              </li>
-              <li style="margin-bottom: 20px";>
-                <text style="color:#a9dc24;">C#</text>: JSIL, Script#
-              </li>
-              <li style="margin-bottom: 20px";>
-                <text style="color:#a9dc24;">Python</text>: pyjs
-              </li>
-              <li style="margin-bottom: 20px";>
-                <text style="color:#a9dc24;">Lua</text>: lua.js
-              </li>
-              <li style="margin-bottom: 20px";>
-                <text style="color:#a9dc24;">CoffeeScript, TypeScript, Dart, ...</text>
-              </li>
-              <li style="margin-bottom: 20px";>
-                <a href="https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS" target="_blank">
-                  Jeremy Ashkenas's list
-                </a>
-              </li>
-            </ul>
-          </section>
-        </section>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <img src="./img/benchmark.png" height="650"  style="position: absolute;top: 22%;">
+      </section>
+      <section>
+        <img src="./img/viewer.png" height="350" style="position: absolute;left: 10px;top: 30%;">
+        <p style="margin-left: 250px;">Autodesk Forge Viewer</p>
+        <ul>
+          <li style="margin-bottom: 20px; margin-top: 50px;">
+            <a href="../Test/Test%20-%20viewer/es6.html" target="_blank">
+              ES6
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20viewer/asm.html" target="_blank">
+              asm.js
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20viewer/wasm.html" target="_blank">
+              wasm
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <img src="./img/three.png" height="480" style="position: absolute;left: 30px;top: 30%;">
+        <p style="margin-left: 85px;">THREE.js Test</p>
+        <ul>
+          <li style="margin-bottom: 20px; margin-top: 50px;">
+            <a href="../Test/Test%20-%20three.js/es6.html" target="_blank">
+              ES6
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20three.js/asm.html" target="_blank">
+              asm.js
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20three.js/wasm.html" target="_blank">
+              wasm
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <img src="./img/lhc.png" height="320" style="position: absolute;left: 30px;top: 30%;">
+        <p style="margin-left: 55px;">LHC Bonus</p>
+        <ul>
+          <li style="margin-bottom: 20px; margin-top: 50px;">
+            <a href="../Test/Test%20-%20LHC/es6.html" target="_blank">
+              ES6
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20LHC/asm.html" target="_blank">
+              asm.js
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="../Test/Test%20-%20LHC/wasm.html" target="_blank">
+              wasm
+            </a>
+          </li>
+        </ul>
+      </section>
+    </section>
 
 
-        <section>
-          <h2 style="top: 40px;">BOOST YOUR WEB APPLICATION</h2>
-          <h2 style="top: 115px;">WITH C++</h2>
+    <section>
+      <h2>RESOURCES</h2>
+      <section>
+        <ul>
+          <li style="margin-bottom: 20px";>
+            <a href="https://github.io/leefsmp/Particle-System/slides/index.html" target="_blank">
+              https://github.io/leefsmp/Particle-System/slides/index.html
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="https://github.com/leefsmp/Particle-System" target="_blank">
+              https://github.com/leefsmp/Particle-System
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="https://github.com/kripken/emscripten" target="_blank">
+              https://github.com/kripken/emscripten
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="https://webassembly.github.io" target="_blank">
+              https://webassembly.github.io
+            </a>
+          </li>
+          <li style="margin-bottom: 60px";>
+            <a href="http://emscripten.org" target="_blank">
+              http://emscripten.org
+            </a>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="https://forge.autodesk.com" target="_blank">
+              https://forge.autodesk.com
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <b style="position: absolute; top: 30%; left: 40%;">
+          Ammo.js (
+          <a href="https://github.com/kripken/ammo.js" target="_blank">
+            Bullet C++ Emscripten port
+          </a>)
+          <br>+<br>
+          Forge Viewer Integration Demo
+          <br>
+          <br>
+          <a href="http://physics.autodesk.io" target="_blank">
+            http://physics.autodesk.io
+          </a>
+          <br>
+          <br>
+          <br>
+          <a href="./samples/ammo.html" target="_blank">
+            three.js demo
+          </a>
+        </b>
+        <img src="./img/physics.png" height="350" style="position: absolute; top: 10%; left: 3%;">
+        <img src="./img/three2.png" height="350" style="position: absolute; top: 50%; left: 12%;">
+      </section>
+      <section>
+        <b style="margin-bottom: 250px;">Online Unity demos</b>
+        <br>
+        <a href="http://beta.unity3d.com/jonas/AngryBots/" target="_blank" style="position: absolute;left:25%;top:40%">
+          <img src="./img/angrybots.png">
+        </a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a href="http://beta.unity3d.com/jonas/DT2/" target="_blank" style="position: absolute; right:25%;top:40%">
+          <img src="./img/DEAD-TRIGGER-2-Icon1.png">
+        </a>
+      </section>
+      <section>
+        <ul style="position:relative; margin-top: 120px;margin-bottom: 40px;">
+          COMPILE CODE TO JS
+          <li style="margin-bottom: 20px";>
+            <text style="color:#a9dc24;">C/C++</text>: Emscripten, Mandreel
+          </li>
+          <li style="margin-bottom: 20px";>
+            <text style="color:#a9dc24;">Java</text>: Google Web Toolkit (GWT)
+          </li>
+          <li style="margin-bottom: 20px";>
+            <text style="color:#a9dc24;">C#</text>: JSIL, Script#
+          </li>
+          <li style="margin-bottom: 20px";>
+            <text style="color:#a9dc24;">Python</text>: pyjs
+          </li>
+          <li style="margin-bottom: 20px";>
+            <text style="color:#a9dc24;">Lua</text>: lua.js
+          </li>
+          <li style="margin-bottom: 20px";>
+            <text style="color:#a9dc24;">CoffeeScript, TypeScript, Dart, ...</text>
+          </li>
+          <li style="margin-bottom: 20px";>
+            <a href="https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS" target="_blank">
+              Jeremy Ashkenas's list
+            </a>
+          </li>
+        </ul>
+      </section>
+    </section>
 
-          <!--<iframe src="./slides/connected-data.html" style="width:800px;height:500px;">-->
-          <!--</iframe>-->
 
-          <p style="bottom: 250px; position: absolute;">
-            <small style="margin-bottom: 10px;">
-              <a href="http://http://twitter.com/F3lipek" target="_blank">
-                Philippe Leefsma
-              </a>
-              /
-              <a href="http://twitter.com/F3lipek" target="_blank">
-                @F3lipek
-              </a>
-              <br>
-              Forge Partner Development
-            </small>
-            <br>
-          <div style="bottom: 200px; position: absolute;">
-            <img src="./img/adsk.ico" width="60" height="60"/>
-            <img src="./img/forge.png" width="60" height="60"/>
-            <!--<img class="adsk-logo" src="./img/adsk.ico" width="60" height="60" style="position: relative; transform: rotateY(90deg);"/>-->
-            <!--<img class="adsk-logo" src="./img/forge.png" width="60" height="60" style="position: relative; display: none; transform: rotateY(90deg);"/>-->
-          </div>
-          </p>
-        </section>
+    <section>
+      <h2 style="top: 40px;">BOOST YOUR WEB APPLICATION</h2>
+      <h2 style="top: 115px;">WITH C++</h2>
 
-			</div>
-		</div>
+      <!--<iframe src="./slides/connected-data.html" style="width:800px;height:500px;">-->
+      <!--</iframe>-->
+
+      <p style="bottom: 250px; position: absolute;">
+        <small style="margin-bottom: 10px;">
+          <a href="http://http://twitter.com/F3lipek" target="_blank">
+            Philippe Leefsma
+          </a>
+          /
+          <a href="http://twitter.com/F3lipek" target="_blank">
+            @F3lipek
+          </a>
+          <br>
+          Forge Partner Development
+        </small>
+        <br>
+      <div style="bottom: 200px; position: absolute;">
+        <img src="./img/adsk.ico" width="60" height="60"/>
+        <img src="./img/forge.png" width="60" height="60"/>
+        <!--<img class="adsk-logo" src="./img/adsk.ico" width="60" height="60" style="position: relative; transform: rotateY(90deg);"/>-->
+        <!--<img class="adsk-logo" src="./img/forge.png" width="60" height="60" style="position: relative; display: none; transform: rotateY(90deg);"/>-->
+      </div>
+      </p>
+    </section>
+
+  </div>
+</div>
 
 
-        <script src="lib/js/jquery.min.js"></script>
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+<script src="lib/js/jquery.min.js"></script>
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
 
-    <script>
+<script>
 
-      // disable all iframes
-      //$('.iframe-fullscreen').remove()
+  // disable all iframes
+  //$('.iframe-fullscreen').remove()
 
-      // Full list of configuration options available at:
-      // https://github.com/hakimel/reveal.js#configuration
-      Reveal.initialize({
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
 
-        margin: 0,
+    margin: 0,
 
-        width: '100%',
-        height: '100%',
+    width: '100%',
+    height: '100%',
 
-        minScale: 1.0,
-        maxScale: 1.0,
+    minScale: 1.0,
+    maxScale: 1.0,
 
-        controls: true,
-        progress: true,
-        history: true,
-        center: true,
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
 
-        //viewDistance: 3,
+    //viewDistance: 3,
 
-        transition: 'convex', // none/fade/slide/convex/concave/zoom
+    transition: 'convex', // none/fade/slide/convex/concave/zoom
 
-        // Optional reveal.js plugins
-        dependencies: [ {
-          src: 'lib/js/classList.js', condition: function() {
-            return !document.body.classList;
-          }
-        }, {
-          src: 'plugin/markdown/marked.js', condition: function() {
-            return !!document.querySelector( '[data-markdown]' );
-          }
-        }, {
-          src: 'plugin/markdown/markdown.js', condition: function() {
-            return !!document.querySelector( '[data-markdown]' );
-          }
-        }, {
-          src: 'plugin/highlight/highlight.js', async: true, callback: function() {
-            hljs.initHighlightingOnLoad();
-          }
-        }, {
-          src: 'plugin/zoom-js/zoom.js', async: true
-        },	{
-          src: 'plugin/notes/notes.js', async: true
-        }]
-      });
+    // Optional reveal.js plugins
+    dependencies: [ {
+      src: 'lib/js/classList.js', condition: function() {
+        return !document.body.classList;
+      }
+    }, {
+      src: 'plugin/markdown/marked.js', condition: function() {
+        return !!document.querySelector( '[data-markdown]' );
+      }
+    }, {
+      src: 'plugin/markdown/markdown.js', condition: function() {
+        return !!document.querySelector( '[data-markdown]' );
+      }
+    }, {
+      src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+        hljs.initHighlightingOnLoad();
+      }
+    }, {
+      src: 'plugin/zoom-js/zoom.js', async: true
+    },	{
+      src: 'plugin/notes/notes.js', async: true
+    }]
+  });
 
-      function setTheme(name){
+  function setTheme(name){
 
-        document.getElementById('theme').setAttribute(
+    document.getElementById('theme').setAttribute(
             'href','css/theme/' + name + '.css');
 
-        return false;
-      }
+    return false;
+  }
 
-      function animate (imgs, idx) {
+  function animate (imgs, idx) {
 
-        $(imgs[idx]).animate({
-          rotation: 180
-        }, {
-          step: function(now, tween) {
+    $(imgs[idx]).animate({
+      rotation: 180
+    }, {
+      step: function(now, tween) {
 
-          if (tween.prop === "rotation") {
-              $(this).css('transform', 'rotateY(' + (now + 90) + 'deg)');
-            }
-          },
-          easing: 'swing',
-          duration: 10000,
-          complete: function () {
+        if (tween.prop === "rotation") {
+          $(this).css('transform', 'rotateY(' + (now + 90) + 'deg)');
+        }
+      },
+      easing: 'swing',
+      duration: 10000,
+      complete: function () {
 
-            $(imgs[idx]).css({
-              rotation: 0,
-              display: 'none'
-            });
-
-            idx = (++idx) % 2
-
-            $(imgs[idx]).css({
-              rotation: 0,
-              display: 'block'
-            });
-
-            animate(imgs, idx)
-          }
+        $(imgs[idx]).css({
+          rotation: 0,
+          display: 'none'
         });
+
+        idx = (++idx) % 2
+
+        $(imgs[idx]).css({
+          rotation: 0,
+          display: 'block'
+        });
+
+        animate(imgs, idx)
       }
+    });
+  }
 
-      //animate($('.adsk-logo'), 0)
+  //animate($('.adsk-logo'), 0)
 
-		</script>
+</script>
 
-	</body>
+</body>
 </html>

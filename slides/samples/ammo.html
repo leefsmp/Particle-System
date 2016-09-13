@@ -248,6 +248,8 @@
                     new THREE.BoxGeometry(50, 2, 10),
                     material);
 
+                mesh.receiveShadow = true;
+
                 mesh.position.copy(position);
 
                 rotations.forEach(function(rotation){
@@ -277,6 +279,7 @@
 
                 _renderer.setSize(domContainer.clientWidth, domContainer.clientHeight)
                 _renderer.setPixelRatio(window.devicePixelRatio)
+                _renderer.shadowMapEnabled = true;
                 //_renderer.setClearColor(0x9b9b9b)
 
                 this.fps = new FPSMeter(toolbarContainer, {
@@ -324,9 +327,14 @@
                 var ambientLight = new THREE.AmbientLight(0x555555);
                 _scene.add(ambientLight);
 
-                var directionalLight = new THREE.DirectionalLight(0xffffff);
-                directionalLight.position.set( -.5, .5, -1.5 ).normalize();
-                _scene.add(directionalLight);
+//                var directionalLight = new THREE.DirectionalLight(0xffffff);
+//                directionalLight.position.set( -.5, .5, -1.5 ).normalize();
+//                _scene.add(directionalLight);
+
+                var spotLight = new THREE.SpotLight(0xffffff);
+                spotLight.position.set( -.5, .5, -1.5);
+                spotLight.castShadow = true;
+                _scene.add(spotLight);
 
                 var material = new THREE.MeshLambertMaterial({
                     color: 0xdd0000
@@ -492,6 +500,8 @@
 
                     mesh.position.x = _random(-40, -20);
                     mesh.position.y = 50;
+
+                    mesh.castShadow = true;
 
                     _scene.add(mesh);
 

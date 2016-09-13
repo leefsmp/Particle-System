@@ -99,6 +99,7 @@ export default class DynamicTest extends UnitTestBase {
       if (config.dumpParticles) {
 
         for (let i = 0; i < config.nbSteps; ++i) {
+
           console.log('-------- Step ' + (i + 1) + ' --------')
           this.ps.step(config.timeStep)
           this.dumpParticles(this.ps)
@@ -107,6 +108,7 @@ export default class DynamicTest extends UnitTestBase {
       } else {
 
         for (let i = 0; i < config.nbSteps; ++i) {
+
           this.ps.step(config.timeStep)
         }
       }

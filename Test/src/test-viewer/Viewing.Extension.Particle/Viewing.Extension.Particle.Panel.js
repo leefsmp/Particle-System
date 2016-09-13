@@ -50,9 +50,9 @@ export default class ParticlePanel extends ToolPanelBase {
 
     this.maxParticleCtrl.onFinishChange((value) => {
 
-      this.particleSytemGUI.update()
-
       this.emit('maxParticles.changed', value)
+
+      this.particleSytemGUI.update()
     })
 
     this.particleSytemGUI.shaders = 'ON'

@@ -207,7 +207,7 @@ export default class ParticleSystem extends EventsEmitter {
   }
 
   ///////////////////////////////////////////////////////////////////
-  // filter particles using lifeTime and event callback
+  // filter particles using lifeTime
   //
   ///////////////////////////////////////////////////////////////////
   filterParticle (particle) {
