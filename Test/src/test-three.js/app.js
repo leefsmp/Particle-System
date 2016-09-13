@@ -164,6 +164,14 @@ class ThreeJsApp {
       this.camera,
       this.domContainer)
 
+    this.transformControlTx.visible = false
+
+    this.scene.add(this.transformControlTx)
+
+    this.transformControlTx.addEventListener(
+      'change',
+      this.onTransformHandler)
+
     this.raycaster = new THREE.Raycaster()
     this.raycaster.params.Points.threshold = 0.1
 
@@ -653,21 +661,16 @@ class ThreeJsApp {
       this.panel.loadObjectGUI(obj)
 
       this.transformControlTx.attach(selectable)
-      this.scene.add(this.transformControlTx)
 
-      this.transformControlTx.addEventListener(
-        'change',
-        this.onTransformHandler)
+      this.transformControlTx.visible = true
 
     } else {
 
       this.panel.loadObjectGUI(null)
 
-      this.transformControlTx.removeEventListener(
-        'change',
-        this.onTransformHandler)
+      this.transformControlTx.detach()
 
-      this.scene.remove(this.transformControlTx)
+      this.transformControlTx.visible = false
     }
   }
 
