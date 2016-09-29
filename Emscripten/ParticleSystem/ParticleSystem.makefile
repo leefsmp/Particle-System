@@ -25,8 +25,8 @@ build_all_configurations: Release
 
 # Builds the Release configuration...
 .PHONY: Release
-Release: create_folders release/Field.o release/MagneticField.o release/main.o release/Baseobject.o release/Particle.o release/ParticleEmitter.o release/ParticleSystem.o release/EventEmitter.o release/EventHandler.o release/Vector.o release/glue_wrapper.o
-	$(CPP_COMPILER) release/Field.o release/MagneticField.o release/main.o release/Baseobject.o release/Particle.o release/ParticleEmitter.o release/ParticleSystem.o release/EventEmitter.o release/EventHandler.o release/Vector.o release/glue_wrapper.o  $(Release_Library_Path) $(Release_Libraries) -Wl,-rpath,./ -o ../release/ParticleSystem.bc
+Release: create_folders release/Field.o release/MagneticField.o release/main.o release/BaseObject.o release/Particle.o release/ParticleEmitter.o release/ParticleSystem.o release/EventEmitter.o release/EventHandler.o release/Vector.o release/glue_wrapper.o
+	$(CPP_COMPILER) release/Field.o release/MagneticField.o release/main.o release/BaseObject.o release/Particle.o release/ParticleEmitter.o release/ParticleSystem.o release/EventEmitter.o release/EventHandler.o release/Vector.o release/glue_wrapper.o  $(Release_Library_Path) $(Release_Libraries) -Wl,-rpath,./ -o ../release/ParticleSystem.bc
 
 # Compiles file glue_wrapper.cpp for the Release configuration...
 -include release/glue_wrapper.d
@@ -52,11 +52,11 @@ release/main.o: main.cpp
 	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c main.cpp $(Release_Include_Path) -o release/main.o
 	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM main.cpp $(Release_Include_Path) > release/main.d
 
-# Compiles file Baseobject.cpp for the Release configuration...
--include release/Baseobject.d
-release/Baseobject.o: Baseobject.cpp
-	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c Baseobject.cpp $(Release_Include_Path) -o release/Baseobject.o
-	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM Baseobject.cpp $(Release_Include_Path) > release/Baseobject.d
+# Compiles file BaseObject.cpp for the Release configuration...
+-include release/BaseObject.d
+release/BaseObject.o: BaseObject.cpp
+	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c BaseObject.cpp $(Release_Include_Path) -o release/BaseObject.o
+	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM BaseObject.cpp $(Release_Include_Path) > release/BaseObject.d
 
 # Compiles file Particle.cpp for the Release configuration...
 -include release/Particle.d
@@ -110,4 +110,6 @@ clean:
 	rm -f ../release/*.so
 	rm -f ../release/*.dll
 	rm -f ../release/*.exe
+
+
 
