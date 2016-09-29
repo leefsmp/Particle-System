@@ -245,24 +245,25 @@
     <section>
       <section>
           <pre><code contenteditable>
-            float array[5000]; // C++
+float array[5000]; // C++
 
-            int main() {
-            for (int i = 0; i < 5000; ++i) {
-            array[i] += 1.0f;
-            }
-            }
+int main() {
+  for (int i = 0; i < 5000; ++i) {
+    array[i] += 1.0f;
+  }
+}
           </code></pre>
         <p><b>&rArr;</b> <text style="color:#a9dc24;">Emscripten</text> <b>&rArr;</b></p>
           <pre><code contenteditable>
-            function main() { // JavaScript
+function main() { // JavaScript
 
-            var a = 0, b = 0;
-            do {
-            a = (8 + (b << 2)) | 0;
-            HEAPF32[a >> 2] = +HEAPF32[a >> 2] + 1.0;
-            b = (b + 1) | 0;
-            } while ((b | 0) < 5000);
+var a = 0, b = 0;
+
+do {
+  a = (8 + (b << 2)) | 0;
+  HEAPF32[a >> 2] = +HEAPF32[a >> 2] + 1.0;
+  b = (b + 1) | 0;
+} while ((b | 0) < 5000);
           </code></pre>
         <p class="fragment">This is <a href="http://asmjs.org" target="_blank">asm.js</a></b></p>
       </section>
@@ -494,14 +495,14 @@
           Download the Portable Emscripten SDK
         </a>
             <pre><code contenteditable>
-              #Fetch the latest registry of available tools
-              ./emsdk update
+  #Fetch the latest registry of available tools
+  ./emsdk update
 
-              # Download and install the incoming SDK tools (Binaryen Support)
-              ./emsdk install sdk-incoming-64bit
+  # Download and install the incoming SDK tools (Binaryen Support)
+  ./emsdk install sdk-incoming-64bit
 
-              # Make the "latest" SDK "active"
-              ./emsdk activate sdk-incoming-64bit
+  # Make the "latest" SDK "active"
+  ./emsdk activate sdk-incoming-64bit
             </code></pre>
       </section>
       <section>
@@ -541,7 +542,7 @@
       </section>
       <section>
             <pre><code contenteditable>
-              python ~/emsdk/emscripten/incoming/tools/webidl_binder.py bindings.idl glue
+python ~/emsdk/emscripten/incoming/tools/webidl_binder.py bindings.idl glue
             </code></pre>
       </section>
     </section>
@@ -549,14 +550,14 @@
     <section>
       <h2>Generating <text style="color:#a9dc24;">asm.js</text></h2>
           <pre><code contenteditable>
-            emcc -s ParticleSystem.bc --post-js glue.js -o ParticleSystem.asm.js
+emcc -s ParticleSystem.bc --post-js glue.js -o ParticleSystem.asm.js
           </code></pre>
     </section>
 
     <section>
       <h2>Generating <text style="color:#a9dc24;">WebAssembly</text></h2>
           <pre style="width: 72%;"><code contenteditable>
-            emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
+emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
           </code></pre>
     </section>
 
@@ -564,27 +565,27 @@
       <h2><text style="color:#a9dc24;">Loading wasm</text> in your Web Page</h2>
       <section>
             <pre><code contenteditable>
-              var Module = Module || {}
+  var Module = Module || {}
 
-              //'WEB' / 'WORKER' / 'NODE' / 'SHELL'
-              Module['ENVIRONMENT'] = 'WEB'
+  //'WEB' / 'WORKER' / 'NODE' / 'SHELL'
+  Module['ENVIRONMENT'] = 'WEB'
 
-              Module.wasmBinaryFile = './wasm/ParticleSystem.wasm'
+  Module.wasmBinaryFile = './wasm/ParticleSystem.wasm'
 
-              var xhr = new XMLHttpRequest()
-              xhr.open('GET', './wasm/ParticleSystem.wasm', true)
-              xhr.responseType = 'arraybuffer'
+  var xhr = new XMLHttpRequest()
+  xhr.open('GET', './wasm/ParticleSystem.wasm', true)
+  xhr.responseType = 'arraybuffer'
 
-              xhr.onload = function() {
+  xhr.onload = function() {
 
-              Module.wasmBinary = xhr.response
+    Module.wasmBinary = xhr.response
 
-              var script = document.createElement('script')
-              script.src = "./wasm/ParticleSystem.js"
-              document.body.appendChild(script)
-              }
+    var script = document.createElement('script')
+    script.src = "./wasm/ParticleSystem.js"
+    document.body.appendChild(script)
+  }
 
-              xhr.send(null)
+  xhr.send(null)
             </code></pre>
       </section>
       <section>

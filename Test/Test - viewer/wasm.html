@@ -24,6 +24,8 @@
 
       Module.wasmBinaryFile = wasmRoot + 'ParticleSystem.wasm'
 
+      Module.memoryInitializerPrefixURL = wasmRoot
+
       var xhr = new XMLHttpRequest()
       xhr.open('GET', wasmRoot + 'ParticleSystem.wasm', true)
       xhr.responseType = 'arraybuffer'

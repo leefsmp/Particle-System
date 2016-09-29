@@ -127,5 +127,5 @@ void Particle::step(double dt) {
 void Particle::reset() {
 
 	_recycled = false;
-  _lifeTime = 30.0;
+ 	_lifeTime = 30.0;
 }

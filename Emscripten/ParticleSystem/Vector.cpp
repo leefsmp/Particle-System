@@ -16,7 +16,7 @@ Vector::Vector() {
 //
 //
 ///////////////////////////////////////////////////////////////////
-Vector::Vector(Vector& v) {
+Vector::Vector(const Vector& v) {
 
 	this->x = v.x;
 	this->y = v.y;
@@ -27,7 +27,7 @@ Vector::Vector(Vector& v) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-Vector::Vector(double x, double y, double z) {
+Vector::Vector(const double x, const double y, const double z) {
 
 	this->x = x;
 	this->y = y;
@@ -38,7 +38,7 @@ Vector::Vector(double x, double y, double z) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-void Vector::set(double x, double y, double z) {
+void Vector::set(const double x, const double y, const double z) {
 
 	this->x = x;
 	this->y = y;
@@ -49,7 +49,7 @@ void Vector::set(double x, double y, double z) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-void Vector::set(Vector& v) {
+void Vector::set(const Vector& v) {
 
 	this->set(v.x, v.y, v.z);
 }
@@ -58,17 +58,17 @@ void Vector::set(Vector& v) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-double Vector::getX() {
+double Vector::getX() const {
 
 	return x;
 }
 
-double Vector::getY() {
+double Vector::getY() const {
 
 	return y;
 }
 
-double Vector::getZ() {
+double Vector::getZ() const {
 
 	return z;
 }
@@ -77,7 +77,7 @@ double Vector::getZ() {
 //
 //
 ///////////////////////////////////////////////////////////////////
-double Vector::magnitude() {
+double Vector::magnitude() const {
 
 	return sqrt(x * x + y * y + z * z);
 }
@@ -86,7 +86,7 @@ double Vector::magnitude() {
 //
 //
 ///////////////////////////////////////////////////////////////////
- Vector Vector::asUnitVector () {
+ Vector Vector::asUnitVector () const {
 
     double m = this->magnitude();
 
@@ -99,7 +99,7 @@ double Vector::magnitude() {
 //
 //
 ///////////////////////////////////////////////////////////////////
-Vector Vector::scaled(double scaleFactor) {
+Vector Vector::scaled(const double scaleFactor) const {
 
 	double m = this->magnitude();
 
@@ -115,29 +115,32 @@ Vector Vector::scaled(double scaleFactor) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-void Vector::multiply(double scaleFactor) {
+Vector Vector::multiply(const double scaleFactor) const {
 
-	x *= scaleFactor;
-    y *= scaleFactor;
-    z *= scaleFactor;
+    Vector res(
+    	x * scaleFactor,
+    	y * scaleFactor,
+    	z * scaleFactor);
+
+ 	return res;
 }
 
 ///////////////////////////////////////////////////////////////////
 //
 //
 ///////////////////////////////////////////////////////////////////
-void Vector::add(const Vector& v) {
+Vector Vector::add(const Vector& v) const {
 
-	x += v.x;
-	y += v.y;
-    z += v.z;
+    Vector res(x + v.x, y + v.y, z + v.z);
+
+    return res;
 }
 
 ///////////////////////////////////////////////////////////////////
 //
 //
 ///////////////////////////////////////////////////////////////////
-Vector Vector::vectorTo(const Vector& v) {
+Vector Vector::vectorTo(const Vector& v) const {
 
 	 Vector res(v.x - x, v.y - y, v.z - z);
 
@@ -148,7 +151,8 @@ Vector Vector::vectorTo(const Vector& v) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-bool Vector::withinSphere (Vector* center, double radius) {
+bool Vector::withinSphere (
+	const Vector* center, const double radius) const {
 
 	double magnitudeSqr =
       (x - center->x) * (x - center->x) +
@@ -162,7 +166,7 @@ bool Vector::withinSphere (Vector* center, double radius) {
 //
 //
 ///////////////////////////////////////////////////////////////////
-Vector Vector::copy() {
+Vector Vector::copy() const {
 
 	Vector v(x, y, z);
 
@@ -173,7 +177,7 @@ Vector Vector::copy() {
 //
 //
 ///////////////////////////////////////////////////////////////////
-Vector Vector::fromArray(double* data) {
+Vector Vector::fromArray(const double* data) {
 
 	Vector v(data[0], data[1], data[2]);
 

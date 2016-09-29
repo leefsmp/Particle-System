@@ -1,6 +1,6 @@
 
 // Unit Tests
-import DynamicTest from 'Dynamic.Test'
+import DynamicTest from 'DynamicTest'
 
 // Libs
 import JSONEditor from 'jsoneditor'

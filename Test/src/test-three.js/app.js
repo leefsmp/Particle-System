@@ -304,8 +304,10 @@ class ThreeJsApp {
       transparent:true,
       uniforms: {},
       fragmentShader,
-      vertexShader,
-      transparent: true
+      vertexShader
+      //blending: THREE.AdditiveBlending,
+      //opacity: 0.8,
+      //map: THREE.ImageUtils.loadTexture("../resources/img/particle.png")
     }
 
     let shaderMaterial = new THREE.ShaderMaterial(
