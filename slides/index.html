@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/theme/league.css" id="theme"/>
   <link rel="stylesheet" href="lib/css/zenburn.css"/>
   <link rel="stylesheet" href="css/custom.css"/>
+  <link rel="stylesheet" href="lib/chart/chart.css"/>
 
   <!-- Printing and PDF exports -->
   <script>
@@ -664,7 +665,7 @@ emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
         </ul>
       </section>
       <section>
-        <img src="./img/benchmark.png" height="650"  style="position: absolute;top: 22%;">
+        <div id="barChart"></div>
       </section>
       <section>
         <img src="./img/viewer.png" height="350" style="position: absolute;left: 10px;top: 30%;">
@@ -865,10 +866,11 @@ emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
   </div>
 </div>
 
-
 <script src="lib/js/jquery.min.js"></script>
+<script src="lib/chart/d3.min.js"></script>
 <script src="lib/js/head.min.js"></script>
-<script src="js/reveal.js"></script>
+<script src="lib/chart/chart.js"></script>
+<script src="./js/reveal.js"></script>
 
 <script>
 
@@ -892,7 +894,7 @@ emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
     history: true,
     center: true,
 
-    //viewDistance: 3,
+    viewDistance: 1,
 
     transition: 'convex', // none/fade/slide/convex/concave/zoom
 
@@ -961,6 +963,111 @@ emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
   }
 
   //animate($('.adsk-logo'), 0)
+
+  var r = "#de3a03"
+  var g = "#25ce6a"
+  var b = "#0738be"
+
+  function makeEmpty(label) {
+    return {
+      label: label,
+      color: b,
+      value: 0
+    }
+  }
+
+  function guid() {
+    var d = new Date().getTime()
+    var guid = 'xxxxxx'.replace(
+            /[xy]/g,
+            function (c) {
+              var r = (d + Math.random() * 16) % 16 | 0
+              d = Math.floor(d / 16)
+              return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16)
+            })
+    return guid
+  }
+
+
+  var chartData = [
+    /////////// Chrome //////////////////////
+    {
+      key: guid(),
+      label: 'Chrome - ES6',
+      color: r,
+      value: 1884.03
+    },
+    {
+      key: guid(),
+      label: 'Chrome - asm.js [Faster x 1.30]',
+      color: b,
+      value: 1443.75
+    },
+    makeEmpty(""),
+    makeEmpty(" "),
+    /////////// Canary //////////////////////
+    {
+      label: 'Chrome (Canary) - ES6',
+      color: r,
+      value: 1832.19
+    },
+    {
+      label: 'Chrome (Canary) - asm.js [Faster x 1.33]',
+      color: b,
+      value: 1378.34
+    },
+    {
+      label: 'Chrome (Canary) - WASM [Faster x 1.64]',
+      color: g,
+      value: 1146.56
+    },
+    makeEmpty("  "),
+    makeEmpty("   "),
+    /////////// firefox //////////////////////
+    {
+      label: 'Firefox - ES6',
+      color: r,
+      value: 1185.61
+    },
+    {
+      label: 'Firefox - asm.js [Faster x 1.21]',
+      color: b,
+      value: 980.12
+    },
+    makeEmpty("    "),
+    makeEmpty("     "),
+    /////////// nightly //////////////////////
+    {
+      label: 'Firefox (Nightly) - ES6',
+      color: r,
+      value: 1219.520
+    },
+    {
+      label: 'Firefox (Nightly) - asm.js [Faster x 1.22]',
+      color: b,
+      value: 1010.070
+    },
+    {
+      label: 'Firefox (Nightly) - WASM [Slower x 1.02]',
+      color: g,
+      value: 1243.73
+    },
+    makeEmpty("      "),
+    makeEmpty("       "),
+    /////////// Safari //////////////////////
+    {
+      label: 'Safari - ES6',
+      color: r,
+      value:  2587.45
+    },
+    {
+      label: 'Safari - asm.js [Faster x 3.66]',
+      color: b,
+      value: 706.12
+    }
+  ]
+
+  barChart('#barChart', chartData)
 
 </script>
 
