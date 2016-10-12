@@ -551,14 +551,22 @@ python ~/emsdk/emscripten/incoming/tools/webidl_binder.py bindings.idl glue
     <section>
       <h2>Generating <text style="color:#a9dc24;">asm.js</text></h2>
           <pre><code contenteditable>
-emcc -s ParticleSystem.bc --post-js glue.js -o ParticleSystem.asm.js
+ //Step 1 -> generating LLVM bytecode
+ make
+
+ //Step 2 -> generating asm.js
+ emcc -s ParticleSystem.bc --post-js glue.js -o ParticleSystem.asm.js
           </code></pre>
     </section>
 
     <section>
       <h2>Generating <text style="color:#a9dc24;">WebAssembly</text></h2>
           <pre style="width: 72%;"><code contenteditable>
-emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
+ //Step 1 -> generating LLVM bytecode
+ make
+
+ //Step 2 -> generating wasm
+ emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
           </code></pre>
     </section>
 
@@ -711,7 +719,7 @@ emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
       </section>
       <section>
         <img src="./img/lhc.png" height="320" style="position: absolute;left: 30px;top: 30%;">
-        <p style="margin-left: 55px;">LHC Bonus</p>
+        <p style="margin-left: 155px;">Forge Viewer / LHC</p>
         <ul>
           <li style="margin-bottom: 20px; margin-top: 50px;">
             <a href="../Test/Test%20-%20LHC/es6.html" target="_blank">
@@ -785,7 +793,7 @@ emcc -s BINARYEN=1 ParticleSystem.bc --post-js glue.js -o ParticleSystem.js
           <br>
           <br>
           <br>
-          <a href="./samples/ammo.html" target="_blank">
+          <a href="./samples/ammo/ammo.html" target="_blank">
             three.js demo
           </a>
         </b>

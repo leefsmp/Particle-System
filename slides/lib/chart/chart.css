@@ -2,8 +2,8 @@
     overflow-x: auto;
 }
 
-.bar-item:hover {
-    fill: brown;
+.bar-item {
+    opacity: 0.8;
 }
 
 .axis {

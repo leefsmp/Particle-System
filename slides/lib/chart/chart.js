@@ -95,14 +95,12 @@ function barChart(selector, data) {
       return data[i].color;
     })
     .on('click', (item)=>{
-      this.emit('bar.click', {
-        dbIds: item.dbIds
-      });
+
     })
     .on('mouseover',function(props){
 
       tooltip.transition()
-        .style('opacity',.9);
+        .style('opacity',1.0);
 
       var offset = $container.offset();
 
@@ -118,14 +116,14 @@ function barChart(selector, data) {
 
       tempcolor = this.style.fill;
 
-      //d3.select(this)
-      //  .style('fill','#6AB8E3')
-      //  .style('opacity',.5);
+      d3.select(this)
+        .style('opacity',1.0)
+        .style('border', '1px solid ' + this.style.fill)
     })
     .on('mouseout',function(d){
 
       d3.select(this)
-        .style('opacity',1)
+        .style('opacity',0.8)
         .style('fill',tempcolor);
 
       tooltip.style('display', 'none');
