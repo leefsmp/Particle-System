@@ -10,18 +10,16 @@ export default class ParticlePanel extends ToolPanelBase {
   //
   //
   /////////////////////////////////////////////////////////////
-  constructor (particleTool, viewer, btnElement) {
+  constructor (extension, viewer, btnElement) {
     
     super(viewer.container, 'Particle Controls', {
       buttonElement: btnElement,
       closable: false
     })
 
-    this._particleTool = particleTool
-
-    this._viewer = viewer
-
     $(this.container).addClass('particle')
+
+    this.particleSystem = extension.particleSystem
 
     var gui = new dat.GUI({
       autoPlace: false
@@ -35,36 +33,24 @@ export default class ParticlePanel extends ToolPanelBase {
 
     var folder = gui.addFolder('Particle System Settings')
 
-    this.particleSytemGUI = new GUIObjectAdapter(
-      particleTool.particleSystem, {
-        maxParticles: {
-          getter: 'getMaxParticles',
-          setter: 'setMaxParticles'
-        }
-    })
-
     this.maxParticleCtrl = folder.add(
-      this.particleSytemGUI,
+      extension,
       'maxParticles', 0, 50000).name(
         'Max Particles').step(1)
 
     this.maxParticleCtrl.onFinishChange((value) => {
 
       this.emit('maxParticles.changed', value)
-
-      this.particleSytemGUI.update()
     })
 
-    this.particleSytemGUI.shaders = 'ON'
+    this.toolCtrl = folder.add(
+      extension,
+      'tool', ['Mesh', 'Point Cloud']).name(
+      'Tool')
 
-    this.shadersCtrl = folder.add(
-      this.particleSytemGUI,
-      'shaders', ['ON', 'OFF']).name(
-      'Shaders')
+    this.toolCtrl.onFinishChange((value) => {
 
-    this.shadersCtrl.onFinishChange((value) => {
-
-      this.emit('shaders.changed', value)
+      this.emit('tool.changed', value)
     })
 
     folder.open()
@@ -118,7 +104,7 @@ export default class ParticlePanel extends ToolPanelBase {
       case 0:
 
         this.selectedObjectGUI = new GUIObjectAdapter(
-          this._particleTool.particleSystem.getEmitter(obj.getId()), {
+          this.particleSystem.getEmitter(obj.getId()), {
             emissionRate: {
               getter: 'getEmissionRate',
               setter: 'setEmissionRate'
@@ -182,7 +168,7 @@ export default class ParticlePanel extends ToolPanelBase {
       case 1:
 
         this.selectedObjectGUI = new GUIObjectAdapter(
-          this._particleTool.particleSystem.getMagneticField(obj.getId()), {
+          this.particleSystem.getMagneticField(obj.getId()), {
             force: {
               getter: 'getForce',
               setter: 'setForce'
@@ -207,6 +193,58 @@ export default class ParticlePanel extends ToolPanelBase {
         })
 
         fieldFolder.open()
+        break
+
+      default:
+        break
+    }
+
+    window.setTimeout(() => {
+      gui.domElement.style.width = '100%'
+    }, 0)
+
+    this.setVisible(true)
+  }
+
+  /////////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////////
+  loadToolGUI (tool) {
+
+    $('#' + this.container.id + '-tool-gui').remove()
+
+    var gui = new dat.GUI({
+      autoPlace: false
+    })
+
+    $('#' + this.container.id + '-gui').append(
+      `<div id="${this.container.id}-tool-gui"></div>`
+    )
+
+    var guiContainer = document.getElementById(
+      this.container.id + '-tool-gui')
+
+    guiContainer.appendChild(
+      gui.domElement)
+
+    switch (tool.getName()) {
+
+      case 'Viewing.Particle.Tool.Mesh':
+
+        var meshFolder = gui.addFolder(
+          'Mesh Tool Settings')
+
+        this.shadersCtrl = meshFolder.add(
+          tool,
+          'shaders', ['ON', 'OFF']).name(
+          'Shaders')
+
+        this.shadersCtrl.onFinishChange((value) => {
+
+          this.emit('shaders.changed', value)
+        })
+
         break
 
       default:

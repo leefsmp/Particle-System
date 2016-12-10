@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
 
-  devtool: false,
+  devtool: 'source-map',
 
   entry: {
 
@@ -36,8 +36,8 @@ module.exports = {
       compress: {
         warnings: false
       },
-      minimize: true,
-      mangle: true
+      minimize: false,
+      mangle: false
     }),
 
     new webpack.DefinePlugin({

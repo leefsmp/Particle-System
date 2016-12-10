@@ -26,6 +26,21 @@
       height: 100vh;
     }
 
+    .input-container {
+        position: absolute;
+        z-index: 100;
+        height: 30px;
+        width: 190px;
+        left: 10px;
+        top: 50px;
+    }
+
+    .input-container input {
+        position: relative;
+        width: 100%;
+        top:10px;
+    }
+
   </style>
 
 </head>
@@ -35,12 +50,16 @@
     <script type="text/javascript" src="lib/TrackballControls.js"></script>
     <script type="text/javascript" src="lib/ammo.js"></script>
     <script type="text/javascript" src="lib/fpsmeter.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
 
-
-    <div id="canvas">
-      <div id="toolbar"> </div>
+    <div>
+        <div class="input-container">
+            <input id="range" type="range" min="1" max="1450" step="1" value="0">
+        </div>
+        <div id="canvas">
+            <div id="toolbar"></div>
+        </div>
     </div>
-
 
     <script>
 
@@ -565,6 +584,18 @@
             }
 
             ///////////////////////////////////////////////////////////////////
+            //
+            //
+            ///////////////////////////////////////////////////////////////////
+            this.setPeriod = function(t) {
+
+                clearInterval(_intervalId)
+
+                _intervalId = setInterval(
+                    _newElements, t);
+            }
+
+            ///////////////////////////////////////////////////////////////////
             // Stops simulation
             //
             ///////////////////////////////////////////////////////////////////
@@ -619,6 +650,13 @@
           false)
 
         simulationManager.start();
+
+        $('#range').on('change', function(e){
+
+            var t = 1500 - $('#range').val()
+
+            simulationManager.setPeriod(t)
+        })
 
     </script>
 

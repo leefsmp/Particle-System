@@ -11,6 +11,8 @@ export default class TransformTool extends EventsEmitter {
 
     super()
 
+    viewer.toolController.registerTool(this)
+
     this._viewer = viewer
 
     this._dbIds = []
@@ -270,37 +272,47 @@ export default class TransformTool extends EventsEmitter {
   ///////////////////////////////////////////////////////////////////
   activate() {
 
-    this.active = true
+    if (!this.active) {
 
-    this._viewer.select([])
+      console.log(this.getName() + ' activated')
 
-    var bbox = this._viewer.model.getBoundingBox()
+      this.active = true
 
-    this._viewer.impl.createOverlayScene(
-      'TransformToolOverlay')
+      this._viewer.select([])
 
-    this._transformControlTx = new THREE.TransformControls(
-      this._viewer.impl.camera,
-      this._viewer.impl.canvas,
-      "translate")
+      var bbox = this._viewer.model.getBoundingBox()
 
-    this._transformControlTx.setSize(
-      bbox.getBoundingSphere().radius * 5)
+      this._viewer.impl.createOverlayScene(
+        'TransformToolOverlay')
 
-    this._transformControlTx.visible = false
+      this._transformControlTx = new THREE.TransformControls(
+        this._viewer.impl.camera,
+        this._viewer.impl.canvas,
+        "translate")
 
-    this._viewer.impl.addOverlay(
-      'TransformToolOverlay',
-      this._transformControlTx)
+      this._transformControlTx.setSize(
+        bbox.getBoundingSphere().radius * 5)
 
-    this._transformMesh = this.createTransformMesh()
+      this._transformControlTx.visible = false
 
-    this._transformControlTx.attach(
-      this._transformMesh)
+      this._viewer.impl.addOverlay(
+        'TransformToolOverlay',
+        this._transformControlTx)
 
-    this._viewer.addEventListener(
-      Autodesk.Viewing.AGGREGATE_SELECTION_CHANGED_EVENT,
-      this.onAggregateSelectionChanged)
+      this._transformMesh = this.createTransformMesh()
+
+      this._transformControlTx.attach(
+        this._transformMesh)
+
+      this._viewer.addEventListener(
+        Autodesk.Viewing.AGGREGATE_SELECTION_CHANGED_EVENT,
+        this.onAggregateSelectionChanged)
+
+      this._viewer.toolController.activateTool(
+        this.getName())
+
+      this.emit('activate')
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -309,28 +321,38 @@ export default class TransformTool extends EventsEmitter {
   ///////////////////////////////////////////////////////////////////////////
   deactivate() {
 
-    this.active = false
+    if (this.active) {
 
-    this._viewer.impl.removeOverlay(
-      'TransformToolOverlay',
-      this._transformControlTx)
+      console.log(this.getName() + ' deactivated')
 
-    this._transformControlTx.removeEventListener(
-      'change',
-      this.onTxChange)
+      this.active = false
 
-    this._transformControlTx = null
+      this.viewer.toolController.deactivateTool(
+        this.getName())
 
-    this._viewer.impl.removeOverlayScene(
-      'TransformToolOverlay')
+      this._viewer.impl.removeOverlay(
+        'TransformToolOverlay',
+        this._transformControlTx)
 
-    this._viewer.removeEventListener(
-      Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-      this.onCameraChanged)
+      this._transformControlTx.removeEventListener(
+        'change',
+        this.onTxChange)
 
-    this._viewer.removeEventListener(
-      Autodesk.Viewing.AGGREGATE_SELECTION_CHANGED_EVENT,
-      this.onAggregateSelectionChanged)
+      this._transformControlTx = null
+
+      this._viewer.impl.removeOverlayScene(
+        'TransformToolOverlay')
+
+      this._viewer.removeEventListener(
+        Autodesk.Viewing.CAMERA_CHANGE_EVENT,
+        this.onCameraChanged)
+
+      this._viewer.removeEventListener(
+        Autodesk.Viewing.AGGREGATE_SELECTION_CHANGED_EVENT,
+        this.onAggregateSelectionChanged)
+
+      this.emit('deactivate')
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////
