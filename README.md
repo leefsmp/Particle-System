@@ -1,10 +1,10 @@
-#Particle System
+# Particle System
 
-##Description
+## Description
 
 A Particle System experiment designed to benchmark web technologies from a non trivial piece of code: ES6, Emscripten and Web Assembly
 
-##Setup/Usage Instructions
+## Setup/Usage Instructions
 
 - Building the ASM.js and WebAssembly versions:
 
